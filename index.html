@@ -1518,12 +1518,11 @@ footer {
   resizeCanvas();
   window.addEventListener('resize', resizeCanvas);
 
-  let t = 0;
-  function drawAurora() {
+  function drawAurora(now) {
     ctx.clearRect(0, 0, W, H);
     blobs.forEach((b, i) => {
-      const bx = W * b.x + Math.sin(t * b.speed * 1000 + i * 2.1) * W * .12;
-      const by = H * b.y + Math.cos(t * b.speed * 1000 + i * 1.7) * H * .1;
+      const bx = W * b.x + Math.sin(now * b.speed + i * 2.1) * W * .12;
+      const by = H * b.y + Math.cos(now * b.speed + i * 1.7) * H * .1;
       const radius = Math.min(W, H) * b.r;
       const g = ctx.createRadialGradient(bx, by, 0, bx, by, radius);
       const [r, g2, bl] = b.color;
@@ -1534,10 +1533,9 @@ footer {
       ctx.fillStyle = g;
       ctx.fill();
     });
-    t = performance.now();
     requestAnimationFrame(drawAurora);
   }
-  drawAurora();
+  requestAnimationFrame(drawAurora);
 
   /* ── CUSTOM CURSOR ── */
   const dot = document.querySelector('.cursor-dot');
