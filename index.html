@@ -1049,7 +1049,7 @@ footer {
           <!-- Top label -->
           <div class="camera-top-bar">
             <span class="ctb-label">AI Scan</span>
-            <span class="ctb-badge">FREE · 5/day</span>
+            <span class="ctb-badge">AI Powered</span>
           </div>
           <!-- Bottom status pill — scanning / analyzing -->
           <div class="camera-bottom-bar" id="cam-bottom-bar">
@@ -1102,8 +1102,8 @@ footer {
 <!-- ─── STATS ─────────────────────────────────────── -->
 <div class="stats-bar" id="features">
   <div class="stat-item">
-    <div class="stat-num" data-count="5">0</div>
-    <div class="stat-label">Free daily scans</div>
+    <div class="stat-num">Free</div>
+    <div class="stat-label">To get started</div>
   </div>
   <div class="stat-item">
     <div class="stat-num" data-count="9">0</div>
@@ -1129,7 +1129,7 @@ footer {
       <span class="chip blue">📸 Photo scan</span>
       <span class="chip green">🏷️ Barcode scan</span>
       <span class="chip purple">🗺️ Menu scan</span>
-      <span class="chip cyan">✨ Free 5/day</span>
+      <span class="chip cyan">✨ Instant results</span>
     </div>
   </div>
   <div class="feat-visual reveal reveal-delay-2">
@@ -1691,7 +1691,7 @@ footer {
         setTimeout(() => el.classList.add('in'), delay);
         io.unobserve(el);
       });
-    }, { threshold: 0.08, rootMargin: '0px 0px -40px 0px' });
+    }, { threshold: 0.05, rootMargin: '0px 0px 60px 0px' });
 
     reveals.forEach(el => io.observe(el));
   })();
