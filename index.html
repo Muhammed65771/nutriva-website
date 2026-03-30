@@ -177,6 +177,7 @@ nav.scrolled {
   font-size: 11.5px; font-weight: 700; letter-spacing: .6px;
   text-transform: uppercase;
   color: var(--blue2); margin-bottom: 28px;
+  animation: hero-fade-up 0.7s cubic-bezier(0.16,1,0.3,1) 0.2s both;
 }
 .live-pulse {
   width: 6px; height: 6px; border-radius: 50%;
@@ -188,12 +189,21 @@ nav.scrolled {
   0%, 100% { opacity: 1; transform: scale(1); }
   50% { opacity: .5; transform: scale(.7); }
 }
+@keyframes hero-fade-up {
+  from { opacity: 0; transform: translateY(28px); }
+  to   { opacity: 1; transform: none; }
+}
+@keyframes hero-fade-in {
+  from { opacity: 0; }
+  to   { opacity: 1; }
+}
 .hero-h1 {
   font-size: clamp(40px, 5.5vw, 76px);
   font-weight: 900;
   line-height: 1.0;
   letter-spacing: -2.5px;
   margin-bottom: 24px;
+  animation: hero-fade-up 0.9s cubic-bezier(0.16,1,0.3,1) 0.35s both;
 }
 .hero-h1 em {
   font-style: normal;
@@ -209,10 +219,12 @@ nav.scrolled {
   max-width: 460px;
   font-weight: 400;
   margin-bottom: 40px;
+  animation: hero-fade-up 0.8s cubic-bezier(0.16,1,0.3,1) 0.55s both;
 }
 .hero-ctas {
   display: flex; align-items: center; gap: 14px;
   flex-wrap: wrap;
+  animation: hero-fade-up 0.7s cubic-bezier(0.16,1,0.3,1) 0.7s both;
 }
 .btn-primary {
   display: inline-flex; align-items: center; gap: 9px;
@@ -242,6 +254,7 @@ nav.scrolled {
   display: flex; align-items: center; gap: 10px;
   margin-top: 32px;
   font-size: 12.5px; color: var(--ink3);
+  animation: hero-fade-in 0.6s cubic-bezier(0.16,1,0.3,1) 0.85s both;
 }
 .hero-trust span { color: var(--green); font-weight: 600; }
 .hero-trust-div { width: 1px; height: 14px; background: var(--ink4); }
@@ -251,6 +264,7 @@ nav.scrolled {
   display: flex; align-items: center; justify-content: center;
   position: relative;
   perspective: 800px;
+  animation: hero-fade-in 1.0s cubic-bezier(0.16,1,0.3,1) 0.3s both;
 }
 .phone-wrap {
   position: relative;
@@ -1488,8 +1502,6 @@ footer {
 </footer>
 
 <!-- ─── SCRIPTS ───────────────────────────────────── -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
 <script>
 (function () {
   'use strict';
@@ -1653,20 +1665,8 @@ footer {
   })();
 
   /* ── HERO ENTRANCE ── */
-  // Elements are visible by default (no CSS opacity:0); GSAP animates them FROM invisible for a polished entrance.
-  // If GSAP fails or is slow, users always see the content immediately.
-  try {
-    gsap.registerPlugin(ScrollTrigger);
-    const tl = gsap.timeline({ defaults: { ease: 'power3.out' } });
-    tl.from('#eyebrow',    { opacity: 0, y: 20, duration: .7, delay: .3 })
-      .from('#hero-h1',    { opacity: 0, y: 30, duration: .9 }, '-=.4')
-      .from('#hero-sub',   { opacity: 0, y: 20, duration: .8 }, '-=.6')
-      .from('#hero-ctas',  { opacity: 0, y: 20, duration: .7 }, '-=.5')
-      .from('#hero-trust', { opacity: 0, duration: .6 }, '-=.3')
-      .from('#hero-right', { opacity: 0, duration: 1, ease: 'power2.out' }, '-=.8');
-  } catch (e) {
-    // GSAP unavailable — hero is already visible via CSS defaults, nothing to do
-  }
+  // Hero elements animate in via pure CSS @keyframes (hero-fade-up / hero-fade-in).
+  // No JS or CDN required — the browser handles it immediately on first paint.
 
   /* ── SCROLL REVEAL (native IntersectionObserver) ── */
   (function initReveal() {
