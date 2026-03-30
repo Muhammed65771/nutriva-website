@@ -177,7 +177,6 @@ nav.scrolled {
   font-size: 11.5px; font-weight: 700; letter-spacing: .6px;
   text-transform: uppercase;
   color: var(--blue2); margin-bottom: 28px;
-  opacity: 0; transform: translateY(20px);
 }
 .live-pulse {
   width: 6px; height: 6px; border-radius: 50%;
@@ -195,7 +194,6 @@ nav.scrolled {
   line-height: 1.0;
   letter-spacing: -2.5px;
   margin-bottom: 24px;
-  opacity: 0; transform: translateY(30px);
 }
 .hero-h1 em {
   font-style: normal;
@@ -211,12 +209,10 @@ nav.scrolled {
   max-width: 460px;
   font-weight: 400;
   margin-bottom: 40px;
-  opacity: 0; transform: translateY(20px);
 }
 .hero-ctas {
   display: flex; align-items: center; gap: 14px;
   flex-wrap: wrap;
-  opacity: 0; transform: translateY(20px);
 }
 .btn-primary {
   display: inline-flex; align-items: center; gap: 9px;
@@ -246,7 +242,6 @@ nav.scrolled {
   display: flex; align-items: center; gap: 10px;
   margin-top: 32px;
   font-size: 12.5px; color: var(--ink3);
-  opacity: 0;
 }
 .hero-trust span { color: var(--green); font-weight: 600; }
 .hero-trust-div { width: 1px; height: 14px; background: var(--ink4); }
@@ -256,7 +251,6 @@ nav.scrolled {
   display: flex; align-items: center; justify-content: center;
   position: relative;
   perspective: 800px;
-  opacity: 0;
 }
 .phone-wrap {
   position: relative;
@@ -1659,21 +1653,19 @@ footer {
   })();
 
   /* ── HERO ENTRANCE ── */
+  // Elements are visible by default (no CSS opacity:0); GSAP animates them FROM invisible for a polished entrance.
+  // If GSAP fails or is slow, users always see the content immediately.
   try {
     gsap.registerPlugin(ScrollTrigger);
     const tl = gsap.timeline({ defaults: { ease: 'power3.out' } });
-    tl.to('#eyebrow',    { opacity: 1, y: 0, duration: .7, delay: .3 })
-      .to('#hero-h1',    { opacity: 1, y: 0, duration: .9 }, '-=.4')
-      .to('#hero-sub',   { opacity: 1, y: 0, duration: .8 }, '-=.6')
-      .to('#hero-ctas',  { opacity: 1, y: 0, duration: .7 }, '-=.5')
-      .to('#hero-trust', { opacity: 1, duration: .6 }, '-=.3')
-      .to('#hero-right', { opacity: 1, duration: 1, ease: 'power2.out' }, '-=.8');
+    tl.from('#eyebrow',    { opacity: 0, y: 20, duration: .7, delay: .3 })
+      .from('#hero-h1',    { opacity: 0, y: 30, duration: .9 }, '-=.4')
+      .from('#hero-sub',   { opacity: 0, y: 20, duration: .8 }, '-=.6')
+      .from('#hero-ctas',  { opacity: 0, y: 20, duration: .7 }, '-=.5')
+      .from('#hero-trust', { opacity: 0, duration: .6 }, '-=.3')
+      .from('#hero-right', { opacity: 0, duration: 1, ease: 'power2.out' }, '-=.8');
   } catch (e) {
-    // GSAP fallback — show hero elements immediately
-    ['#eyebrow','#hero-h1','#hero-sub','#hero-ctas','#hero-trust','#hero-right'].forEach(sel => {
-      const el = document.querySelector(sel);
-      if (el) { el.style.opacity = '1'; el.style.transform = 'none'; }
-    });
+    // GSAP unavailable — hero is already visible via CSS defaults, nothing to do
   }
 
   /* ── SCROLL REVEAL (native IntersectionObserver) ── */
