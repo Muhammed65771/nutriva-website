@@ -91,7 +91,19 @@
 
   "rewrites": [
     {
-      "source": "/((?!privacy|terms|reset-password|favicon|food-bowl).*)",
+      "source": "/reset-password",
+      "destination": "/reset-password.html"
+    },
+    {
+      "source": "/privacy",
+      "destination": "/privacy.html"
+    },
+    {
+      "source": "/terms",
+      "destination": "/terms.html"
+    },
+    {
+      "source": "/(.*)",
       "destination": "/index.html"
     }
   ]
