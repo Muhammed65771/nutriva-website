@@ -95,6 +95,10 @@
       "destination": "/reset-password.html"
     },
     {
+      "source": "/confirm",
+      "destination": "/confirm.html"
+    },
+    {
       "source": "/privacy",
       "destination": "/privacy.html"
     },
