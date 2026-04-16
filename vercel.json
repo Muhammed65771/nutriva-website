@@ -32,7 +32,7 @@
         },
         {
           "key": "Content-Security-Policy",
-          "value": "default-src 'self'; script-src 'self' 'unsafe-inline' https://cdnjs.cloudflare.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; img-src 'self' data: https:; connect-src 'self' https://uvlkgvacystmezuskecb.supabase.co; frame-ancestors 'none';"
+          "value": "default-src 'self'; script-src 'self' 'unsafe-inline' https://cdnjs.cloudflare.com https://cdn.jsdelivr.net; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; img-src 'self' data: https:; connect-src 'self' https://uvlkgvacystmezuskecb.supabase.co https://*.supabase.co; frame-ancestors 'none';"
         },
         {
           "key": "Cross-Origin-Opener-Policy",
@@ -61,6 +61,13 @@
       "headers": [
         { "key": "Cache-Control", "value": "public, max-age=0, must-revalidate" }
       ]
+    },
+    {
+      "source": "/reset-password",
+      "headers": [
+        { "key": "Cache-Control", "value": "no-store, no-cache, must-revalidate" },
+        { "key": "X-Robots-Tag", "value": "noindex, nofollow" }
+      ]
     }
   ],
 
@@ -84,7 +91,7 @@
 
   "rewrites": [
     {
-      "source": "/((?!privacy|terms|favicon|food-bowl).*)",
+      "source": "/((?!privacy|terms|reset-password|favicon|food-bowl).*)",
       "destination": "/index.html"
     }
   ]
