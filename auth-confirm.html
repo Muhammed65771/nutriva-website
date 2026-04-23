@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Confirming your Nutriva AI account…</title>
+  <meta name="robots" content="noindex, nofollow" />
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Inter', sans-serif;
+      background: #080E30;
+      color: #fff;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 100vh;
+      padding: 24px;
+    }
+    .card {
+      text-align: center;
+      max-width: 380px;
+      width: 100%;
+    }
+    .logo {
+      width: 72px;
+      height: 72px;
+      border-radius: 18px;
+      background: linear-gradient(135deg, #4F46E5 0%, #7C3AED 100%);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin: 0 auto 24px;
+      font-size: 32px;
+    }
+    h1 {
+      font-size: 22px;
+      font-weight: 700;
+      margin-bottom: 8px;
+    }
+    p {
+      font-size: 15px;
+      color: #A0A0B0;
+      margin-bottom: 32px;
+      line-height: 1.5;
+    }
+    .spinner {
+      width: 40px;
+      height: 40px;
+      border: 3px solid rgba(79,70,229,0.3);
+      border-top-color: #4F46E5;
+      border-radius: 50%;
+      animation: spin 0.8s linear infinite;
+      margin: 0 auto 24px;
+    }
+    @keyframes spin { to { transform: rotate(360deg); } }
+    .btn {
+      display: inline-block;
+      background: linear-gradient(135deg, #4F46E5, #7C3AED);
+      color: #fff;
+      font-size: 16px;
+      font-weight: 600;
+      padding: 14px 32px;
+      border-radius: 12px;
+      text-decoration: none;
+      border: none;
+      cursor: pointer;
+      width: 100%;
+      margin-top: 8px;
+    }
+    .error-state { display: none; }
+    .success-state { display: none; }
+    .loading-state { display: block; }
+  </style>
+</head>
+<body>
+  <div class="card">
+    <div class="logo">🥗</div>
+
+    <!-- Loading -->
+    <div class="loading-state" id="loading">
+      <div class="spinner"></div>
+      <h1>Confirming your account…</h1>
+      <p>Please wait while we verify your email address.</p>
+    </div>
+
+    <!-- Success -->
+    <div class="success-state" id="success">
+      <h1>Email confirmed! ✓</h1>
+      <p>Your Nutriva AI account is ready. Tap below to open the app and get started.</p>
+      <a class="btn" id="openAppBtn" href="#">Open Nutriva AI</a>
+      <p style="margin-top:16px; font-size:13px; color:#666;">
+        If the app doesn't open, make sure Nutriva AI is installed on your device.
+      </p>
+    </div>
+
+    <!-- Error -->
+    <div class="error-state" id="error">
+      <h1>Something went wrong</h1>
+      <p id="errorMsg">The confirmation link may have expired. Please try signing up again.</p>
+    </div>
+  </div>
+
+  <script>
+    (function () {
+      var SCHEME = 'nutrivaai://auth/callback';
+
+      function show(id) {
+        ['loading', 'success', 'error'].forEach(function (s) {
+          document.getElementById(s).style.display = s === id ? 'block' : 'none';
+        });
+      }
+
+      function buildDeepLink(params) {
+        // Reconstruct the full fragment as a query string for the deep link
+        var parts = [];
+        params.forEach(function (val, key) {
+          parts.push(encodeURIComponent(key) + '=' + encodeURIComponent(val));
+        });
+        return SCHEME + (parts.length ? '?' + parts.join('&') : '');
+      }
+
+      function run() {
+        // Supabase puts tokens in URL hash: #access_token=...&refresh_token=...&type=signup
+        var hash = window.location.hash.substring(1); // strip leading #
+        var query = window.location.search.substring(1); // strip leading ?
+
+        // Combine hash + query params
+        var combined = (hash || '') + (hash && query ? '&' : '') + (query || '');
+        var params = new URLSearchParams(combined);
+
+        var error = params.get('error') || params.get('error_description');
+        var errorCode = params.get('error_code');
+        var accessToken = params.get('access_token');
+        var type = params.get('type'); // signup, recovery, etc.
+
+        if (error) {
+          show('error');
+          var msg = document.getElementById('errorMsg');
+          if (errorCode === 'otp_expired' || error.includes('expired')) {
+            msg.textContent = 'This confirmation link has expired. Please sign up again to receive a new one.';
+          } else if (error.includes('already')) {
+            msg.textContent = 'This account has already been confirmed. Please open the app and log in.';
+          } else {
+            msg.textContent = decodeURIComponent(error).replace(/\+/g, ' ');
+          }
+          return;
+        }
+
+        if (!accessToken && !params.get('token_hash')) {
+          // No tokens — maybe navigated directly
+          show('error');
+          document.getElementById('errorMsg').textContent =
+            'No confirmation token found. Please use the link from your email.';
+          return;
+        }
+
+        // Build the deep link with all the params Supabase gave us
+        var deepLink = buildDeepLink(params);
+        document.getElementById('openAppBtn').href = deepLink;
+
+        show('success');
+
+        // Auto-open the app
+        window.location.href = deepLink;
+
+        // Fallback: if window didn't leave, show the button prominently after 1.5s
+        setTimeout(function () {
+          // Already on success screen — nothing else needed
+        }, 1500);
+      }
+
+      run();
+    })();
+  </script>
+</body>
+</html>
