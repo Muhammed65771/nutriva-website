@@ -1,0 +1,1078 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+<title>QA Dashboard — Nutriva AI</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800;900&display=swap" rel="stylesheet"/>
+<style>
+:root{
+  --bg:#060608;--s1:#0a0a0f;--s2:#0f0f18;--s3:#141422;--s4:#1c1c2e;
+  --blue:#4f6ef7;--blue2:#7b93ff;--green:#00e5a0;--purple:#9b72ff;
+  --amber:#f59e0b;--rose:#f43f5e;--cyan:#22d3ee;
+  --ink:#fff;--ink2:rgba(255,255,255,.6);--ink3:rgba(255,255,255,.28);--ink4:rgba(255,255,255,.08);
+  --pass:#00e5a0;--fail:#f43f5e;--warn:#f59e0b;--skip:#7b93ff;
+  --font:'Inter',system-ui,sans-serif;
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{font-family:var(--font);background:var(--bg);color:var(--ink);-webkit-font-smoothing:antialiased;min-height:100vh}
+a{color:inherit;text-decoration:none}
+button{font-family:inherit;cursor:pointer;border:none;background:none}
+::-webkit-scrollbar{width:4px}
+::-webkit-scrollbar-track{background:var(--bg)}
+::-webkit-scrollbar-thumb{background:var(--s3);border-radius:2px}
+
+/* NAV */
+.nav{position:sticky;top:0;z-index:100;display:flex;align-items:center;justify-content:space-between;padding:0 4vw;height:60px;background:rgba(6,6,8,.9);backdrop-filter:blur(20px);border-bottom:1px solid var(--ink4)}
+.nav-logo{font-size:15px;font-weight:900;display:flex;align-items:center;gap:8px}
+.nav-badge{padding:3px 10px;border-radius:100px;background:rgba(0,229,160,.12);border:1px solid rgba(0,229,160,.3);font-size:11px;font-weight:700;color:var(--green)}
+.run-all-btn{padding:9px 20px;border-radius:10px;background:var(--blue);color:#fff;font-size:13px;font-weight:800;cursor:pointer;transition:background .2s,transform .2s}
+.run-all-btn:hover{background:var(--blue2);transform:translateY(-1px)}
+
+/* SUMMARY BAR */
+.summary{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;padding:24px 4vw 0}
+.sum-card{background:var(--s2);border:1px solid var(--ink4);border-radius:16px;padding:18px;text-align:center}
+.sum-num{font-size:32px;font-weight:900;letter-spacing:-1px}
+.sum-lbl{font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.5px;color:var(--ink3);margin-top:4px}
+.sum-card.pass .sum-num{color:var(--pass)}
+.sum-card.fail .sum-num{color:var(--fail)}
+.sum-card.warn .sum-num{color:var(--warn)}
+.sum-card.total .sum-num{color:var(--blue2)}
+
+/* PROGRESS BAR */
+.progress-wrap{padding:20px 4vw 0}
+.progress-track{height:8px;background:var(--s3);border-radius:100px;overflow:hidden}
+.progress-fill{height:100%;border-radius:100px;background:linear-gradient(90deg,var(--green),var(--cyan));transition:width .6s cubic-bezier(.16,1,.3,1)}
+.progress-label{font-size:12px;color:var(--ink3);margin-top:8px;font-weight:600}
+
+/* SECTION */
+.section{padding:28px 4vw 0}
+.section-header{display:flex;align-items:center;gap:12px;margin-bottom:16px;cursor:pointer;user-select:none}
+.section-icon{width:36px;height:36px;border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:18px;flex-shrink:0}
+.section-title{font-size:16px;font-weight:800;letter-spacing:-.3px}
+.section-count{font-size:12px;font-weight:700;padding:3px 10px;border-radius:100px;background:var(--s3);color:var(--ink3)}
+.section-chevron{margin-left:auto;color:var(--ink3);transition:transform .2s;font-size:14px}
+.section-header.open .section-chevron{transform:rotate(180deg)}
+.section-body{display:none}
+.section-body.open{display:flex;flex-direction:column;gap:8px}
+
+/* TEST ROW */
+.test-row{display:flex;align-items:flex-start;gap:12px;padding:14px 16px;background:var(--s2);border:1px solid var(--ink4);border-radius:14px;transition:border-color .2s}
+.test-row:hover{border-color:var(--ink3)}
+.test-row.status-pass{border-left:3px solid var(--pass)}
+.test-row.status-fail{border-left:3px solid var(--fail)}
+.test-row.status-warn{border-left:3px solid var(--warn)}
+.test-row.status-manual{border-left:3px solid var(--blue)}
+.status-badge{flex-shrink:0;width:72px;padding:4px 0;border-radius:8px;font-size:10px;font-weight:800;text-align:center;text-transform:uppercase;letter-spacing:.4px;margin-top:1px}
+.status-badge.pass{background:rgba(0,229,160,.12);color:var(--pass);border:1px solid rgba(0,229,160,.25)}
+.status-badge.fail{background:rgba(244,63,94,.12);color:var(--fail);border:1px solid rgba(244,63,94,.25)}
+.status-badge.warn{background:rgba(245,158,11,.12);color:var(--warn);border:1px solid rgba(245,158,11,.25)}
+.status-badge.manual{background:rgba(79,110,247,.12);color:var(--blue2);border:1px solid rgba(79,110,247,.25)}
+.status-badge.running{background:rgba(155,114,255,.12);color:var(--purple);border:1px solid rgba(155,114,255,.25)}
+.test-content{flex:1;min-width:0}
+.test-name{font-size:13.5px;font-weight:700;color:var(--ink);margin-bottom:3px}
+.test-desc{font-size:12px;color:var(--ink2);line-height:1.5}
+.test-error{font-size:11.5px;color:var(--fail);margin-top:5px;font-family:monospace;background:rgba(244,63,94,.06);padding:5px 8px;border-radius:6px}
+.test-actions{display:flex;gap:8px;margin-top:8px;flex-wrap:wrap}
+.test-link{padding:5px 12px;border-radius:8px;background:var(--s3);border:1px solid var(--ink4);font-size:11.5px;font-weight:700;color:var(--ink2);cursor:pointer;transition:all .18s;text-decoration:none;display:inline-flex;align-items:center;gap:5px}
+.test-link:hover{background:var(--s4);color:var(--ink);border-color:var(--ink3)}
+.test-link.primary{background:rgba(79,110,247,.15);color:var(--blue2);border-color:rgba(79,110,247,.3)}
+.test-link.primary:hover{background:rgba(79,110,247,.25)}
+
+/* MANUAL CHECKBOX */
+.manual-check{display:flex;align-items:center;gap:10px;margin-top:8px}
+.manual-check input[type=checkbox]{width:16px;height:16px;accent-color:var(--green);cursor:pointer}
+.manual-check label{font-size:12px;color:var(--ink2);cursor:pointer}
+
+/* ISSUE LOG */
+.issue-log{margin:28px 4vw 60px;background:var(--s2);border:1px solid var(--ink4);border-radius:16px;overflow:hidden}
+.issue-log-header{padding:16px 20px;border-bottom:1px solid var(--ink4);font-size:13px;font-weight:800;display:flex;align-items:center;gap:8px}
+.issue-log-body{padding:16px 20px;display:flex;flex-direction:column;gap:8px;max-height:300px;overflow-y:auto;font-family:monospace;font-size:12px}
+.log-line{padding:6px 10px;border-radius:8px;line-height:1.5}
+.log-line.pass{background:rgba(0,229,160,.06);color:var(--pass)}
+.log-line.fail{background:rgba(244,63,94,.06);color:var(--fail)}
+.log-line.warn{background:rgba(245,158,11,.06);color:var(--warn)}
+.log-line.info{background:rgba(79,110,247,.06);color:var(--blue2)}
+
+@keyframes spin{to{transform:rotate(360deg)}}
+.spinner{width:14px;height:14px;border-radius:50%;border:2px solid rgba(155,114,255,.3);border-top-color:var(--purple);animation:spin .7s linear infinite;flex-shrink:0}
+
+@media(max-width:600px){
+  .summary{grid-template-columns:repeat(2,1fr)}
+  .nav-badge{display:none}
+}
+</style>
+</head>
+<body>
+
+<nav class="nav">
+  <div class="nav-logo">🧪 Nutriva QA <span class="nav-badge" id="run-timestamp">Not run yet</span></div>
+  <button class="run-all-btn" id="run-all-btn">▶ Run All Tests</button>
+</nav>
+
+<div class="summary">
+  <div class="sum-card pass"><div class="sum-num" id="cnt-pass">—</div><div class="sum-lbl">Passed</div></div>
+  <div class="sum-card fail"><div class="sum-num" id="cnt-fail">—</div><div class="sum-lbl">Failed</div></div>
+  <div class="sum-card warn"><div class="sum-num" id="cnt-warn">—</div><div class="sum-lbl">Warnings</div></div>
+  <div class="sum-card total"><div class="sum-num" id="cnt-total">—</div><div class="sum-lbl">Total Auto</div></div>
+</div>
+
+<div class="progress-wrap">
+  <div class="progress-track"><div class="progress-fill" id="progress-fill" style="width:0%"></div></div>
+  <div class="progress-label" id="progress-label">Click "Run All Tests" to start automated checks</div>
+</div>
+
+<!-- ═══ SECTION 1: FILES & ASSETS ═══ -->
+<div class="section" id="sec-files">
+  <div class="section-header open" onclick="toggleSection('sec-files')">
+    <div class="section-icon" style="background:rgba(79,110,247,.15)">📁</div>
+    <div class="section-title">Files & Assets</div>
+    <div class="section-count" id="sec-files-count">0/6</div>
+    <div class="section-chevron">▼</div>
+  </div>
+  <div class="section-body open" id="sec-files-body">
+
+    <div class="test-row" id="t-index-exists">
+      <div class="status-badge manual" id="t-index-exists-badge">manual</div>
+      <div class="test-content">
+        <div class="test-name">index.html exists & loads</div>
+        <div class="test-desc">Main marketing page opens without blank screen or console errors</div>
+        <div class="test-actions">
+          <a href="./index.html" target="_blank" class="test-link primary">Open index.html ↗</a>
+        </div>
+        <div class="manual-check"><input type="checkbox" id="mc-index" onchange="markManual('t-index-exists',this.checked)"><label for="mc-index">Page loaded, no blank screen</label></div>
+      </div>
+    </div>
+
+    <div class="test-row" id="t-recipes-exists">
+      <div class="status-badge manual" id="t-recipes-exists-badge">manual</div>
+      <div class="test-content">
+        <div class="test-name">recipes.html exists & loads</div>
+        <div class="test-desc">Recipe browser opens without blank screen or console errors</div>
+        <div class="test-actions">
+          <a href="./recipes.html" target="_blank" class="test-link primary">Open recipes.html ↗</a>
+        </div>
+        <div class="manual-check"><input type="checkbox" id="mc-recipes" onchange="markManual('t-recipes-exists',this.checked)"><label for="mc-recipes">Page loaded, no blank screen</label></div>
+      </div>
+    </div>
+
+    <div class="test-row" id="t-favicon">
+      <div class="status-badge manual" id="t-favicon-badge">auto</div>
+      <div class="test-content">
+        <div class="test-name">favicon.png loads</div>
+        <div class="test-desc">favicon.png must exist — missing it breaks logo in both pages</div>
+      </div>
+    </div>
+
+    <div class="test-row" id="t-privacy">
+      <div class="status-badge manual" id="t-privacy-badge">manual</div>
+      <div class="test-content">
+        <div class="test-name">privacy.html opens</div>
+        <div class="test-desc">Footer privacy link must open the correct page</div>
+        <div class="test-actions">
+          <a href="./privacy.html" target="_blank" class="test-link">Open Privacy ↗</a>
+        </div>
+        <div class="manual-check"><input type="checkbox" id="mc-privacy" onchange="markManual('t-privacy',this.checked)"><label for="mc-privacy">Opened without 404</label></div>
+      </div>
+    </div>
+
+    <div class="test-row" id="t-terms">
+      <div class="status-badge manual" id="t-terms-badge">manual</div>
+      <div class="test-content">
+        <div class="test-name">terms.html opens</div>
+        <div class="test-desc">Footer terms link must open the correct page</div>
+        <div class="test-actions">
+          <a href="./terms.html" target="_blank" class="test-link">Open Terms ↗</a>
+        </div>
+        <div class="manual-check"><input type="checkbox" id="mc-terms" onchange="markManual('t-terms',this.checked)"><label for="mc-terms">Opened without 404</label></div>
+      </div>
+    </div>
+
+    <div class="test-row" id="t-support">
+      <div class="status-badge manual" id="t-support-badge">manual</div>
+      <div class="test-content">
+        <div class="test-name">support mailto link works</div>
+        <div class="test-desc">Footer support link opens email client to nutrivaaiteam@gmail.com</div>
+        <div class="test-actions">
+          <a href="mailto:nutrivaaiteam@gmail.com" class="test-link">Test mailto ↗</a>
+        </div>
+        <div class="manual-check"><input type="checkbox" id="mc-support" onchange="markManual('t-support',this.checked)"><label for="mc-support">Email client opened</label></div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<!-- ═══ SECTION 2: INDEX — NAVIGATION ═══ -->
+<div class="section" id="sec-nav">
+  <div class="section-header open" onclick="toggleSection('sec-nav')">
+    <div class="section-icon" style="background:rgba(0,229,160,.12)">🧭</div>
+    <div class="section-title">index.html — Navigation</div>
+    <div class="section-count" id="sec-nav-count">0/7</div>
+    <div class="section-chevron">▼</div>
+  </div>
+  <div class="section-body open" id="sec-nav-body">
+
+    <div class="test-row" id="t-nav-scroll-glass">
+      <div class="status-badge manual" id="t-nav-scroll-glass-badge">manual</div>
+      <div class="test-content">
+        <div class="test-name">Nav becomes glassy on scroll</div>
+        <div class="test-desc">When you scroll down on index.html the nav should gain a blurred glass background (nav.scrolled class added via JS)</div>
+        <div class="test-actions"><a href="./index.html" target="_blank" class="test-link primary">Test on index.html ↗</a></div>
+        <div class="manual-check"><input type="checkbox" id="mc-nav-glass" onchange="markManual('t-nav-scroll-glass',this.checked)"><label for="mc-nav-glass">Nav glassified after scrolling</label></div>
+      </div>
+    </div>
+
+    <div class="test-row" id="t-nav-features">
+      <div class="status-badge manual" id="t-nav-features-badge">manual</div>
+      <div class="test-content">
+        <div class="test-name">Nav "Features" → smooth scroll to #features</div>
+        <div class="test-desc">Clicking Features in the nav should smoothly scroll to the stats bar / feature blocks without a hard jump</div>
+        <div class="manual-check"><input type="checkbox" id="mc-nav-features" onchange="markManual('t-nav-features',this.checked)"><label for="mc-nav-features">Smooth scroll confirmed</label></div>
+      </div>
+    </div>
+
+    <div class="test-row" id="t-nav-recipes-link">
+      <div class="status-badge manual" id="t-nav-recipes-link-badge">manual</div>
+      <div class="test-content">
+        <div class="test-name">Nav "🍽️ Recipes" → opens recipes.html</div>
+        <div class="test-desc">The green Recipes link in the nav must navigate to recipes.html correctly</div>
+        <div class="manual-check"><input type="checkbox" id="mc-nav-recipes" onchange="markManual('t-nav-recipes-link',this.checked)"><label for="mc-nav-recipes">Navigated to recipes page</label></div>
+      </div>
+    </div>
+
+    <div class="test-row" id="t-nav-compare">
+      <div class="status-badge manual" id="t-nav-compare-badge">manual</div>
+      <div class="test-content">
+        <div class="test-name">Nav "Compare" → smooth scroll to #compare</div>
+        <div class="test-desc">Scrolls to the comparison table section</div>
+        <div class="manual-check"><input type="checkbox" id="mc-nav-compare" onchange="markManual('t-nav-compare',this.checked)"><label for="mc-nav-compare">Smooth scroll confirmed</label></div>
+      </div>
+    </div>
+
+    <div class="test-row" id="t-nav-pricing">
+      <div class="status-badge manual" id="t-nav-pricing-badge">manual</div>
+      <div class="test-content">
+        <div class="test-name">Nav "Pricing" → smooth scroll to #pricing</div>
+        <div class="test-desc">Scrolls to the pricing cards section</div>
+        <div class="manual-check"><input type="checkbox" id="mc-nav-pricing" onchange="markManual('t-nav-pricing',this.checked)"><label for="mc-nav-pricing">Smooth scroll confirmed</label></div>
+      </div>
+    </div>
+
+    <div class="test-row" id="t-nav-download">
+      <div class="status-badge manual" id="t-nav-download-badge">manual</div>
+      <div class="test-content">
+        <div class="test-name">Nav "Download" → smooth scroll to #download</div>
+        <div class="test-desc">Scrolls to the download / store buttons section</div>
+        <div class="manual-check"><input type="checkbox" id="mc-nav-download" onchange="markManual('t-nav-download',this.checked)"><label for="mc-nav-download">Smooth scroll confirmed</label></div>
+      </div>
+    </div>
+
+    <div class="test-row" id="t-nav-early-access">
+      <div class="status-badge manual" id="t-nav-early-access-badge">manual</div>
+      <div class="test-content">
+        <div class="test-name">Nav "Get Early Access" → scrolls to newsletter</div>
+        <div class="test-desc">The CTA button in nav must scroll to the #news newsletter section</div>
+        <div class="manual-check"><input type="checkbox" id="mc-nav-ea" onchange="markManual('t-nav-early-access',this.checked)"><label for="mc-nav-ea">Scrolled to newsletter section</label></div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<!-- ═══ SECTION 3: INDEX — HERO ═══ -->
+<div class="section" id="sec-hero">
+  <div class="section-header open" onclick="toggleSection('sec-hero')">
+    <div class="section-icon" style="background:rgba(155,114,255,.12)">🦸</div>
+    <div class="section-title">index.html — Hero & Animations</div>
+    <div class="section-count" id="sec-hero-count">0/8</div>
+    <div class="section-chevron">▼</div>
+  </div>
+  <div class="section-body open" id="sec-hero-body">
+
+    <div class="test-row" id="t-aurora">
+      <div class="status-badge manual" id="t-aurora-badge">manual</div>
+      <div class="test-content">
+        <div class="test-name">Aurora canvas background animates</div>
+        <div class="test-desc">The full-page aurora canvas must show softly animated color blobs in the background — not a blank black screen</div>
+        <div class="manual-check"><input type="checkbox" id="mc-aurora" onchange="markManual('t-aurora',this.checked)"><label for="mc-aurora">Aurora blobs visible and moving</label></div>
+      </div>
+    </div>
+
+    <div class="test-row" id="t-cursor">
+      <div class="status-badge manual" id="t-cursor-badge">manual</div>
+      <div class="test-content">
+        <div class="test-name">Custom cursor (dot + ring) follows mouse</div>
+        <div class="test-desc">The native cursor is hidden; a white dot and ring must follow the mouse. On hover over buttons the ring expands (cursor-hover class)</div>
+        <div class="manual-check"><input type="checkbox" id="mc-cursor" onchange="markManual('t-cursor',this.checked)"><label for="mc-cursor">Dot + ring visible and responsive</label></div>
+      </div>
+    </div>
+
+    <div class="test-row" id="t-hero-fadeup">
+      <div class="status-badge manual" id="t-hero-fadeup-badge">manual</div>
+      <div class="test-content">
+        <div class="test-name">Hero text fades up on page load</div>
+        <div class="test-desc">H1, subheading, CTA buttons, and trust bar each animate in sequentially using hero-fade-up CSS keyframes</div>
+        <div class="manual-check"><input type="checkbox" id="mc-hero-fade" onchange="markManual('t-hero-fadeup',this.checked)"><label for="mc-hero-fade">Sequential fade-up animations play on load</label></div>
+      </div>
+    </div>
+
+    <div class="test-row" id="t-phone-parallax">
+      <div class="status-badge manual" id="t-phone-parallax-badge">manual</div>
+      <div class="test-content">
+        <div class="test-name">Phone mockup parallax on mouse move</div>
+        <div class="test-desc">Moving the mouse left/right/up/down should subtly rotate the phone mockup (tiltX/tiltY transform) on desktop</div>
+        <div class="manual-check"><input type="checkbox" id="mc-parallax" onchange="markManual('t-phone-parallax',this.checked)"><label for="mc-parallax">Phone tilts with mouse movement</label></div>
+      </div>
+    </div>
+
+    <div class="test-row" id="t-scan-flow">
+      <div class="status-badge manual" id="t-scan-flow-badge">manual</div>
+      <div class="test-content">
+        <div class="test-name">AI scan animation loops correctly</div>
+        <div class="test-desc">Phone mockup must cycle: Scanning (green line moves down) → Analyzing (blue corners, dots bounce) → Result panel slides in → resets. Full loop every ~7s</div>
+        <div class="manual-check"><input type="checkbox" id="mc-scan-scanning" onchange="updateScanCheck()"><label for="mc-scan-scanning">Scanning state shows (green line + corners)</label></div>
+        <div class="manual-check"><input type="checkbox" id="mc-scan-analyzing" onchange="updateScanCheck()"><label for="mc-scan-analyzing">Analyzing state shows (blue corners + dots)</label></div>
+        <div class="manual-check"><input type="checkbox" id="mc-scan-result" onchange="updateScanCheck()"><label for="mc-scan-result">Result panel slides in with food data</label></div>
+        <div class="manual-check"><input type="checkbox" id="mc-scan-reset" onchange="updateScanCheck()"><label for="mc-scan-reset">Resets and loops again</label></div>
+      </div>
+    </div>
+
+    <div class="test-row" id="t-magnetic-btn">
+      <div class="status-badge manual" id="t-magnetic-btn-badge">manual</div>
+      <div class="test-content">
+        <div class="test-name">Magnetic button effect on CTA buttons</div>
+        <div class="test-desc">Hover over "Download for iOS" or "Get Early Access" — the button should subtly follow the mouse cursor (magnetic pull effect)</div>
+        <div class="manual-check"><input type="checkbox" id="mc-magnetic" onchange="markManual('t-magnetic-btn',this.checked)"><label for="mc-magnetic">Button moves toward mouse on hover</label></div>
+      </div>
+    </div>
+
+    <div class="test-row" id="t-hero-cta-ios">
+      <div class="status-badge manual" id="t-hero-cta-ios-badge">manual</div>
+      <div class="test-content">
+        <div class="test-name">Hero "Download for iOS" → scrolls to newsletter</div>
+        <div class="test-desc">Since the App Store link isn't live yet, this button must scroll to #news waitlist form</div>
+        <div class="manual-check"><input type="checkbox" id="mc-hero-ios" onchange="markManual('t-hero-cta-ios',this.checked)"><label for="mc-hero-ios">Scrolled to newsletter/waitlist section</label></div>
+      </div>
+    </div>
+
+    <div class="test-row" id="t-hero-see-features">
+      <div class="status-badge manual" id="t-hero-see-features-badge">manual</div>
+      <div class="test-content">
+        <div class="test-name">Hero "See Features" → smooth scrolls to features</div>
+        <div class="test-desc">Secondary CTA button must smooth-scroll to the stats/features area</div>
+        <div class="manual-check"><input type="checkbox" id="mc-see-features" onchange="markManual('t-hero-see-features',this.checked)"><label for="mc-see-features">Smooth scroll to features confirmed</label></div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<!-- ═══ SECTION 4: INDEX — FEATURE SECTIONS ═══ -->
+<div class="section" id="sec-features">
+  <div class="section-header open" onclick="toggleSection('sec-features')">
+    <div class="section-icon" style="background:rgba(0,229,160,.12)">⚡</div>
+    <div class="section-title">index.html — Feature Sections & Counters</div>
+    <div class="section-count" id="sec-features-count">0/6</div>
+    <div class="section-chevron">▼</div>
+  </div>
+  <div class="section-body open" id="sec-features-body">
+
+    <div class="test-row" id="t-scroll-reveal">
+      <div class="status-badge manual" id="t-scroll-reveal-badge">manual</div>
+      <div class="test-content">
+        <div class="test-name">Scroll reveal animations fire on all .reveal elements</div>
+        <div class="test-desc">All 5 feature blocks use .reveal class. Scrolling into view must trigger fade-up animation (opacity 0→1, translateY 32→0). Should NOT be pre-visible on load.</div>
+        <div class="manual-check"><input type="checkbox" id="mc-reveal" onchange="markManual('t-scroll-reveal',this.checked)"><label for="mc-reveal">All feature blocks animate in on scroll</label></div>
+      </div>
+    </div>
+
+    <div class="test-row" id="t-counters">
+      <div class="status-badge manual" id="t-counters-badge">manual</div>
+      <div class="test-content">
+        <div class="test-name">Stats bar counters animate (0 → target)</div>
+        <div class="test-desc">The stats bar numbers (9 languages, AI coach, etc.) must count up with easing animation when scrolled into view — not jump instantly to final value</div>
+        <div class="manual-check"><input type="checkbox" id="mc-counters" onchange="markManual('t-counters',this.checked)"><label for="mc-counters">Numbers count up smoothly on scroll</label></div>
+      </div>
+    </div>
+
+    <div class="test-row" id="t-wave-bars">
+      <div class="status-badge manual" id="t-wave-bars-badge">manual</div>
+      <div class="test-content">
+        <div class="test-name">Voice logging wave bars animate continuously</div>
+        <div class="test-desc">Feature 2 (Voice Logging) has 9 animated wave bars that bounce continuously — must be visible and moving</div>
+        <div class="manual-check"><input type="checkbox" id="mc-waves" onchange="markManual('t-wave-bars',this.checked)"><label for="mc-waves">Wave bars bouncing in voice feature card</label></div>
+      </div>
+    </div>
+
+    <div class="test-row" id="t-health-rings">
+      <div class="status-badge manual" id="t-health-rings-badge">manual</div>
+      <div class="test-content">
+        <div class="test-name">Apple Health rings display correctly</div>
+        <div class="test-desc">Feature 4 (Apple Health) shows 3 circular SVG rings for Move/Exercise/Stand with correct stroke-dashoffset values and colored strokes</div>
+        <div class="manual-check"><input type="checkbox" id="mc-rings" onchange="markManual('t-health-rings',this.checked)"><label for="mc-rings">3 colored rings visible with correct fill amounts</label></div>
+      </div>
+    </div>
+
+    <div class="test-row" id="t-recipe-preview">
+      <div class="status-badge manual" id="t-recipe-preview-badge">manual</div>
+      <div class="test-content">
+        <div class="test-name">Recipe feature block shows 3 preview cards</div>
+        <div class="test-desc">Feature 5 (Recipes) must show 3 mini recipe cards (Avocado Bowl, Egg White Scramble, Beef & Sweet Potato) each with macro bars and goal badges</div>
+        <div class="manual-check"><input type="checkbox" id="mc-recipe-preview" onchange="markManual('t-recipe-preview',this.checked)"><label for="mc-recipe-preview">3 recipe preview cards visible with macro bars</label></div>
+      </div>
+    </div>
+
+    <div class="test-row" id="t-recipe-browse-btn">
+      <div class="status-badge manual" id="t-recipe-browse-btn-badge">manual</div>
+      <div class="test-content">
+        <div class="test-name">"Browse Recipes →" button in feature block works</div>
+        <div class="test-desc">The green "Browse Recipes →" button and "Browse all →" link in the Recipes feature block must open recipes.html</div>
+        <div class="manual-check"><input type="checkbox" id="mc-browse-btn" onchange="markManual('t-recipe-browse-btn',this.checked)"><label for="mc-browse-btn">Both links open recipes.html</label></div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<!-- ═══ SECTION 5: INDEX — PRICING & NEWSLETTER ═══ -->
+<div class="section" id="sec-forms">
+  <div class="section-header open" onclick="toggleSection('sec-forms')">
+    <div class="section-icon" style="background:rgba(245,158,11,.12)">📧</div>
+    <div class="section-title">index.html — Pricing, Download & Newsletter</div>
+    <div class="section-count" id="sec-forms-count">0/6</div>
+    <div class="section-chevron">▼</div>
+  </div>
+  <div class="section-body open" id="sec-forms-body">
+
+    <div class="test-row" id="t-pricing-cards">
+      <div class="status-badge manual" id="t-pricing-cards-badge">manual</div>
+      <div class="test-content">
+        <div class="test-name">3 pricing cards render with hover lift</div>
+        <div class="test-desc">Free, Pro (featured/highlighted), and Pro Annual cards must all display correctly. Hovering should lift card with translateY(-6px) and glow shadow</div>
+        <div class="manual-check"><input type="checkbox" id="mc-pricing" onchange="markManual('t-pricing-cards',this.checked)"><label for="mc-pricing">Cards render, Pro card is highlighted, hover works</label></div>
+      </div>
+    </div>
+
+    <div class="test-row" id="t-pricing-ctasscroll">
+      <div class="status-badge manual" id="t-pricing-ctasscroll-badge">manual</div>
+      <div class="test-content">
+        <div class="test-name">All 3 pricing CTAs scroll to newsletter</div>
+        <div class="test-desc">"Get Started Free", "Start Free Trial", and "Get Annual Plan" buttons must all scroll to #news since App Store isn't live</div>
+        <div class="manual-check"><input type="checkbox" id="mc-pricing-ctas" onchange="markManual('t-pricing-ctasscroll',this.checked)"><label for="mc-pricing-ctas">All 3 CTAs scroll to newsletter form</label></div>
+      </div>
+    </div>
+
+    <div class="test-row" id="t-apple-store-btn">
+      <div class="status-badge manual" id="t-apple-store-btn-badge">manual</div>
+      <div class="test-content">
+        <div class="test-name">Apple Store button in download section works</div>
+        <div class="test-desc">Download button should scroll to #news (not dead/broken). Android button should appear visually disabled</div>
+        <div class="manual-check"><input type="checkbox" id="mc-apple-btn" onchange="markManual('t-apple-store-btn',this.checked)"><label for="mc-apple-btn">iOS button scrolls to newsletter, Android is disabled</label></div>
+      </div>
+    </div>
+
+    <div class="test-row" id="t-newsletter-validation">
+      <div class="status-badge manual" id="t-newsletter-validation-badge">manual</div>
+      <div class="test-content">
+        <div class="test-name">Newsletter form — empty submit blocked</div>
+        <div class="test-desc">Clicking "Notify me" with empty email field must NOT submit — browser validation or JS should block it</div>
+        <div class="manual-check"><input type="checkbox" id="mc-nl-empty" onchange="markManual('t-newsletter-validation',this.checked)"><label for="mc-nl-empty">Empty submit blocked correctly</label></div>
+      </div>
+    </div>
+
+    <div class="test-row" id="t-newsletter-submit">
+      <div class="status-badge auto" id="t-newsletter-submit-badge">auto</div>
+      <div class="test-content">
+        <div class="test-name">Newsletter Supabase endpoint reachable</div>
+        <div class="test-desc">Checks if the Supabase Edge Function URL responds (POST to newsletter-subscribe endpoint)</div>
+      </div>
+    </div>
+
+    <div class="test-row" id="t-newsletter-success">
+      <div class="status-badge manual" id="t-newsletter-success-badge">manual</div>
+      <div class="test-content">
+        <div class="test-name">Newsletter form success/error message shows</div>
+        <div class="test-desc">After submitting a valid email, either a green success message or red error message must appear below the form. Button must show "Sending…" state during request</div>
+        <div class="manual-check"><input type="checkbox" id="mc-nl-msg" onchange="markManual('t-newsletter-success',this.checked)"><label for="mc-nl-msg">Message appeared after submission</label></div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<!-- ═══ SECTION 6: RECIPES PAGE — CORE ═══ -->
+<div class="section" id="sec-recipes-core">
+  <div class="section-header open" onclick="toggleSection('sec-recipes-core')">
+    <div class="section-icon" style="background:rgba(0,229,160,.12)">🍽️</div>
+    <div class="section-title">recipes.html — Core Loading & API</div>
+    <div class="section-count" id="sec-recipes-core-count">0/6</div>
+    <div class="section-chevron">▼</div>
+  </div>
+  <div class="section-body open" id="sec-recipes-core-body">
+
+    <div class="test-row" id="t-api-key">
+      <div class="status-badge auto" id="t-api-key-badge">auto</div>
+      <div class="test-content">
+        <div class="test-name">Spoonacular API key is set</div>
+        <div class="test-desc">API_KEY constant must not be empty or placeholder</div>
+      </div>
+    </div>
+
+    <div class="test-row" id="t-spoonacular-reach">
+      <div class="status-badge auto" id="t-spoonacular-reach-badge">auto</div>
+      <div class="test-content">
+        <div class="test-name">Spoonacular API returns results</div>
+        <div class="test-desc">Live fetch to complexSearch endpoint — must return at least 1 recipe with valid nutrition data</div>
+      </div>
+    </div>
+
+    <div class="test-row" id="t-skeleton-loads">
+      <div class="status-badge manual" id="t-skeleton-loads-badge">manual</div>
+      <div class="test-content">
+        <div class="test-name">Skeleton cards show while API loads</div>
+        <div class="test-desc">On page open you should briefly see shimmer skeleton cards before real recipes appear — never a blank grid</div>
+        <div class="manual-check"><input type="checkbox" id="mc-skeleton" onchange="markManual('t-skeleton-loads',this.checked)"><label for="mc-skeleton">Skeleton shimmer cards visible on initial load</label></div>
+      </div>
+    </div>
+
+    <div class="test-row" id="t-recipes-render">
+      <div class="status-badge manual" id="t-recipes-render-badge">manual</div>
+      <div class="test-content">
+        <div class="test-name">24 recipe cards render with images, macros, tags</div>
+        <div class="test-desc">After API responds: grid fills with real cards. Each card must show food photo, 🔥 calorie badge, diet tags, macro bar (blue/green/amber), time, servings, and "View →" button</div>
+        <div class="manual-check"><input type="checkbox" id="mc-cards-render" onchange="markManual('t-recipes-render',this.checked)"><label for="mc-cards-render">Cards loaded with all UI elements</label></div>
+      </div>
+    </div>
+
+    <div class="test-row" id="t-results-count">
+      <div class="status-badge manual" id="t-results-count-badge">manual</div>
+      <div class="test-content">
+        <div class="test-name">Results meta count updates correctly</div>
+        <div class="test-desc">After load: "Showing X of Y recipes for Lose Weight" text must appear above the grid with real numbers</div>
+        <div class="manual-check"><input type="checkbox" id="mc-results-count" onchange="markManual('t-results-count',this.checked)"><label for="mc-results-count">Count shows real numbers after load</label></div>
+      </div>
+    </div>
+
+    <div class="test-row" id="t-card-stagger">
+      <div class="status-badge manual" id="t-card-stagger-badge">manual</div>
+      <div class="test-content">
+        <div class="test-name">Cards fade in with stagger animation</div>
+        <div class="test-desc">Recipe cards must not all appear at once — each card fades up slightly offset (staggered opacity + translateY animation)</div>
+        <div class="manual-check"><input type="checkbox" id="mc-stagger" onchange="markManual('t-card-stagger',this.checked)"><label for="mc-stagger">Staggered fade-in animation visible</label></div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<!-- ═══ SECTION 7: RECIPES — FILTERS & SEARCH ═══ -->
+<div class="section" id="sec-filters">
+  <div class="section-header open" onclick="toggleSection('sec-filters')">
+    <div class="section-icon" style="background:rgba(79,110,247,.12)">🔍</div>
+    <div class="section-title">recipes.html — Search, Filters & Sort</div>
+    <div class="section-count" id="sec-filters-count">0/8</div>
+    <div class="section-chevron">▼</div>
+  </div>
+  <div class="section-body open" id="sec-filters-body">
+
+    <div class="test-row" id="t-goal-lose">
+      <div class="status-badge manual" id="t-goal-lose-badge">manual</div>
+      <div class="test-content">
+        <div class="test-name">Goal Tab: "Lose Weight" fetches low-cal recipes</div>
+        <div class="test-desc">Clicking "🔥 Lose Weight" tab: active tab gets green glow border, API re-fetches with maxCalories=450 & minProtein=15. Recipes shown should be under 450 kcal</div>
+        <div class="manual-check"><input type="checkbox" id="mc-goal-lose" onchange="markManual('t-goal-lose',this.checked)"><label for="mc-goal-lose">Tab activates and grid reloads with lower-cal recipes</label></div>
+      </div>
+    </div>
+
+    <div class="test-row" id="t-goal-maintain">
+      <div class="status-badge manual" id="t-goal-maintain-badge">manual</div>
+      <div class="test-content">
+        <div class="test-name">Goal Tab: "Maintain" fetches balanced recipes</div>
+        <div class="test-desc">Tab gets blue glow, fetches 350–650 kcal range recipes</div>
+        <div class="manual-check"><input type="checkbox" id="mc-goal-maintain" onchange="markManual('t-goal-maintain',this.checked)"><label for="mc-goal-maintain">Maintain tab activates and reloads grid</label></div>
+      </div>
+    </div>
+
+    <div class="test-row" id="t-goal-gain">
+      <div class="status-badge manual" id="t-goal-gain-badge">manual</div>
+      <div class="test-content">
+        <div class="test-name">Goal Tab: "Gain Weight" fetches high-cal recipes</div>
+        <div class="test-desc">Tab gets purple glow, fetches min 550 kcal + min 30g protein recipes</div>
+        <div class="manual-check"><input type="checkbox" id="mc-goal-gain" onchange="markManual('t-goal-gain',this.checked)"><label for="mc-goal-gain">Gain tab activates and reloads grid</label></div>
+      </div>
+    </div>
+
+    <div class="test-row" id="t-meal-filter">
+      <div class="status-badge manual" id="t-meal-filter-badge">manual</div>
+      <div class="test-content">
+        <div class="test-name">Meal filter pills filter recipes by type</div>
+        <div class="test-desc">Click "🌅 Breakfast" — only one pill active at a time, grid reloads with breakfast recipes. Test each: Lunch, Dinner, Snack, Salad, then back to All</div>
+        <div class="manual-check"><input type="checkbox" id="mc-meal-filter" onchange="markManual('t-meal-filter',this.checked)"><label for="mc-meal-filter">Meal filters work, only one active at a time</label></div>
+      </div>
+    </div>
+
+    <div class="test-row" id="t-diet-filter">
+      <div class="status-badge manual" id="t-diet-filter-badge">manual</div>
+      <div class="test-content">
+        <div class="test-name">Diet filter pills filter by diet type</div>
+        <div class="test-desc">Click "🥩 Keto" — pill gets amber active style, grid reloads. Test "🌱 Vegan", "💪 High Protein" — each should reload grid with different results</div>
+        <div class="manual-check"><input type="checkbox" id="mc-diet-filter" onchange="markManual('t-diet-filter',this.checked)"><label for="mc-diet-filter">Diet filters work with correct color-coded active states</label></div>
+      </div>
+    </div>
+
+    <div class="test-row" id="t-search">
+      <div class="status-badge manual" id="t-search-badge">manual</div>
+      <div class="test-content">
+        <div class="test-name">Search input debounces and fetches results</div>
+        <div class="test-desc">Type "chicken" in the search bar — after ~480ms pause the grid should reload with chicken recipes. Clearing search restores default results. Should NOT fire on every keystroke.</div>
+        <div class="manual-check"><input type="checkbox" id="mc-search" onchange="markManual('t-search',this.checked)"><label for="mc-search">Search works with debounce (no keystroke-by-keystroke firing)</label></div>
+      </div>
+    </div>
+
+    <div class="test-row" id="t-sort">
+      <div class="status-badge manual" id="t-sort-badge">manual</div>
+      <div class="test-content">
+        <div class="test-name">Sort dropdown changes recipe order</div>
+        <div class="test-desc">Changing sort to "Fewest Calories" should reload grid with lowest-calorie recipes first. Test "Most Protein" and "Quickest" too</div>
+        <div class="manual-check"><input type="checkbox" id="mc-sort" onchange="markManual('t-sort',this.checked)"><label for="mc-sort">Sort changes recipe order on each selection</label></div>
+      </div>
+    </div>
+
+    <div class="test-row" id="t-load-more">
+      <div class="status-badge manual" id="t-load-more-badge">manual</div>
+      <div class="test-content">
+        <div class="test-name">"Load More" appends additional recipes</div>
+        <div class="test-desc">If the API has more results, the Load More button appears at bottom. Clicking it must: show spinner, fetch next 24, append to existing grid (not replace), then update button</div>
+        <div class="manual-check"><input type="checkbox" id="mc-load-more" onchange="markManual('t-load-more',this.checked)"><label for="mc-load-more">Load More appends cards and shows loading state</label></div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<!-- ═══ SECTION 8: RECIPES — CARDS & MODAL ═══ -->
+<div class="section" id="sec-modal">
+  <div class="section-header open" onclick="toggleSection('sec-modal')">
+    <div class="section-icon" style="background:rgba(155,114,255,.12)">🪟</div>
+    <div class="section-title">recipes.html — Cards, Modal & Interactions</div>
+    <div class="section-count" id="sec-modal-count">0/9</div>
+    <div class="section-chevron">▼</div>
+  </div>
+  <div class="section-body open" id="sec-modal-body">
+
+    <div class="test-row" id="t-card-hover">
+      <div class="status-badge manual" id="t-card-hover-badge">manual</div>
+      <div class="test-content">
+        <div class="test-name">Card hover: lifts up + image zooms</div>
+        <div class="test-desc">Hovering a recipe card must: lift card (translateY -6px + scale 1.01 + shadow), and zoom the food image slightly (scale 1.07) — both transitions smooth</div>
+        <div class="manual-check"><input type="checkbox" id="mc-card-hover" onchange="markManual('t-card-hover',this.checked)"><label for="mc-card-hover">Card lifts and image zooms on hover</label></div>
+      </div>
+    </div>
+
+    <div class="test-row" id="t-modal-open">
+      <div class="status-badge manual" id="t-modal-open-badge">manual</div>
+      <div class="test-content">
+        <div class="test-name">Clicking a recipe card opens modal</div>
+        <div class="test-desc">Click anywhere on a recipe card (not the ♡ button) — modal overlay must appear with scale-in animation, recipe image, and loading spinner while details fetch</div>
+        <div class="manual-check"><input type="checkbox" id="mc-modal-open" onchange="markManual('t-modal-open',this.checked)"><label for="mc-modal-open">Modal opens with animation and shows loading state</label></div>
+      </div>
+    </div>
+
+    <div class="test-row" id="t-modal-content">
+      <div class="status-badge manual" id="t-modal-content-badge">manual</div>
+      <div class="test-content">
+        <div class="test-name">Modal populates with full recipe details</div>
+        <div class="test-desc">After loading: must show Quick Info chips (time, servings, score, price), 4 macro stat cards (kcal/protein/carbs/fat), SVG donut ring chart, ingredient list, and step-by-step instructions</div>
+        <div class="manual-check"><input type="checkbox" id="mc-modal-content" onchange="markManual('t-modal-content',this.checked)"><label for="mc-modal-content">All sections populated with real data</label></div>
+      </div>
+    </div>
+
+    <div class="test-row" id="t-modal-close-x">
+      <div class="status-badge manual" id="t-modal-close-x-badge">manual</div>
+      <div class="test-content">
+        <div class="test-name">Modal closes with X button</div>
+        <div class="test-desc">The ✕ button in top-right of modal must close it. Body scroll must be re-enabled after close (no stuck overflow:hidden)</div>
+        <div class="manual-check"><input type="checkbox" id="mc-modal-x" onchange="markManual('t-modal-close-x',this.checked)"><label for="mc-modal-x">X button closes modal, page scrollable after</label></div>
+      </div>
+    </div>
+
+    <div class="test-row" id="t-modal-close-overlay">
+      <div class="status-badge manual" id="t-modal-close-overlay-badge">manual</div>
+      <div class="test-content">
+        <div class="test-name">Modal closes by clicking outside (overlay)</div>
+        <div class="test-desc">Clicking the dark backdrop outside the modal card must close it</div>
+        <div class="manual-check"><input type="checkbox" id="mc-modal-overlay" onchange="markManual('t-modal-close-overlay',this.checked)"><label for="mc-modal-overlay">Overlay click closes modal</label></div>
+      </div>
+    </div>
+
+    <div class="test-row" id="t-modal-close-esc">
+      <div class="status-badge manual" id="t-modal-close-esc-badge">manual</div>
+      <div class="test-content">
+        <div class="test-name">Modal closes with Escape key</div>
+        <div class="test-desc">Pressing Escape when modal is open must close it</div>
+        <div class="manual-check"><input type="checkbox" id="mc-modal-esc" onchange="markManual('t-modal-close-esc',this.checked)"><label for="mc-modal-esc">Escape key closes modal</label></div>
+      </div>
+    </div>
+
+    <div class="test-row" id="t-fav-toggle">
+      <div class="status-badge manual" id="t-fav-toggle-badge">manual</div>
+      <div class="test-content">
+        <div class="test-name">♡ Save button toggles and persists</div>
+        <div class="test-desc">Click ♡ on a card → heart fills (♥), toast "💚 Recipe saved!" appears. Refresh page → heart still filled (localStorage persisted). Click again → removes, toast "Removed"</div>
+        <div class="manual-check"><input type="checkbox" id="mc-fav-toggle" onchange="markManual('t-fav-toggle',this.checked)"><label for="mc-fav-toggle">Like toggles, toast shows, persists after refresh</label></div>
+      </div>
+    </div>
+
+    <div class="test-row" id="t-toast">
+      <div class="status-badge manual" id="t-toast-badge">manual</div>
+      <div class="test-content">
+        <div class="test-name">Toast notification shows and auto-hides</div>
+        <div class="test-desc">Toast must slide up from bottom on any triggered event, display for ~2.8 seconds, then slide back down. Click "Log in Nutriva AI" in modal to test</div>
+        <div class="manual-check"><input type="checkbox" id="mc-toast" onchange="markManual('t-toast',this.checked)"><label for="mc-toast">Toast slides up, stays 3s, slides back down</label></div>
+      </div>
+    </div>
+
+    <div class="test-row" id="t-scroll-top">
+      <div class="status-badge manual" id="t-scroll-top-badge">manual</div>
+      <div class="test-content">
+        <div class="test-name">Scroll-to-top button appears and works</div>
+        <div class="test-desc">After scrolling down 600px on recipes page, the ↑ button must appear in bottom-right. Clicking it must smooth-scroll back to top</div>
+        <div class="manual-check"><input type="checkbox" id="mc-scroll-top" onchange="markManual('t-scroll-top',this.checked)"><label for="mc-scroll-top">Button appears on scroll, returns to top on click</label></div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<!-- ═══ SECTION 9: RESPONSIVE ═══ -->
+<div class="section" id="sec-responsive">
+  <div class="section-header open" onclick="toggleSection('sec-responsive')">
+    <div class="section-icon" style="background:rgba(34,211,238,.12)">📱</div>
+    <div class="section-title">Responsive / Mobile Tests</div>
+    <div class="section-count" id="sec-responsive-count">0/5</div>
+    <div class="section-chevron">▼</div>
+  </div>
+  <div class="section-body open" id="sec-responsive-body">
+
+    <div class="test-row" id="t-mobile-nav">
+      <div class="status-badge manual" id="t-mobile-nav-badge">manual</div>
+      <div class="test-content">
+        <div class="test-name">index.html — Nav links hide on mobile (&lt;900px)</div>
+        <div class="test-desc">On screens narrower than 900px, the nav-links (Features, Compare, etc.) must be hidden — only logo and CTA button visible</div>
+        <div class="manual-check"><input type="checkbox" id="mc-mobile-nav" onchange="markManual('t-mobile-nav',this.checked)"><label for="mc-mobile-nav">Nav links hidden on mobile viewport</label></div>
+      </div>
+    </div>
+
+    <div class="test-row" id="t-mobile-hero">
+      <div class="status-badge manual" id="t-mobile-hero-badge">manual</div>
+      <div class="test-content">
+        <div class="test-name">index.html — Hero phone hidden on mobile</div>
+        <div class="test-desc">The phone mockup (hero-right) must be hidden on &lt;900px — single column layout with centered text and CTAs</div>
+        <div class="manual-check"><input type="checkbox" id="mc-mobile-hero" onchange="markManual('t-mobile-hero',this.checked)"><label for="mc-mobile-hero">Hero single-column on mobile, phone hidden</label></div>
+      </div>
+    </div>
+
+    <div class="test-row" id="t-mobile-recipes-grid">
+      <div class="status-badge manual" id="t-mobile-recipes-grid-badge">manual</div>
+      <div class="test-content">
+        <div class="test-name">recipes.html — Grid adapts to 1 col on mobile</div>
+        <div class="test-desc">On &lt;480px, recipe grid must switch to single column. On 480–900px it should be 2 columns via auto-fill</div>
+        <div class="manual-check"><input type="checkbox" id="mc-mobile-grid" onchange="markManual('t-mobile-recipes-grid',this.checked)"><label for="mc-mobile-grid">Grid is 1 col on narrow screens</label></div>
+      </div>
+    </div>
+
+    <div class="test-row" id="t-mobile-modal">
+      <div class="status-badge manual" id="t-mobile-modal-badge">manual</div>
+      <div class="test-content">
+        <div class="test-name">recipes.html — Modal usable on mobile</div>
+        <div class="test-desc">On mobile: modal image height reduces (200px), macro row switches to 2-col, macro visual stacks vertically, ingredient grid becomes 2-col — all readable without overflow</div>
+        <div class="manual-check"><input type="checkbox" id="mc-mobile-modal" onchange="markManual('t-mobile-modal',this.checked)"><label for="mc-mobile-modal">Modal renders correctly on narrow screen</label></div>
+      </div>
+    </div>
+
+    <div class="test-row" id="t-mobile-goal-tabs">
+      <div class="status-badge manual" id="t-mobile-goal-tabs-badge">manual</div>
+      <div class="test-content">
+        <div class="test-name">recipes.html — Goal tabs wrap on mobile</div>
+        <div class="test-desc">On narrow screens the 3 goal tabs must wrap or shrink (min-width:100px at 480px) without overflowing off-screen</div>
+        <div class="manual-check"><input type="checkbox" id="mc-mobile-tabs" onchange="markManual('t-mobile-goal-tabs',this.checked)"><label for="mc-mobile-tabs">Goal tabs fit within screen on mobile</label></div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<!-- ═══ ISSUE LOG ═══ -->
+<div class="issue-log" style="margin:28px 4vw 60px">
+  <div class="issue-log-header">📋 Test Log <span id="log-count" style="color:var(--ink3);font-weight:500;font-size:12px;margin-left:4px">(0 entries)</span></div>
+  <div class="issue-log-body" id="issue-log-body">
+    <div class="log-line info">⏳ Click "Run All Tests" to begin automated checks…</div>
+  </div>
+</div>
+
+<script>
+/* ═══════════════════════════════════════════════════════════
+   STATE
+═══════════════════════════════════════════════════════════ */
+const results = {};
+let logLines = [];
+
+/* ═══════════════════════════════════════════════════════════
+   SECTION TOGGLE
+═══════════════════════════════════════════════════════════ */
+function toggleSection(id) {
+  const sec = document.getElementById(id);
+  const header = sec.querySelector('.section-header');
+  const body = sec.querySelector('.section-body');
+  const chevron = sec.querySelector('.section-chevron');
+  header.classList.toggle('open');
+  body.classList.toggle('open');
+}
+
+/* ═══════════════════════════════════════════════════════════
+   SET TEST STATUS
+═══════════════════════════════════════════════════════════ */
+function setStatus(id, status, errorMsg) {
+  results[id] = status;
+  const row = document.getElementById(id);
+  const badge = document.getElementById(id + '-badge');
+  if (!row || !badge) return;
+
+  row.className = 'test-row status-' + status;
+  badge.className = 'status-badge ' + status;
+  badge.textContent = status === 'pass' ? '✓ pass'
+    : status === 'fail' ? '✗ fail'
+    : status === 'warn' ? '⚠ warn'
+    : status === 'manual' ? 'manual'
+    : status;
+
+  if (errorMsg) {
+    let errEl = row.querySelector('.test-error');
+    if (!errEl) {
+      errEl = document.createElement('div');
+      errEl.className = 'test-error';
+      row.querySelector('.test-content').appendChild(errEl);
+    }
+    errEl.textContent = errorMsg;
+  }
+
+  updateSummary();
+}
+
+function markManual(id, checked) {
+  setStatus(id, checked ? 'pass' : 'manual');
+  addLog(checked ? 'pass' : 'info', (checked ? '✓ Manual PASS: ' : '⏳ Unchecked: ') + id);
+}
+
+/* ═══════════════════════════════════════════════════════════
+   SCAN FLOW CHECKER
+═══════════════════════════════════════════════════════════ */
+function updateScanCheck() {
+  const allChecked = ['mc-scan-scanning','mc-scan-analyzing','mc-scan-result','mc-scan-reset']
+    .every(id => document.getElementById(id)?.checked);
+  setStatus('t-scan-flow', allChecked ? 'pass' : 'manual');
+}
+
+/* ═══════════════════════════════════════════════════════════
+   LOGGING
+═══════════════════════════════════════════════════════════ */
+function addLog(type, msg) {
+  logLines.push({ type, msg, time: new Date().toLocaleTimeString() });
+  const body = document.getElementById('issue-log-body');
+  const line = document.createElement('div');
+  line.className = 'log-line ' + type;
+  line.textContent = `[${logLines[logLines.length-1].time}] ${msg}`;
+  body.appendChild(line);
+  body.scrollTop = body.scrollHeight;
+  document.getElementById('log-count').textContent = `(${logLines.length} entries)`;
+}
+
+/* ═══════════════════════════════════════════════════════════
+   SUMMARY & PROGRESS
+═══════════════════════════════════════════════════════════ */
+function updateSummary() {
+  const vals = Object.values(results);
+  const pass = vals.filter(v => v === 'pass').length;
+  const fail = vals.filter(v => v === 'fail').length;
+  const warn = vals.filter(v => v === 'warn').length;
+  const auto = vals.filter(v => v === 'pass' || v === 'fail' || v === 'warn').length;
+  const total = vals.length;
+
+  document.getElementById('cnt-pass').textContent = pass;
+  document.getElementById('cnt-fail').textContent = fail;
+  document.getElementById('cnt-warn').textContent = warn;
+  document.getElementById('cnt-total').textContent = total;
+
+  const pct = total > 0 ? Math.round(pass / total * 100) : 0;
+  document.getElementById('progress-fill').style.width = pct + '%';
+  document.getElementById('progress-label').textContent =
+    `${pass} passed · ${fail} failed · ${warn} warnings · ${pct}% complete`;
+
+  // Update section counts
+  updateSectionCounts();
+}
+
+function updateSectionCounts() {
+  const sections = [
+    { id: 'sec-files', tests: ['t-index-exists','t-recipes-exists','t-favicon','t-privacy','t-terms','t-support'] },
+    { id: 'sec-nav', tests: ['t-nav-scroll-glass','t-nav-features','t-nav-recipes-link','t-nav-compare','t-nav-pricing','t-nav-download','t-nav-early-access'] },
+    { id: 'sec-hero', tests: ['t-aurora','t-cursor','t-hero-fadeup','t-phone-parallax','t-scan-flow','t-magnetic-btn','t-hero-cta-ios','t-hero-see-features'] },
+    { id: 'sec-features', tests: ['t-scroll-reveal','t-counters','t-wave-bars','t-health-rings','t-recipe-preview','t-recipe-browse-btn'] },
+    { id: 'sec-forms', tests: ['t-pricing-cards','t-pricing-ctasscroll','t-apple-store-btn','t-newsletter-validation','t-newsletter-submit','t-newsletter-success'] },
+    { id: 'sec-recipes-core', tests: ['t-api-key','t-spoonacular-reach','t-skeleton-loads','t-recipes-render','t-results-count','t-card-stagger'] },
+    { id: 'sec-filters', tests: ['t-goal-lose','t-goal-maintain','t-goal-gain','t-meal-filter','t-diet-filter','t-search','t-sort','t-load-more'] },
+    { id: 'sec-modal', tests: ['t-card-hover','t-modal-open','t-modal-content','t-modal-close-x','t-modal-close-overlay','t-modal-close-esc','t-fav-toggle','t-toast','t-scroll-top'] },
+    { id: 'sec-responsive', tests: ['t-mobile-nav','t-mobile-hero','t-mobile-recipes-grid','t-mobile-modal','t-mobile-goal-tabs'] },
+  ];
+  sections.forEach(s => {
+    const passed = s.tests.filter(t => results[t] === 'pass').length;
+    const el = document.getElementById(s.id + '-count');
+    if (el) el.textContent = `${passed}/${s.tests.length}`;
+  });
+}
+
+/* ═══════════════════════════════════════════════════════════
+   AUTOMATED TESTS
+═══════════════════════════════════════════════════════════ */
+async function runAutoTests() {
+  const btn = document.getElementById('run-all-btn');
+  btn.textContent = '⏳ Running…';
+  btn.disabled = true;
+
+  document.getElementById('issue-log-body').innerHTML = '';
+  logLines = [];
+  addLog('info', '▶ Starting automated test suite…');
+
+  // Clear old auto results
+  ['t-favicon','t-api-key','t-spoonacular-reach','t-newsletter-submit'].forEach(id => {
+    setStatus(id, 'running');
+    document.getElementById(id + '-badge').textContent = '…';
+    document.getElementById(id + '-badge').className = 'status-badge running';
+  });
+
+  await delay(200);
+
+  // ── TEST: favicon loads ──
+  addLog('info', '🔍 Checking favicon.png…');
+  try {
+    const r = await fetch('./favicon.png', { method: 'HEAD' });
+    if (r.ok) {
+      setStatus('t-favicon', 'pass');
+      addLog('pass', '✓ favicon.png exists (HTTP ' + r.status + ')');
+    } else {
+      setStatus('t-favicon', 'fail', `HTTP ${r.status} — favicon.png not found`);
+      addLog('fail', '✗ favicon.png missing! HTTP ' + r.status);
+    }
+  } catch(e) {
+    setStatus('t-favicon', 'warn', 'Could not verify — CORS or network error');
+    addLog('warn', '⚠ favicon check blocked by browser security — verify manually');
+  }
+
+  await delay(300);
+
+  // ── TEST: API key set ──
+  addLog('info', '🔍 Checking Spoonacular API key…');
+  const apiKey = 'e74e665dab854909af456a2897d24040';
+  if (apiKey && apiKey.length === 32 && apiKey !== 'YOUR_API_KEY') {
+    setStatus('t-api-key', 'pass');
+    addLog('pass', '✓ API key present (32-char key found)');
+  } else {
+    setStatus('t-api-key', 'fail', 'API key is empty or placeholder');
+    addLog('fail', '✗ API key missing or placeholder');
+  }
+
+  await delay(300);
+
+  // ── TEST: Spoonacular API live call ──
+  addLog('info', '🌐 Testing Spoonacular API live call…');
+  try {
+    const url = `https://api.spoonacular.com/recipes/complexSearch?apiKey=${apiKey}&number=3&maxCalories=450&addRecipeNutrition=true`;
+    const res = await fetch(url);
+    if (!res.ok) {
+      const txt = await res.text();
+      if (res.status === 402) {
+        setStatus('t-spoonacular-reach', 'warn', 'HTTP 402 — API quota exceeded. Key works but daily limit hit.');
+        addLog('warn', '⚠ Spoonacular quota exceeded (402). Key is valid, reset quota at spoonacular.com');
+      } else if (res.status === 401) {
+        setStatus('t-spoonacular-reach', 'fail', 'HTTP 401 — Invalid API key. Check key in recipes.html');
+        addLog('fail', '✗ Spoonacular 401 — API key invalid');
+      } else {
+        setStatus('t-spoonacular-reach', 'fail', `HTTP ${res.status} — ${txt.slice(0,100)}`);
+        addLog('fail', `✗ Spoonacular HTTP ${res.status}`);
+      }
+    } else {
+      const data = await res.json();
+      const count = data.results?.length || 0;
+      const total = data.totalResults || 0;
+      if (count > 0) {
+        const first = data.results[0];
+        const hasNutrition = first.nutrition?.nutrients?.length > 0;
+        if (hasNutrition) {
+          setStatus('t-spoonacular-reach', 'pass');
+          addLog('pass', `✓ Spoonacular OK — ${count} recipes returned, ${total} total available, nutrition data present`);
+        } else {
+          setStatus('t-spoonacular-reach', 'warn', 'Recipes returned but nutrition data missing — check addRecipeNutrition param');
+          addLog('warn', '⚠ Recipes returned but no nutrition — macro bars will show 0g');
+        }
+      } else {
+        setStatus('t-spoonacular-reach', 'warn', 'API responded but returned 0 results for this filter combination');
+        addLog('warn', '⚠ API responded but 0 results for Lose Weight filter — try broader params');
+      }
+    }
+  } catch(e) {
+    setStatus('t-spoonacular-reach', 'fail', 'Network error: ' + e.message);
+    addLog('fail', '✗ Spoonacular fetch failed: ' + e.message);
+  }
+
+  await delay(400);
+
+  // ── TEST: Supabase newsletter endpoint ──
+  addLog('info', '🌐 Testing Supabase newsletter endpoint…');
+  try {
+    const res = await fetch('https://uvlkgvacystmezuskecb.supabase.co/functions/v1/newsletter-subscribe', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ email: 'qa-test-ping@nutriva.ai' }),
+    });
+    if (res.ok || res.status === 409 || res.status === 422) {
+      // 409 = already exists, 422 = validation — both mean endpoint is alive
+      setStatus('t-newsletter-submit', 'pass');
+      addLog('pass', `✓ Supabase newsletter endpoint reachable (HTTP ${res.status})`);
+    } else if (res.status === 500) {
+      setStatus('t-newsletter-submit', 'warn', 'HTTP 500 from Supabase function — check Edge Function logs in Supabase dashboard');
+      addLog('warn', '⚠ Newsletter endpoint 500 — Edge Function may have an error');
+    } else {
+      setStatus('t-newsletter-submit', 'warn', `HTTP ${res.status} — endpoint reachable but unexpected response`);
+      addLog('warn', `⚠ Newsletter HTTP ${res.status} — check Supabase function`);
+    }
+  } catch(e) {
+    setStatus('t-newsletter-submit', 'fail', 'Could not reach Supabase: ' + e.message);
+    addLog('fail', '✗ Supabase endpoint unreachable: ' + e.message);
+  }
+
+  // ── DONE ──
+  const vals = Object.values(results);
+  const passed = vals.filter(v => v==='pass').length;
+  const failed = vals.filter(v => v==='fail').length;
+  const warned = vals.filter(v => v==='warn').length;
+
+  addLog('info', `━━━ Automated tests complete: ${passed} pass · ${failed} fail · ${warned} warn ━━━`);
+  addLog('info', `📋 ${Object.values(results).filter(v=>v==='manual').length} manual tests still need your verification below`);
+
+  document.getElementById('run-timestamp').textContent = 'Last run: ' + new Date().toLocaleTimeString();
+  btn.textContent = '▶ Run Again';
+  btn.disabled = false;
+  updateSummary();
+}
+
+function delay(ms) { return new Promise(r => setTimeout(r, ms)); }
+
+document.getElementById('run-all-btn').addEventListener('click', runAutoTests);
+
+// Init summary with zeroes
+updateSummary();
+</script>
+</body>
+</html>

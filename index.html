@@ -3,6 +3,12 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <!-- Security meta tags -->
+  <meta http-equiv="X-Content-Type-Options" content="nosniff" />
+  <meta http-equiv="X-Frame-Options" content="DENY" />
+  <meta name="referrer" content="strict-origin-when-cross-origin" />
+  <meta http-equiv="Permissions-Policy" content="camera=(), microphone=(), geolocation=(), payment=()" />
+  <meta name="format-detection" content="telephone=no, date=no, email=no, address=no" />
   <title>Nutriva AI — AI Nutrition Coach & Calorie Tracker</title>
   <meta name="description" content="AI food scan, voice logging, restaurant menu scan, AI coach, fasting timer, Apple Health sync. Free on iPhone — nutrivaai.com" />
   <meta property="og:title" content="Nutriva AI — AI Nutrition Coach" />
@@ -705,6 +711,59 @@ svg.ring { overflow: visible; }
 .metric-chip-val { font-size: 20px; font-weight: 900; letter-spacing: -.5px; }
 .metric-chip-lbl { font-size: 10.5px; color: var(--ink3); margin-top: 2px; font-weight: 600; }
 
+/* ── TRIBE ──────────────────────────────────────── */
+.tribe-challenge {
+  background: rgba(244,63,94,.05);
+  border: 1px solid rgba(244,63,94,.15);
+  border-radius: 18px; padding: 16px; margin-bottom: 14px;
+}
+.tribe-challenge-header {
+  display: flex; align-items: center; justify-content: space-between; margin-bottom: 12px;
+}
+.tribe-challenge-name { font-size: 14px; font-weight: 800; }
+.tribe-challenge-meta { font-size: 11px; color: var(--ink3); margin-top: 2px; }
+.tribe-active-badge {
+  font-size: 10px; font-weight: 800; padding: 4px 10px;
+  background: rgba(244,63,94,.15); border-radius: 100px;
+  color: var(--rose); white-space: nowrap;
+}
+.tribe-challenge-bar {
+  height: 6px; background: var(--s4); border-radius: 100px; overflow: hidden; margin-top: 8px;
+}
+.tribe-challenge-bar-fill {
+  height: 100%; background: linear-gradient(90deg, var(--rose), #ff7eb3);
+  border-radius: 100px; transition: width 1.2s var(--ease-out-expo);
+}
+.tribe-section-lbl { font-size: 10px; font-weight: 800; letter-spacing: .5px; color: var(--ink3); margin-bottom: 8px; }
+.tribe-leaderboard { display: flex; flex-direction: column; gap: 8px; }
+.tribe-user-row {
+  display: flex; align-items: center; gap: 10px;
+  padding: 10px 12px; border-radius: 12px;
+  background: rgba(255,255,255,.03); border: 1px solid var(--ink4);
+}
+.tribe-user-row.me {
+  background: rgba(79,110,247,.07); border-color: rgba(79,110,247,.2);
+}
+.tribe-rank { font-size: 16px; font-weight: 900; width: 22px; text-align: center; flex-shrink: 0; }
+.tribe-rank.gold { color: #f59e0b; }
+.tribe-avatar {
+  width: 34px; height: 34px; border-radius: 50%; flex-shrink: 0;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 16px; font-weight: 900; color: #fff;
+}
+.tribe-user-name { font-size: 13px; font-weight: 700; flex: 1; }
+.tribe-streak { font-size: 11px; color: var(--amber); font-weight: 700; white-space: nowrap; }
+.tribe-kcal { font-size: 11px; color: var(--ink3); white-space: nowrap; }
+.tribe-badges { display: flex; gap: 8px; flex-wrap: wrap; margin-top: 14px; }
+.tribe-badge {
+  display: flex; flex-direction: column; align-items: center; gap: 3px;
+  padding: 8px 10px; border-radius: 12px;
+  background: rgba(255,255,255,.04); border: 1px solid var(--ink4);
+  flex: 1; min-width: 52px;
+}
+.tribe-badge-icon { font-size: 20px; }
+.tribe-badge-lbl { font-size: 9px; font-weight: 700; color: var(--ink3); text-align: center; }
+
 /* ── COMPARE ─────────────────────────────────────── */
 .compare-wrap { padding: 120px 8vw; }
 .compare-header { text-align: center; margin-bottom: 60px; }
@@ -957,7 +1016,7 @@ footer {
     <a href="#download">Download</a>
   </div>
   <div class="nav-right">
-    <a href="#news" class="btn-nav">Get Early Access</a>
+    <a href="https://apps.apple.com/us/app/nutriva-ai/id6761382561" target="_blank" rel="noopener noreferrer" class="btn-nav">Download on the App Store</a>
   </div>
 </nav>
 
@@ -966,7 +1025,7 @@ footer {
   <div class="hero-left">
     <div class="hero-eyebrow" id="eyebrow">
       <span class="live-pulse"></span>
-      Now in Beta · Free on iOS
+      ✅ Now Available on the App Store · Free
     </div>
     <h1 class="hero-h1" id="hero-h1">
       Eat smarter.<br/>
@@ -977,10 +1036,10 @@ footer {
       Snap a photo, say it out loud, or scan the menu. Nutriva AI handles the calories — you handle the living.
     </p>
     <div class="hero-ctas" id="hero-ctas">
-      <!-- UPDATE href to real App Store URL when available: https://apps.apple.com/app/id[YOUR_ID] -->
-      <a href="#news" class="btn-primary" id="hero-apple">
+      <!-- App Store: https://apps.apple.com/us/app/nutriva-ai/id6761382561 -->
+      <a href="https://apps.apple.com/us/app/nutriva-ai/id6761382561" target="_blank" rel="noopener noreferrer" class="btn-primary" id="hero-apple">
         <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M18.71 19.5c-.83 1.24-1.71 2.45-3.05 2.47-1.34.03-1.77-.79-3.29-.79-1.53 0-2 .77-3.27.82-1.31.05-2.3-1.32-3.14-2.53C4.25 17 2.94 12.45 4.7 9.39c.87-1.52 2.43-2.48 4.12-2.51 1.28-.02 2.5.87 3.29.87.78 0 2.26-1.07 3.8-.91.65.03 2.47.26 3.64 1.98-.09.06-2.17 1.28-2.15 3.81.03 3.02 2.65 4.03 2.68 4.04-.03.07-.42 1.44-1.38 2.83M13 3.5c.73-.83 1.94-1.46 2.94-1.5.13 1.17-.34 2.35-1.04 3.19-.69.85-1.83 1.51-2.95 1.42-.15-1.15.41-2.35 1.05-3.11z"/></svg>
-        Download for iOS
+        Download on the App Store
       </a>
       <a href="#features" class="btn-secondary">
         <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="m9 12 2 2 4-4"/></svg>
@@ -992,7 +1051,7 @@ footer {
       <div class="hero-trust-div"></div>
       <span>No ads</span>
       <div class="hero-trust-div"></div>
-      <span>9 languages</span>
+      <span>13 languages</span>
       <div class="hero-trust-div"></div>
       <span>HealthKit sync</span>
     </div>
@@ -1238,7 +1297,7 @@ footer {
   <div class="feat-copy reveal">
     <div class="eyebrow amber"><span class="eyebrow-line"></span>Built for the World</div>
     <h2 class="section-h2">The app that<br/>speaks your<br/>language.</h2>
-    <p class="section-body">Arabic, English, Turkish, French, German, Spanish, Portuguese, Italian, and Kurdish — with full RTL support and the world's only Islamic health mode including Ramadan fasting, Suhoor & Iftar tracking.</p>
+    <p class="section-body">Arabic, English, Turkish, French, German, Spanish, Portuguese, Italian, Hindi, Indonesian, Russian, Croatian, Chinese, and Kurdish — 13 languages with full RTL support and the world's only Islamic health mode including Ramadan fasting, Suhoor &amp; Iftar tracking.</p>
     <div class="feat-chips">
       <span class="chip amber">🌙 Ramadan mode</span>
       <span class="chip green">🕌 Halal filter</span>
@@ -1256,13 +1315,21 @@ footer {
             <p>Suhoor in 3h 42m · Iftar in 11h 18m</p>
           </div>
         </div>
-        <div class="lang-grid">
+        <div class="lang-grid" style="grid-template-columns:repeat(4,1fr);">
           <div class="lang-item"><div class="lang-flag">🇸🇦</div><div class="lang-name">Arabic</div></div>
           <div class="lang-item"><div class="lang-flag">🇺🇸</div><div class="lang-name">English</div></div>
           <div class="lang-item"><div class="lang-flag">🇹🇷</div><div class="lang-name">Turkish</div></div>
           <div class="lang-item"><div class="lang-flag">🇫🇷</div><div class="lang-name">French</div></div>
           <div class="lang-item"><div class="lang-flag">🇩🇪</div><div class="lang-name">German</div></div>
           <div class="lang-item"><div class="lang-flag">🇪🇸</div><div class="lang-name">Spanish</div></div>
+          <div class="lang-item"><div class="lang-flag">🇵🇹</div><div class="lang-name">Portuguese</div></div>
+          <div class="lang-item"><div class="lang-flag">🇮🇹</div><div class="lang-name">Italian</div></div>
+          <div class="lang-item"><div class="lang-flag">🇮🇳</div><div class="lang-name">Hindi</div></div>
+          <div class="lang-item"><div class="lang-flag">🇮🇩</div><div class="lang-name">Indonesian</div></div>
+          <div class="lang-item"><div class="lang-flag">🇷🇺</div><div class="lang-name">Russian</div></div>
+          <div class="lang-item"><div class="lang-flag">🇭🇷</div><div class="lang-name">Croatian</div></div>
+          <div class="lang-item"><div class="lang-flag">🇨🇳</div><div class="lang-name">Chinese</div></div>
+          <div class="lang-item"><div class="lang-flag">🕋</div><div class="lang-name">Kurdish</div></div>
         </div>
       </div>
     </div>
@@ -1290,7 +1357,7 @@ footer {
           <div class="ring-wrap">
             <svg class="ring" width="80" height="80" viewBox="0 0 80 80">
               <circle class="ring-bg" cx="40" cy="40" r="32"/>
-              <circle class="ring-fill" cx="40" cy="40" r="32" stroke="var(--rose)" stroke-dasharray="201" stroke-dashoffset="40" transform="rotate(-90 40 40)"/>
+              <circle class="ring-fill" cx="40" cy="40" r="32" stroke="var(--rose)" stroke-dasharray="201" stroke-dashoffset="201" data-target="40" transform="rotate(-90 40 40)"/>
               <text class="ring-pct" x="40" y="40" style="font-family:Inter,sans-serif;">83%</text>
             </svg>
             <span class="ring-label-b">Move</span>
@@ -1298,7 +1365,7 @@ footer {
           <div class="ring-wrap">
             <svg class="ring" width="80" height="80" viewBox="0 0 80 80">
               <circle class="ring-bg" cx="40" cy="40" r="32"/>
-              <circle class="ring-fill" cx="40" cy="40" r="32" stroke="var(--green)" stroke-dasharray="201" stroke-dashoffset="60" transform="rotate(-90 40 40)"/>
+              <circle class="ring-fill" cx="40" cy="40" r="32" stroke="var(--green)" stroke-dasharray="201" stroke-dashoffset="201" data-target="60" transform="rotate(-90 40 40)"/>
               <text class="ring-pct" x="40" y="40" style="font-family:Inter,sans-serif;">70%</text>
             </svg>
             <span class="ring-label-b">Exercise</span>
@@ -1306,7 +1373,7 @@ footer {
           <div class="ring-wrap">
             <svg class="ring" width="80" height="80" viewBox="0 0 80 80">
               <circle class="ring-bg" cx="40" cy="40" r="32"/>
-              <circle class="ring-fill" cx="40" cy="40" r="32" stroke="var(--blue)" stroke-dasharray="201" stroke-dashoffset="20" transform="rotate(-90 40 40)"/>
+              <circle class="ring-fill" cx="40" cy="40" r="32" stroke="var(--blue)" stroke-dasharray="201" stroke-dashoffset="201" data-target="20" transform="rotate(-90 40 40)"/>
               <text class="ring-pct" x="40" y="40" style="font-family:Inter,sans-serif;">90%</text>
             </svg>
             <span class="ring-label-b">Stand</span>
@@ -1335,6 +1402,73 @@ footer {
   </div>
 </div>
 
+<!-- ─── FEATURE 5: RECIPES ─────────────────────────── -->
+<div class="feature-block">
+  <div class="feat-copy reveal">
+    <div class="eyebrow green"><span class="eyebrow-line"></span>Recipe Library &nbsp;<span style="font-size:10px;font-weight:800;padding:3px 10px;background:rgba(0,229,160,.15);border:1px solid rgba(0,229,160,.3);border-radius:100px;color:var(--green);vertical-align:middle;">COMING SOON</span></div>
+    <h2 class="section-h2">5,000+ recipes<br/>matched to<br/>your goal.</h2>
+    <p class="section-body">Browse a curated library of nutrition-tracked recipes — filtered by your goal (lose, maintain, or gain), meal type, and diet. Every recipe shows real macros, prep time, and step-by-step instructions.</p>
+    <div class="feat-chips">
+      <span class="chip green">🔥 Lose Weight</span>
+      <span class="chip blue">⚖️ Maintain</span>
+      <span class="chip purple">💪 Gain Muscle</span>
+      <span class="chip amber">🥗 Diet Filters</span>
+    </div>
+    <div style="display:inline-flex;align-items:center;gap:10px;margin-top:24px;padding:13px 20px;background:rgba(0,229,160,.08);border:1px solid rgba(0,229,160,.2);border-radius:14px;color:var(--green);font-size:13px;font-weight:700;">
+      🗓️ Launching in a future update
+    </div>
+  </div>
+  <div class="feat-visual reveal reveal-delay-2">
+    <div class="feat-card">
+      <div class="feat-card-glow card-glow-green"></div>
+      <div style="position:relative;z-index:1;">
+        <!-- Mini recipe cards preview -->
+        <div style="display:flex;flex-direction:column;gap:10px;">
+          <div style="display:flex;align-items:center;gap:12px;background:rgba(0,229,160,.06);border:1px solid rgba(0,229,160,.15);border-radius:14px;padding:12px;transition:all .2s;">
+            <div style="width:52px;height:52px;border-radius:10px;background:rgba(0,229,160,.12);display:flex;align-items:center;justify-content:center;font-size:26px;flex-shrink:0;">🥑</div>
+            <div style="flex:1;min-width:0;">
+              <div style="font-size:13px;font-weight:800;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">Avocado Chicken Power Bowl</div>
+              <div style="font-size:11px;color:var(--ink3);margin-top:2px;">380 kcal · 38g protein · 22 min</div>
+              <div style="height:4px;background:var(--s4);border-radius:100px;margin-top:7px;overflow:hidden;">
+                <div style="height:100%;width:100%;background:linear-gradient(90deg,var(--blue2) 40%,var(--green) 40% 75%,var(--amber) 75%);border-radius:100px;"></div>
+              </div>
+            </div>
+            <span style="font-size:10px;font-weight:800;padding:4px 8px;background:rgba(0,229,160,.15);border-radius:100px;color:var(--green);flex-shrink:0;">🔥 Lose</span>
+          </div>
+          <div style="display:flex;align-items:center;gap:12px;background:rgba(79,110,247,.06);border:1px solid rgba(79,110,247,.15);border-radius:14px;padding:12px;">
+            <div style="width:52px;height:52px;border-radius:10px;background:rgba(79,110,247,.12);display:flex;align-items:center;justify-content:center;font-size:26px;flex-shrink:0;">🍳</div>
+            <div style="flex:1;min-width:0;">
+              <div style="font-size:13px;font-weight:800;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">High-Protein Egg White Scramble</div>
+              <div style="font-size:11px;color:var(--ink3);margin-top:2px;">290 kcal · 42g protein · 10 min</div>
+              <div style="height:4px;background:var(--s4);border-radius:100px;margin-top:7px;overflow:hidden;">
+                <div style="height:100%;width:100%;background:linear-gradient(90deg,var(--blue2) 55%,var(--green) 55% 72%,var(--amber) 72%);border-radius:100px;"></div>
+              </div>
+            </div>
+            <span style="font-size:10px;font-weight:800;padding:4px 8px;background:rgba(79,110,247,.15);border-radius:100px;color:var(--blue2);flex-shrink:0;">⚖️ Maintain</span>
+          </div>
+          <div style="display:flex;align-items:center;gap:12px;background:rgba(155,114,255,.06);border:1px solid rgba(155,114,255,.15);border-radius:14px;padding:12px;">
+            <div style="width:52px;height:52px;border-radius:10px;background:rgba(155,114,255,.12);display:flex;align-items:center;justify-content:center;font-size:26px;flex-shrink:0;">🥩</div>
+            <div style="flex:1;min-width:0;">
+              <div style="font-size:13px;font-weight:800;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">Beef & Sweet Potato Muscle Meal</div>
+              <div style="font-size:11px;color:var(--ink3);margin-top:2px;">620 kcal · 48g protein · 35 min</div>
+              <div style="height:4px;background:var(--s4);border-radius:100px;margin-top:7px;overflow:hidden;">
+                <div style="height:100%;width:100%;background:linear-gradient(90deg,var(--blue2) 35%,var(--green) 35% 60%,var(--amber) 60%);border-radius:100px;"></div>
+              </div>
+            </div>
+            <span style="font-size:10px;font-weight:800;padding:4px 8px;background:rgba(155,114,255,.15);border-radius:100px;color:var(--purple);flex-shrink:0;">💪 Gain</span>
+          </div>
+        </div>
+        <!-- CTA row -->
+        <div style="display:flex;align-items:center;justify-content:space-between;margin-top:16px;padding-top:14px;border-top:1px solid var(--ink4);">
+          <span style="font-size:12px;color:var(--ink3);">5,000+ recipes · Coming in next update</span>
+          <span style="font-size:12px;font-weight:800;color:var(--green);opacity:.5;">Soon →</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+
 <!-- ─── COMPARE ────────────────────────────────────── -->
 <section id="compare">
   <div class="compare-wrap">
@@ -1343,7 +1477,7 @@ footer {
       <h2 class="section-h2">Why Nutriva AI wins.</h2>
       <p class="section-body" style="margin-top:12px;">We stack up against every major app — and we lead where it counts.</p>
     </div>
-    <div class="reveal">
+    <div class="reveal" style="overflow-x:auto;-webkit-overflow-scrolling:touch;border-radius:20px;">
     <table class="compare-table">
       <thead>
         <tr>
@@ -1362,12 +1496,12 @@ footer {
         <tr><td>Restaurant Menu Scan</td><td class="highlight-col yes-cell">✓</td><td class="no-cell">✗</td><td class="no-cell">✗</td><td class="no-cell">✗</td><td class="no-cell">✗</td></tr>
         <tr><td>AI Chat Coach</td><td class="highlight-col yes-cell">✓</td><td class="no-cell">✗</td><td class="no-cell">✗</td><td class="no-cell">✗</td><td class="no-cell">✗</td></tr>
         <tr><td>Ramadan / Islamic Mode</td><td class="highlight-col yes-cell">✓</td><td class="no-cell">✗</td><td class="no-cell">✗</td><td class="no-cell">✗</td><td class="no-cell">✗</td></tr>
-        <tr><td>Arabic RTL + 9 Languages</td><td class="highlight-col yes-cell">✓</td><td class="no-cell">✗</td><td class="no-cell">✗</td><td class="no-cell">✗</td><td class="no-cell">✗</td></tr>
+        <tr><td>Arabic RTL + 13 Languages</td><td class="highlight-col yes-cell">✓</td><td class="no-cell">✗</td><td class="no-cell">✗</td><td class="no-cell">✗</td><td class="no-cell">✗</td></tr>
         <tr><td>AI Workout Plans</td><td class="highlight-col yes-cell">✓</td><td class="no-cell">✗</td><td class="no-cell">✗</td><td class="no-cell">✗</td><td class="no-cell">✗</td></tr>
         <tr><td>Gamification</td><td class="highlight-col yes-cell">✓</td><td class="no-cell">✗</td><td class="no-cell">✗</td><td class="no-cell">✗</td><td class="no-cell">✗</td></tr>
         <tr><td>Apple HealthKit Sync</td><td class="highlight-col yes-cell">✓</td><td class="yes-cell">✓</td><td class="no-cell">✗</td><td class="yes-cell">✓</td><td class="yes-cell">✓</td></tr>
         <tr><td>Free Tier</td><td class="highlight-col yes-cell">✓</td><td class="yes-cell">✓</td><td class="no-cell">✗</td><td class="yes-cell">✓</td><td class="yes-cell">✓</td></tr>
-        <tr><td>Monthly Price</td><td class="highlight-col" style="font-weight:700;color:var(--green);">$9.99</td><td>$19.99</td><td>$4–9</td><td>$4.17</td><td>$9.99</td></tr>
+        <tr><td>Monthly Price</td><td class="highlight-col" style="font-weight:700;color:var(--green);">$12.99</td><td>$19.99</td><td>$4–9</td><td>$4.17</td><td>$9.99</td></tr>
       </tbody>
     </table>
     </div>
@@ -1393,19 +1527,19 @@ footer {
           <li><div class="pf-icon yes">✓</div>Barcode scanner</li>
           <li><div class="pf-icon yes">✓</div>Basic nutrition tracking</li>
           <li><div class="pf-icon yes">✓</div>Fasting timer</li>
-          <li><div class="pf-icon yes">✓</div>9 languages + RTL</li>
+          <li><div class="pf-icon yes">✓</div>13 languages + RTL</li>
           <li><div class="pf-icon no">–</div>Voice logging</li>
           <li><div class="pf-icon no">–</div>AI chat coach</li>
           <li><div class="pf-icon no">–</div>Workout plans</li>
         </ul>
         <!-- UPDATE href to App Store URL when available -->
-        <a href="#news" class="price-cta cta-secondary">Get Started Free</a>
+        <a href="https://apps.apple.com/us/app/nutriva-ai/id6761382561" target="_blank" rel="noopener noreferrer" class="price-cta cta-secondary">Get Started Free</a>
       </div>
       <!-- PRO -->
       <div class="price-card featured reveal reveal-delay-1">
         <div class="featured-label">Most Popular</div>
         <div class="price-plan">Pro</div>
-        <div class="price-amount" style="background:linear-gradient(135deg,var(--blue),var(--purple));-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent;">$9.99</div>
+        <div class="price-amount" style="background:linear-gradient(135deg,var(--blue),var(--purple));-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent;">$12.99</div>
         <div class="price-period">per month</div>
         <ul class="price-features">
           <li><div class="pf-icon yes">✓</div>Unlimited AI scans</li>
@@ -1418,13 +1552,13 @@ footer {
           <li><div class="pf-icon yes">✓</div>Gamification & badges</li>
         </ul>
         <!-- UPDATE href to App Store URL when available -->
-        <a href="#news" class="price-cta cta-primary">Start Free Trial</a>
+        <a href="https://apps.apple.com/us/app/nutriva-ai/id6761382561" target="_blank" rel="noopener noreferrer" class="price-cta cta-primary">Start Free Trial</a>
       </div>
       <!-- ANNUAL -->
       <div class="price-card reveal reveal-delay-2">
         <div class="price-plan">Pro Annual</div>
-        <div class="price-amount">$79</div>
-        <div class="price-period">per year · save 34%</div>
+        <div class="price-amount">$49.99</div>
+        <div class="price-period">per year · save 68%</div>
         <ul class="price-features">
           <li><div class="pf-icon yes">✓</div>Everything in Pro</li>
           <li><div class="pf-icon yes">✓</div>Priority AI processing</li>
@@ -1436,7 +1570,7 @@ footer {
           <li><div class="pf-icon no">–</div>Custom integrations</li>
         </ul>
         <!-- UPDATE href to App Store URL when available -->
-        <a href="#news" class="price-cta cta-secondary">Get Annual Plan</a>
+        <a href="https://apps.apple.com/us/app/nutriva-ai/id6761382561" target="_blank" rel="noopener noreferrer" class="price-cta cta-secondary">Get Annual Plan</a>
       </div>
     </div>
   </div>
@@ -1448,19 +1582,18 @@ footer {
     <div class="download-glow"></div>
     <div class="reveal">
       <div class="eyebrow blue" style="justify-content:center;"><span class="eyebrow-line"></span>Download</div>
-      <h2 class="section-h2">Start tracking today.</h2>
-      <p class="section-body">Free forever. No credit card. Upgrade when you're ready.</p>
+      <h2 class="section-h2">Start tracking today.<br/>It's free.</h2>
+      <p class="section-body">Download Nutriva AI now — free forever, no credit card required. Upgrade to Pro when you're ready.</p>
     </div>
     <div class="store-btns reveal reveal-delay-1">
-      <!-- ↓ UPDATE href when App Store ID is confirmed: https://apps.apple.com/app/id[YOUR_APP_STORE_ID] -->
-      <a href="#news" class="store-btn" id="download-apple">
+      <a href="https://apps.apple.com/us/app/nutriva-ai/id6761382561" target="_blank" rel="noopener noreferrer" class="store-btn" id="download-apple">
         <svg viewBox="0 0 24 24" fill="white"><path d="M18.71 19.5c-.83 1.24-1.71 2.45-3.05 2.47-1.34.03-1.77-.79-3.29-.79-1.53 0-2 .77-3.27.82-1.31.05-2.3-1.32-3.14-2.53C4.25 17 2.94 12.45 4.7 9.39c.87-1.52 2.43-2.48 4.12-2.51 1.28-.02 2.5.87 3.29.87.78 0 2.26-1.07 3.8-.91.65.03 2.47.26 3.64 1.98-.09.06-2.17 1.28-2.15 3.81.03 3.02 2.65 4.03 2.68 4.04-.03.07-.42 1.44-1.38 2.83M13 3.5c.73-.83 1.94-1.46 2.94-1.5.13 1.17-.34 2.35-1.04 3.19-.69.85-1.83 1.51-2.95 1.42-.15-1.15.41-2.35 1.05-3.11z"/></svg>
         <div class="store-btn-text">
-          <span class="store-btn-sub">Coming soon on</span>
+          <span class="store-btn-sub">Download on the</span>
           <span class="store-btn-name">App Store</span>
         </div>
       </a>
-      <!-- Android — disabled until published -->
+      <!-- Android — coming soon -->
       <span class="store-btn disabled">
         <svg viewBox="0 0 24 24" fill="white"><path d="M17.523 15.341c-.113.06-.215.136-.309.226l-2.3-1.328c.044-.157.072-.322.072-.492s-.028-.335-.072-.492l2.3-1.328c.094.09.196.167.309.226a1.503 1.503 0 001.477-2.612 1.5 1.5 0 00-1.786 2.386l-2.3 1.328A3.008 3.008 0 0012 12a3.008 3.008 0 00-2.914 2.275l-2.3-1.328a1.5 1.5 0 00-1.786-2.386A1.503 1.503 0 006.477 13.17c.113-.06.215-.136.309-.226l2.3 1.328A3.02 3.02 0 009 15c0 .17.028.335.072.492l-2.3 1.328a1.504 1.504 0 10.535.878l2.3-1.328A3 3 0 1015.452 14.1l2.3-1.328a1.503 1.503 0 101.786 2.569zM12 16.5a1.5 1.5 0 110-3 1.5 1.5 0 010 3z"/></svg>
         <div class="store-btn-text">
@@ -1469,17 +1602,29 @@ footer {
         </div>
       </span>
     </div>
-    <p class="waitlist-note reveal reveal-delay-2">
-      Not out yet? <a href="#news">Join the waitlist</a> and be first to know.
-    </p>
+
+    <!-- QR Code block -->
+    <div class="reveal reveal-delay-2" style="margin-top:48px;display:flex;flex-direction:column;align-items:center;gap:16px;">
+      <p style="font-size:13px;color:var(--ink3);letter-spacing:.06em;text-transform:uppercase;font-weight:700;">Scan to download instantly</p>
+      <div style="padding:16px;background:#fff;border-radius:20px;box-shadow:0 0 0 1px rgba(255,255,255,.08),0 8px 40px rgba(0,0,0,.4);display:inline-block;">
+        <img
+          src="https://api.qrserver.com/v1/create-qr-code/?size=180x180&margin=0&color=0d1117&bgcolor=ffffff&data=https://apps.apple.com/us/app/nutriva-ai/id6761382561"
+          alt="Scan to download Nutriva AI on the App Store"
+          width="180" height="180"
+          style="display:block;border-radius:8px;"
+          loading="lazy"
+        />
+      </div>
+      <p style="font-size:12px;color:var(--ink3);">Point your iPhone camera at the code above</p>
+    </div>
   </div>
 </section>
 
 <!-- ─── NEWSLETTER ─────────────────────────────────── -->
 <div class="newsletter-wrap" id="news">
   <div class="newsletter-card reveal">
-    <h3>Be first in line.</h3>
-    <p>Drop your email and we'll notify you the moment Nutriva AI goes live on the App Store.</p>
+    <h3>Start your health journey. 🍎</h3>
+    <p>Nutriva AI is free to download. Drop your email for tips, updates, and early access to new features.</p>
     <form class="newsletter-form" id="nl-form">
       <input type="email" id="nl-email" placeholder="you@email.com" required autocomplete="email" />
       <button type="submit">Notify me</button>
@@ -1497,7 +1642,7 @@ footer {
   <div class="footer-links">
     <a href="./privacy.html">Privacy</a>
     <a href="./terms.html">Terms</a>
-    <a href="mailto:support@nutrivaai.com">Support</a>
+    <a href="mailto:nutrivaaiteam@gmail.com">Support</a>
   </div>
 </footer>
 
@@ -1688,6 +1833,23 @@ footer {
     reveals.forEach(el => io.observe(el));
   })();
 
+  /* ── HEALTH RINGS ANIMATION ── */
+  (function initRings() {
+    const rings = document.querySelectorAll('.ring-fill[data-target]');
+    if (!rings.length) return;
+    const io = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (!entry.isIntersecting) return;
+        const el = entry.target;
+        const target = parseFloat(el.dataset.target);
+        // Brief delay so the card has finished revealing
+        setTimeout(() => { el.style.strokeDashoffset = target; }, 250);
+        io.unobserve(el);
+      });
+    }, { threshold: 0.3 });
+    rings.forEach(r => io.observe(r));
+  })();
+
   /* ── COUNTER (native IntersectionObserver) ── */
   (function initCounters() {
     const counters = document.querySelectorAll('.stat-num[data-count]');
@@ -1722,11 +1884,44 @@ footer {
   /* ── NEWSLETTER ── */
   const form = document.getElementById('nl-form');
   const msg  = document.getElementById('nl-msg');
+  // Strict email regex — rejects obvious injection attempts
+  const EMAIL_RE = /^[a-zA-Z0-9._%+\-]+@[a-zA-Z0-9.\-]+\.[a-zA-Z]{2,}$/;
+  // Rate limit: max 3 submit attempts per session
+  let _nlAttempts = 0;
   if (form) {
+    if (localStorage.getItem('nx_waitlist') === 'joined') {
+      msg.textContent = "You're already on the list — we'll be in touch!";
+      msg.className = 'ok';
+      const emailInput = document.getElementById('nl-email');
+      const btn = form.querySelector('button');
+      if (emailInput) emailInput.disabled = true;
+      if (btn) { btn.textContent = '✓ Joined'; btn.disabled = true; }
+    }
+
     form.addEventListener('submit', async e => {
       e.preventDefault();
-      const email = document.getElementById('nl-email').value.trim();
-      if (!email) return;
+      // Rate limit guard
+      if (_nlAttempts >= 3) {
+        msg.textContent = 'Too many attempts. Please try again later.';
+        msg.className = 'err';
+        return;
+      }
+      _nlAttempts++;
+
+      const raw   = document.getElementById('nl-email').value;
+      const email = raw.trim().slice(0, 254); // RFC 5321 max email length
+      // Validate strictly — no HTML, no scripts, proper format
+      if (!email || !EMAIL_RE.test(email)) {
+        msg.textContent = 'Please enter a valid email address.';
+        msg.className = 'err';
+        return;
+      }
+      if (localStorage.getItem('nx_waitlist') === 'joined') {
+        msg.textContent = "You're already on the list — we'll be in touch!";
+        msg.className = 'ok';
+        return;
+      }
+
       const btn = form.querySelector('button');
       btn.textContent = 'Sending…';
       btn.disabled = true;
@@ -1737,16 +1932,17 @@ footer {
           body: JSON.stringify({ email }),
         });
         if (res.ok) {
-          msg.textContent = "You're on the list! We'll notify you at launch.";
+          localStorage.setItem('nx_waitlist', 'joined');
+          msg.textContent = "You're on the list! 🎉";
           msg.className = 'ok';
           form.reset();
+          btn.textContent = '✓ Joined';
         } else {
           throw new Error('Server error');
         }
       } catch {
-        msg.textContent = "Something went wrong. Try again or email support@nutrivaai.com";
+        msg.textContent = 'Something went wrong. Please try again.';
         msg.className = 'err';
-      } finally {
         btn.textContent = 'Notify me';
         btn.disabled = false;
       }

@@ -1,0 +1,1955 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Recipes — Nutriva AI</title>
+  <meta name="description" content="Discover delicious recipes tailored to your goals — lose weight, maintain, or build muscle. Powered by Nutriva AI." />
+  <link rel="icon" type="image/png" href="./favicon.png" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,300..900;1,14..32,300..900&display=swap" rel="stylesheet" />
+
+<style>
+/* ═══════════════════════════════════════════════════════════
+   DESIGN TOKENS
+═══════════════════════════════════════════════════════════ */
+:root {
+  --bg:         #060608;
+  --s1:         #0a0a0f;
+  --s2:         #0f0f18;
+  --s3:         #141422;
+  --s4:         #1a1a2e;
+
+  --blue:       #4f6ef7;
+  --blue2:      #7b93ff;
+  --blue-dim:   rgba(79,110,247,.12);
+  --green:      #00e5a0;
+  --green2:     #00c98e;
+  --green-dim:  rgba(0,229,160,.12);
+  --purple:     #9b72ff;
+  --purple-dim: rgba(155,114,255,.12);
+  --amber:      #f59e0b;
+  --amber-dim:  rgba(245,158,11,.12);
+  --rose:       #f43f5e;
+  --cyan:       #22d3ee;
+
+  --ink:        #ffffff;
+  --ink2:       rgba(255,255,255,.55);
+  --ink3:       rgba(255,255,255,.28);
+  --ink4:       rgba(255,255,255,.08);
+  --ink5:       rgba(255,255,255,.04);
+
+  --glow-b:     rgba(79,110,247,.4);
+  --glow-g:     rgba(0,229,160,.35);
+  --glow-p:     rgba(155,114,255,.35);
+
+  --radius-sm:  10px;
+  --radius:     16px;
+  --radius-lg:  24px;
+  --radius-xl:  32px;
+
+  --ease-expo:  cubic-bezier(0.16, 1, 0.3, 1);
+  --ease-quart: cubic-bezier(0.25, 1, 0.5, 1);
+  --font:       'Inter', system-ui, -apple-system, sans-serif;
+
+  --nav-h:      68px;
+}
+
+/* ═══════════════════════════════════════════════════════════
+   RESET & BASE
+═══════════════════════════════════════════════════════════ */
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html { scroll-behavior: smooth; font-optical-sizing: auto; }
+body {
+  font-family: var(--font);
+  background: var(--bg);
+  color: var(--ink);
+  -webkit-font-smoothing: antialiased;
+  overflow-x: hidden;
+  min-height: 100vh;
+}
+a { color: inherit; text-decoration: none; }
+img { display: block; max-width: 100%; }
+button { font-family: inherit; cursor: pointer; border: none; background: none; }
+::selection { background: rgba(79,110,247,.35); color: #fff; }
+::-webkit-scrollbar { width: 4px; }
+::-webkit-scrollbar-track { background: var(--bg); }
+::-webkit-scrollbar-thumb { background: var(--s3); border-radius: 2px; }
+
+/* ═══════════════════════════════════════════════════════════
+   AURORA BACKGROUND
+═══════════════════════════════════════════════════════════ */
+#aurora-canvas {
+  position: fixed; inset: 0; z-index: 0;
+  pointer-events: none; opacity: .5;
+}
+
+/* ═══════════════════════════════════════════════════════════
+   NAV
+═══════════════════════════════════════════════════════════ */
+.nav {
+  position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+  height: var(--nav-h);
+  display: flex; align-items: center;
+  padding: 0 5vw;
+  background: rgba(6,6,8,.8);
+  backdrop-filter: blur(24px);
+  border-bottom: 1px solid var(--ink4);
+  gap: 16px;
+}
+.nav-logo {
+  display: flex; align-items: center; gap: 10px;
+  font-size: 16px; font-weight: 800; letter-spacing: -.3px;
+  color: var(--ink); text-decoration: none; flex-shrink: 0;
+}
+.nav-logo img { width: 30px; height: 30px; border-radius: 8px; }
+
+.nav-search {
+  flex: 1; max-width: 520px; margin: 0 auto;
+  position: relative;
+}
+.nav-search input {
+  width: 100%;
+  height: 42px;
+  padding: 0 16px 0 44px;
+  background: var(--s2);
+  border: 1px solid var(--ink4);
+  border-radius: 12px;
+  color: var(--ink);
+  font-family: var(--font);
+  font-size: 14px;
+  outline: none;
+  transition: border-color .2s, background .2s, box-shadow .2s;
+}
+.nav-search input:focus {
+  border-color: var(--blue);
+  background: rgba(79,110,247,.06);
+  box-shadow: 0 0 0 3px rgba(79,110,247,.12);
+}
+.nav-search input::placeholder { color: var(--ink3); }
+.nav-search-icon {
+  position: absolute; left: 14px; top: 50%; transform: translateY(-50%);
+  color: var(--ink3); pointer-events: none; width: 16px; height: 16px;
+}
+
+.nav-right {
+  display: flex; align-items: center; gap: 12px; flex-shrink: 0;
+}
+.nav-back {
+  display: flex; align-items: center; gap: 6px;
+  font-size: 13px; font-weight: 600; color: var(--ink2);
+  padding: 8px 14px; border-radius: 10px;
+  border: 1px solid var(--ink4);
+  transition: background .2s, color .2s;
+}
+.nav-back:hover { background: var(--ink4); color: var(--ink); }
+.nav-cta {
+  padding: 9px 20px; border-radius: 11px;
+  background: var(--blue);
+  font-size: 13px; font-weight: 700; color: #fff;
+  box-shadow: 0 0 20px var(--glow-b);
+  transition: background .2s, transform .2s var(--ease-quart);
+}
+.nav-cta:hover { background: var(--blue2); transform: translateY(-1px); }
+
+/* ═══════════════════════════════════════════════════════════
+   PAGE WRAPPER
+═══════════════════════════════════════════════════════════ */
+.page-wrap {
+  position: relative; z-index: 1;
+  padding-top: var(--nav-h);
+  min-height: 100vh;
+}
+
+/* ═══════════════════════════════════════════════════════════
+   HERO HEADER
+═══════════════════════════════════════════════════════════ */
+.recipes-hero {
+  text-align: center;
+  padding: 56px 5vw 0;
+}
+.recipes-hero .eyebrow {
+  display: inline-flex; align-items: center; gap: 8px;
+  font-size: 11px; font-weight: 800; letter-spacing: 1.2px;
+  text-transform: uppercase; color: var(--green);
+  margin-bottom: 16px;
+}
+.hero-dot {
+  width: 6px; height: 6px; border-radius: 50%;
+  background: var(--green);
+  box-shadow: 0 0 8px var(--green);
+  animation: pulse 2s ease-in-out infinite;
+}
+@keyframes pulse {
+  0%, 100% { opacity: 1; transform: scale(1); }
+  50% { opacity: .6; transform: scale(.8); }
+}
+.recipes-hero h1 {
+  font-size: clamp(32px, 5vw, 52px);
+  font-weight: 900; letter-spacing: -1.5px; line-height: 1.1;
+  margin-bottom: 16px;
+}
+.recipes-hero h1 em {
+  font-style: normal;
+  background: linear-gradient(135deg, var(--green), var(--cyan));
+  -webkit-background-clip: text; background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+.recipes-hero p {
+  font-size: 16px; color: var(--ink2); max-width: 480px; margin: 0 auto 40px;
+  line-height: 1.6;
+}
+
+/* ═══════════════════════════════════════════════════════════
+   GOAL TABS
+═══════════════════════════════════════════════════════════ */
+.goal-tabs {
+  display: flex; gap: 12px; justify-content: center;
+  flex-wrap: wrap; padding: 0 5vw 0;
+}
+.goal-tab {
+  display: flex; flex-direction: column; align-items: center; gap: 6px;
+  padding: 16px 28px;
+  border-radius: var(--radius-lg);
+  border: 1.5px solid var(--ink4);
+  background: var(--s2);
+  cursor: pointer;
+  transition: all .25s var(--ease-quart);
+  min-width: 160px;
+  color: var(--ink2);
+}
+.goal-tab:hover {
+  border-color: var(--ink3);
+  background: var(--s3);
+  color: var(--ink);
+  transform: translateY(-2px);
+}
+.goal-tab.active {
+  border-color: transparent;
+  color: var(--ink);
+  transform: translateY(-2px);
+  box-shadow: 0 8px 40px rgba(0,0,0,.4);
+}
+.goal-tab.active[data-goal="lose"] {
+  background: linear-gradient(135deg, rgba(0,229,160,.15), rgba(34,211,238,.1));
+  border-color: rgba(0,229,160,.3);
+  box-shadow: 0 8px 40px rgba(0,229,160,.15), 0 0 0 1px rgba(0,229,160,.3);
+}
+.goal-tab.active[data-goal="maintain"] {
+  background: linear-gradient(135deg, rgba(79,110,247,.15), rgba(155,114,255,.1));
+  border-color: rgba(79,110,247,.3);
+  box-shadow: 0 8px 40px rgba(79,110,247,.2), 0 0 0 1px rgba(79,110,247,.3);
+}
+.goal-tab.active[data-goal="gain"] {
+  background: linear-gradient(135deg, rgba(155,114,255,.15), rgba(244,63,94,.1));
+  border-color: rgba(155,114,255,.3);
+  box-shadow: 0 8px 40px rgba(155,114,255,.2), 0 0 0 1px rgba(155,114,255,.3);
+}
+.goal-icon {
+  font-size: 28px; line-height: 1;
+}
+.goal-label {
+  font-size: 13px; font-weight: 800; letter-spacing: -.2px;
+}
+.goal-sub {
+  font-size: 11px; opacity: .6; font-weight: 500;
+}
+
+/* ═══════════════════════════════════════════════════════════
+   FILTER BAR
+═══════════════════════════════════════════════════════════ */
+.filter-bar {
+  padding: 32px 5vw 0;
+  display: flex; flex-direction: column; gap: 14px;
+}
+.filter-row {
+  display: flex; gap: 8px; align-items: center; flex-wrap: wrap;
+}
+.filter-label {
+  font-size: 11px; font-weight: 700; letter-spacing: .5px;
+  text-transform: uppercase; color: var(--ink3);
+  margin-right: 4px; flex-shrink: 0;
+}
+.filter-pill {
+  display: flex; align-items: center; gap: 5px;
+  padding: 7px 14px; border-radius: 100px;
+  border: 1px solid var(--ink4);
+  background: var(--s2);
+  font-size: 12.5px; font-weight: 600; color: var(--ink2);
+  cursor: pointer;
+  transition: all .18s;
+  white-space: nowrap;
+}
+.filter-pill:hover {
+  border-color: var(--ink3); color: var(--ink);
+  background: var(--s3);
+}
+.filter-pill.active {
+  color: var(--ink); background: rgba(79,110,247,.15);
+  border-color: rgba(79,110,247,.4);
+}
+.filter-pill.active.pill-green {
+  background: rgba(0,229,160,.1); border-color: rgba(0,229,160,.35);
+  color: var(--green);
+}
+.filter-pill.active.pill-purple {
+  background: rgba(155,114,255,.1); border-color: rgba(155,114,255,.35);
+  color: var(--purple);
+}
+.filter-pill.active.pill-amber {
+  background: rgba(245,158,11,.1); border-color: rgba(245,158,11,.35);
+  color: var(--amber);
+}
+.filter-pill.active.pill-rose {
+  background: rgba(244,63,94,.1); border-color: rgba(244,63,94,.35);
+  color: var(--rose);
+}
+.filter-pill.active.pill-cyan {
+  background: rgba(34,211,238,.1); border-color: rgba(34,211,238,.35);
+  color: var(--cyan);
+}
+.filter-divider {
+  width: 1px; height: 20px; background: var(--ink4); margin: 0 4px;
+}
+
+/* ═══════════════════════════════════════════════════════════
+   RESULTS META
+═══════════════════════════════════════════════════════════ */
+.results-meta {
+  padding: 20px 5vw 0;
+  display: flex; align-items: center; justify-content: space-between;
+  gap: 12px;
+}
+.results-count {
+  font-size: 13px; color: var(--ink3); font-weight: 500;
+}
+.results-count strong { color: var(--ink2); font-weight: 700; }
+.sort-select {
+  padding: 7px 14px;
+  background: var(--s2); border: 1px solid var(--ink4);
+  border-radius: 10px; color: var(--ink2);
+  font-family: var(--font); font-size: 12.5px; font-weight: 600;
+  outline: none; cursor: pointer;
+  transition: border-color .2s;
+  -webkit-appearance: none;
+  appearance: none;
+  padding-right: 28px;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='rgba(255,255,255,.4)' stroke-width='2'%3E%3Cpath d='m6 9 6 6 6-6'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 10px center;
+}
+.sort-select:focus { border-color: var(--blue); }
+.sort-select option { background: #0f0f18; }
+
+/* ═══════════════════════════════════════════════════════════
+   RECIPE GRID
+═══════════════════════════════════════════════════════════ */
+.recipes-grid-wrap {
+  padding: 24px 5vw 80px;
+}
+.recipes-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 20px;
+}
+
+/* ═══════════════════════════════════════════════════════════
+   SKELETON CARDS
+═══════════════════════════════════════════════════════════ */
+@keyframes shimmer {
+  0% { background-position: -400px 0; }
+  100% { background-position: 400px 0; }
+}
+.skeleton-card {
+  background: var(--s2);
+  border: 1px solid var(--ink4);
+  border-radius: var(--radius-lg);
+  overflow: hidden;
+}
+.skel-img {
+  width: 100%; aspect-ratio: 4/3;
+  background: linear-gradient(90deg, var(--s2) 25%, var(--s3) 50%, var(--s2) 75%);
+  background-size: 800px 100%;
+  animation: shimmer 1.5s infinite;
+}
+.skel-body { padding: 16px; display: flex; flex-direction: column; gap: 10px; }
+.skel-line {
+  border-radius: 6px;
+  background: linear-gradient(90deg, var(--s2) 25%, var(--s3) 50%, var(--s2) 75%);
+  background-size: 800px 100%;
+  animation: shimmer 1.5s infinite;
+}
+.skel-line.h16 { height: 16px; }
+.skel-line.h12 { height: 12px; }
+.skel-line.h10 { height: 10px; }
+.skel-line.w80 { width: 80%; }
+.skel-line.w60 { width: 60%; }
+.skel-line.w45 { width: 45%; }
+.skel-row { display: flex; gap: 8px; }
+.skel-row .skel-line { flex: 1; }
+.skel-macro { height: 6px; border-radius: 100px; margin-top: 2px; }
+
+/* ═══════════════════════════════════════════════════════════
+   RECIPE CARDS
+═══════════════════════════════════════════════════════════ */
+.recipe-card {
+  background: var(--s2);
+  border: 1px solid var(--ink4);
+  border-radius: var(--radius-lg);
+  overflow: hidden;
+  cursor: pointer;
+  transition: transform .3s var(--ease-expo), box-shadow .3s, border-color .3s;
+  display: flex; flex-direction: column;
+  position: relative;
+}
+.recipe-card:hover {
+  transform: translateY(-6px) scale(1.01);
+  border-color: rgba(255,255,255,.14);
+  box-shadow: 0 20px 60px rgba(0,0,0,.5);
+}
+
+/* image */
+.card-img-wrap {
+  position: relative; overflow: hidden;
+  aspect-ratio: 4/3;
+  background: var(--s3);
+  flex-shrink: 0;
+}
+.card-img {
+  width: 100%; height: 100%; object-fit: cover;
+  transition: transform .5s var(--ease-expo);
+}
+.recipe-card:hover .card-img { transform: scale(1.07); }
+.card-img-fallback {
+  width: 100%; height: 100%;
+  background: linear-gradient(135deg, var(--s3), var(--s4));
+  display: flex; align-items: center; justify-content: center;
+  font-size: 48px; user-select: none;
+}
+
+/* saved view button */
+.saved-view-btn {
+  display: flex; align-items: center; gap: 6px;
+  padding: 8px 16px; border-radius: 100px;
+  font-size: 12px; font-weight: 800;
+  background: rgba(0,229,160,.08); border: 1px solid rgba(0,229,160,.18);
+  color: var(--green); cursor: pointer;
+  transition: background .2s, color .2s, border-color .2s;
+  white-space: nowrap; flex-shrink: 0;
+}
+.saved-view-btn:hover { background: rgba(0,229,160,.15); }
+.saved-view-btn.active { background: var(--green); color: #000; border-color: var(--green); }
+.saved-count-badge {
+  display: inline-flex; align-items: center; justify-content: center;
+  min-width: 18px; height: 18px; border-radius: 9px; padding: 0 5px;
+  font-size: 10px; font-weight: 900;
+  background: rgba(0,229,160,.2); color: var(--green);
+}
+.saved-view-btn.active .saved-count-badge { background: rgba(0,0,0,.2); color: #000; }
+
+/* calorie badge */
+.card-cal-badge {
+  position: absolute; top: 12px; right: 12px;
+  background: rgba(0,0,0,.72);
+  backdrop-filter: blur(12px);
+  border: 1px solid rgba(255,255,255,.1);
+  border-radius: 100px;
+  padding: 5px 12px;
+  font-size: 12px; font-weight: 800; color: var(--ink);
+  display: flex; align-items: center; gap: 5px;
+}
+.cal-flame { font-size: 13px; }
+
+/* diet tags on image */
+.card-diet-tags {
+  position: absolute; bottom: 10px; left: 10px;
+  display: flex; gap: 5px; flex-wrap: wrap;
+}
+.diet-tag {
+  padding: 3px 9px; border-radius: 100px;
+  font-size: 10px; font-weight: 700; letter-spacing: .2px;
+  backdrop-filter: blur(10px);
+}
+.diet-tag.keto    { background: rgba(155,114,255,.35); color: #d4baff; }
+.diet-tag.vegan   { background: rgba(0,229,160,.3); color: #a0ffd6; }
+.diet-tag.protein { background: rgba(79,110,247,.35); color: #b3c3ff; }
+.diet-tag.lowcarb { background: rgba(245,158,11,.3); color: #fde08a; }
+.diet-tag.paleo   { background: rgba(244,63,94,.3); color: #ffb3c0; }
+.diet-tag.halal   { background: rgba(34,211,238,.25); color: #a5f3fc; }
+.diet-tag.vegetarian { background: rgba(0,229,160,.25); color: #b0ffd8; }
+.diet-tag.glutenfree { background: rgba(245,158,11,.25); color: #fef3c7; }
+
+/* card body */
+.card-body {
+  padding: 16px; flex: 1; display: flex; flex-direction: column; gap: 12px;
+}
+.card-title {
+  font-size: 15px; font-weight: 800; letter-spacing: -.2px;
+  line-height: 1.35; color: var(--ink);
+  display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+/* macro bar */
+.macro-bar-wrap {}
+.macro-bar-labels {
+  display: flex; justify-content: space-between;
+  margin-bottom: 6px;
+}
+.macro-lbl {
+  display: flex; align-items: center; gap: 4px;
+  font-size: 10.5px; font-weight: 700; color: var(--ink3);
+}
+.macro-dot {
+  width: 6px; height: 6px; border-radius: 50%;
+}
+.macro-lbl-val {
+  color: var(--ink2); font-weight: 800;
+}
+.macro-bar {
+  height: 6px; border-radius: 100px;
+  background: var(--s3);
+  overflow: hidden; display: flex; gap: 1px;
+}
+.macro-seg {
+  height: 100%; border-radius: 100px;
+  transition: width .6s var(--ease-expo);
+}
+.macro-seg.protein { background: var(--blue); }
+.macro-seg.carbs   { background: var(--green); }
+.macro-seg.fat     { background: var(--amber); }
+
+/* card footer */
+.card-footer {
+  display: flex; align-items: center; gap: 10px;
+  padding-top: 12px;
+  border-top: 1px solid var(--ink4);
+  margin-top: auto;
+}
+.card-meta-chip {
+  display: flex; align-items: center; gap: 5px;
+  font-size: 11.5px; font-weight: 600; color: var(--ink3);
+}
+.card-meta-chip svg { width: 13px; height: 13px; flex-shrink: 0; }
+.card-meta-sep { flex: 1; }
+.card-log-btn {
+  padding: 7px 14px; border-radius: 8px;
+  background: var(--blue-dim); color: var(--blue2);
+  font-size: 11.5px; font-weight: 700;
+  border: 1px solid rgba(79,110,247,.2);
+  transition: background .2s, transform .2s;
+  cursor: pointer;
+}
+.card-log-btn:hover {
+  background: rgba(79,110,247,.22);
+  transform: scale(1.04);
+}
+
+/* favourite button */
+.card-fav {
+  position: absolute; top: 12px; left: 12px;
+  width: 34px; height: 34px; border-radius: 50%;
+  background: rgba(0,0,0,.55); backdrop-filter: blur(10px);
+  border: 1px solid rgba(255,255,255,.08);
+  display: flex; align-items: center; justify-content: center;
+  font-size: 16px; cursor: pointer;
+  transition: transform .2s, background .2s;
+  z-index: 2;
+}
+.card-fav:hover { transform: scale(1.15); background: rgba(0,0,0,.75); }
+.card-fav.liked { color: #ff6b9d; }
+.card-fav:not(.liked) { color: rgba(255,255,255,.4); }
+
+/* ═══════════════════════════════════════════════════════════
+   EMPTY STATE
+═══════════════════════════════════════════════════════════ */
+.empty-state {
+  grid-column: 1 / -1;
+  text-align: center; padding: 80px 20px;
+  display: flex; flex-direction: column; align-items: center; gap: 16px;
+}
+.empty-icon { font-size: 56px; line-height: 1; margin-bottom: 4px; }
+.empty-state h3 { font-size: 20px; font-weight: 800; letter-spacing: -.4px; }
+.empty-state p { font-size: 14px; color: var(--ink2); max-width: 340px; }
+.empty-retry {
+  margin-top: 8px;
+  padding: 11px 24px; border-radius: 12px;
+  background: var(--blue); color: #fff;
+  font-size: 14px; font-weight: 700;
+  box-shadow: 0 0 24px var(--glow-b);
+  cursor: pointer;
+  transition: background .2s, transform .2s;
+}
+.empty-retry:hover { background: var(--blue2); transform: translateY(-2px); }
+
+/* ═══════════════════════════════════════════════════════════
+   DETAIL MODAL
+═══════════════════════════════════════════════════════════ */
+.modal-overlay {
+  position: fixed; inset: 0; z-index: 500;
+  background: rgba(0,0,0,.75);
+  backdrop-filter: blur(8px);
+  display: flex; align-items: center; justify-content: center;
+  padding: 20px;
+  opacity: 0; pointer-events: none;
+  transition: opacity .3s;
+}
+.modal-overlay.open { opacity: 1; pointer-events: all; }
+
+.modal {
+  width: 100%; max-width: 760px; max-height: 90vh;
+  background: var(--s2);
+  border: 1px solid var(--ink4);
+  border-radius: var(--radius-xl);
+  overflow: hidden;
+  display: flex; flex-direction: column;
+  transform: scale(.92) translateY(20px);
+  transition: transform .35s var(--ease-expo);
+  box-shadow: 0 40px 120px rgba(0,0,0,.7);
+}
+.modal-overlay.open .modal { transform: scale(1) translateY(0); }
+
+.modal-hero {
+  position: relative; flex-shrink: 0;
+}
+.modal-img {
+  width: 100%; height: 280px; object-fit: cover;
+}
+.modal-img-placeholder {
+  width: 100%; height: 280px;
+  background: linear-gradient(135deg, var(--s3), var(--s4));
+  display: flex; align-items: center; justify-content: center;
+  font-size: 64px;
+}
+.modal-img-overlay {
+  position: absolute; inset: 0;
+  background: linear-gradient(to top, rgba(6,6,8,.95) 0%, rgba(6,6,8,.3) 50%, transparent 100%);
+}
+.modal-close {
+  position: absolute; top: 16px; right: 16px;
+  width: 38px; height: 38px; border-radius: 50%;
+  background: rgba(0,0,0,.6); backdrop-filter: blur(12px);
+  border: 1px solid rgba(255,255,255,.1);
+  color: var(--ink); font-size: 18px; line-height: 1;
+  display: flex; align-items: center; justify-content: center;
+  cursor: pointer;
+  transition: background .2s, transform .2s;
+  z-index: 2;
+}
+.modal-close:hover { background: rgba(0,0,0,.85); transform: scale(1.1); }
+
+.modal-title-block {
+  position: absolute; bottom: 16px; left: 20px; right: 20px; z-index: 2;
+}
+.modal-title {
+  font-size: 22px; font-weight: 900; letter-spacing: -.5px; line-height: 1.2;
+  text-shadow: 0 2px 12px rgba(0,0,0,.6);
+}
+
+.modal-scroll {
+  flex: 1; overflow-y: auto; padding: 20px;
+  display: flex; flex-direction: column; gap: 20px;
+}
+.modal-scroll::-webkit-scrollbar { width: 3px; }
+.modal-scroll::-webkit-scrollbar-thumb { background: var(--s4); border-radius: 2px; }
+
+/* Macro overview row */
+.modal-macro-row {
+  display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px;
+}
+.macro-card {
+  background: var(--s3);
+  border: 1px solid var(--ink4);
+  border-radius: var(--radius);
+  padding: 14px;
+  text-align: center;
+}
+.macro-card-val {
+  font-size: 22px; font-weight: 900; letter-spacing: -.5px;
+  line-height: 1.1; margin-bottom: 4px;
+}
+.macro-card-lbl {
+  font-size: 10.5px; font-weight: 700; text-transform: uppercase;
+  letter-spacing: .4px; color: var(--ink3);
+}
+.macro-card.cal  .macro-card-val { color: var(--amber); }
+.macro-card.prot .macro-card-val { color: var(--blue2); }
+.macro-card.carb .macro-card-val { color: var(--green); }
+.macro-card.fat  .macro-card-val { color: var(--rose); }
+
+/* Macro ring chart */
+.modal-macro-visual {
+  display: flex; align-items: center; gap: 20px;
+}
+.macro-ring-wrap {
+  flex-shrink: 0; position: relative;
+  width: 100px; height: 100px;
+}
+.macro-ring-wrap svg { transform: rotate(-90deg); }
+.macro-ring-center {
+  position: absolute; inset: 0;
+  display: flex; flex-direction: column; align-items: center; justify-content: center;
+  font-size: 20px; font-weight: 900; color: var(--amber);
+}
+.macro-ring-center span { font-size: 9px; font-weight: 600; color: var(--ink3); margin-top: 1px; }
+.macro-legend { flex: 1; display: flex; flex-direction: column; gap: 10px; }
+.legend-row {
+  display: flex; align-items: center; gap: 10px;
+}
+.legend-dot {
+  width: 10px; height: 10px; border-radius: 3px; flex-shrink: 0;
+}
+.legend-lbl { flex: 1; font-size: 13px; font-weight: 600; color: var(--ink2); }
+.legend-val { font-size: 13px; font-weight: 800; }
+.legend-bar-track {
+  width: 100%; height: 4px; background: var(--s4);
+  border-radius: 100px; overflow: hidden; margin-top: 3px;
+}
+.legend-bar-fill { height: 100%; border-radius: 100px; }
+
+/* Modal sections */
+.modal-section { display: flex; flex-direction: column; gap: 12px; }
+.modal-section-title {
+  font-size: 13px; font-weight: 800; text-transform: uppercase;
+  letter-spacing: .5px; color: var(--ink3);
+  display: flex; align-items: center; gap: 8px;
+}
+.modal-section-title::after {
+  content: ''; flex: 1; height: 1px; background: var(--ink4);
+}
+
+.info-chips {
+  display: flex; gap: 10px; flex-wrap: wrap;
+}
+.info-chip {
+  display: flex; align-items: center; gap: 7px;
+  padding: 9px 14px; border-radius: 12px;
+  background: var(--s3); border: 1px solid var(--ink4);
+  font-size: 13px; font-weight: 700;
+}
+.info-chip-icon { font-size: 16px; }
+.info-chip-sub { font-size: 11px; font-weight: 500; color: var(--ink3); margin-top: 1px; }
+.info-chip-inner { display: flex; flex-direction: column; }
+
+.ingredients-grid {
+  display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  gap: 8px;
+}
+.ingredient-item {
+  display: flex; align-items: center; gap: 10px;
+  padding: 10px 12px; border-radius: 10px;
+  background: var(--s3); border: 1px solid var(--ink4);
+  font-size: 12.5px; font-weight: 600; color: var(--ink2);
+}
+.ingredient-dot {
+  width: 6px; height: 6px; border-radius: 50%;
+  background: var(--green); flex-shrink: 0;
+}
+
+.instructions-list {
+  display: flex; flex-direction: column; gap: 10px;
+}
+.instruction-step {
+  display: flex; gap: 12px; align-items: flex-start;
+  padding: 12px;
+  background: var(--s3); border: 1px solid var(--ink4);
+  border-radius: 12px;
+}
+.step-num {
+  width: 26px; height: 26px; border-radius: 8px;
+  background: var(--blue-dim); color: var(--blue2);
+  font-size: 12px; font-weight: 900;
+  display: flex; align-items: center; justify-content: center;
+  flex-shrink: 0; margin-top: 1px;
+}
+.step-text {
+  font-size: 13px; color: var(--ink2); line-height: 1.6; flex: 1;
+}
+
+/* Modal CTA */
+.modal-cta-bar {
+  padding: 16px 20px;
+  border-top: 1px solid var(--ink4);
+  display: flex; gap: 10px; align-items: center;
+  background: var(--s1); flex-shrink: 0;
+}
+.modal-cta-primary {
+  flex: 1; padding: 14px;
+  background: linear-gradient(135deg, var(--blue), var(--purple));
+  color: #fff; border-radius: var(--radius);
+  font-size: 15px; font-weight: 800; letter-spacing: -.2px;
+  text-align: center; cursor: pointer; border: none;
+  box-shadow: 0 4px 24px rgba(79,110,247,.3);
+  transition: opacity .2s, transform .2s var(--ease-quart);
+  display: flex; align-items: center; justify-content: center; gap: 8px;
+}
+.modal-cta-primary:hover { opacity: .9; transform: translateY(-1px); }
+.modal-cta-secondary {
+  padding: 14px 18px;
+  background: var(--s3); border: 1px solid var(--ink4); color: var(--ink2);
+  border-radius: var(--radius);
+  font-size: 14px; font-weight: 700; cursor: pointer;
+  transition: background .2s, color .2s;
+}
+.modal-cta-secondary:hover { background: var(--s4); color: var(--ink); }
+
+/* ═══════════════════════════════════════════════════════════
+   LOAD MORE
+═══════════════════════════════════════════════════════════ */
+.load-more-wrap {
+  text-align: center; padding: 0 0 60px;
+}
+.load-more-btn {
+  display: inline-flex; align-items: center; gap: 10px;
+  padding: 14px 36px; border-radius: var(--radius);
+  background: var(--s2); border: 1px solid var(--ink4);
+  color: var(--ink2); font-size: 14px; font-weight: 700;
+  cursor: pointer;
+  transition: all .25s var(--ease-quart);
+}
+.load-more-btn:hover {
+  background: var(--s3); border-color: var(--ink3);
+  color: var(--ink); transform: translateY(-2px);
+  box-shadow: 0 8px 32px rgba(0,0,0,.3);
+}
+.load-more-btn.loading { opacity: .5; pointer-events: none; }
+
+/* ═══════════════════════════════════════════════════════════
+   TOAST
+═══════════════════════════════════════════════════════════ */
+.toast {
+  position: fixed; bottom: 32px; left: 50%; transform: translateX(-50%) translateY(80px);
+  background: var(--s3); border: 1px solid var(--ink4);
+  border-radius: 100px;
+  padding: 12px 20px;
+  font-size: 13.5px; font-weight: 700;
+  display: flex; align-items: center; gap: 10px;
+  z-index: 600;
+  box-shadow: 0 8px 40px rgba(0,0,0,.5);
+  transition: transform .4s var(--ease-expo), opacity .3s;
+  opacity: 0;
+  white-space: nowrap;
+}
+.toast.show { transform: translateX(-50%) translateY(0); opacity: 1; }
+.toast-icon { font-size: 16px; }
+
+/* ═══════════════════════════════════════════════════════════
+   SCROLL-TO-TOP
+═══════════════════════════════════════════════════════════ */
+.scroll-top {
+  position: fixed; bottom: 32px; right: 32px; z-index: 300;
+  width: 44px; height: 44px; border-radius: 50%;
+  background: var(--s2); border: 1px solid var(--ink4);
+  color: var(--ink2); font-size: 18px;
+  display: flex; align-items: center; justify-content: center;
+  cursor: pointer; opacity: 0; pointer-events: none;
+  transition: all .3s var(--ease-quart);
+}
+.scroll-top.visible { opacity: 1; pointer-events: all; }
+.scroll-top:hover { background: var(--s3); color: var(--ink); transform: translateY(-3px); }
+
+/* ═══════════════════════════════════════════════════════════
+   RESPONSIVE
+═══════════════════════════════════════════════════════════ */
+@media (max-width: 768px) {
+  .nav-back-text { display: none; }
+  .goal-tab { min-width: 120px; padding: 12px 16px; }
+  .modal-macro-row { grid-template-columns: repeat(2, 1fr); }
+  .modal-img { height: 200px; }
+  .modal-img-placeholder { height: 200px; }
+  .modal-macro-visual { flex-direction: column; }
+  .ingredients-grid { grid-template-columns: 1fr 1fr; }
+}
+@media (max-width: 480px) {
+  .recipes-grid { grid-template-columns: 1fr; }
+  .nav-search { max-width: 180px; }
+  .goal-tab { min-width: 100px; }
+  .recipes-hero { padding-top: 36px; }
+  .ingredients-grid { grid-template-columns: 1fr; }
+}
+
+/* ═══════════════════════════════════════════════════════════
+   LOADING SPINNER (for btn state)
+═══════════════════════════════════════════════════════════ */
+@keyframes spin { to { transform: rotate(360deg); } }
+.spinner {
+  width: 16px; height: 16px; border-radius: 50%;
+  border: 2px solid rgba(255,255,255,.2);
+  border-top-color: #fff;
+  animation: spin .7s linear infinite;
+  flex-shrink: 0;
+}
+
+/* ═══════════════════════════════════════════════════════════
+   PAGE FADE IN
+═══════════════════════════════════════════════════════════ */
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(20px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+.fade-up { animation: fadeUp .6s var(--ease-expo) both; }
+.fade-up-1 { animation-delay: .05s; }
+.fade-up-2 { animation-delay: .12s; }
+.fade-up-3 { animation-delay: .2s; }
+.fade-up-4 { animation-delay: .28s; }
+</style>
+</head>
+<body>
+
+<!-- ─── AURORA ─────────────────────────────────── -->
+<canvas id="aurora-canvas"></canvas>
+
+<!-- ─── NAV ───────────────────────────────────── -->
+<nav class="nav">
+  <a href="./index.html" class="nav-logo">
+    <img src="./favicon.png" alt="Nutriva AI" onerror="this.style.display='none'" />
+    Nutriva AI
+  </a>
+
+  <div class="nav-search fade-up fade-up-1">
+    <svg class="nav-search-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+      <circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/>
+    </svg>
+    <input type="text" id="search-input" placeholder="Search recipes, ingredients…" autocomplete="off" />
+  </div>
+
+  <div class="nav-right">
+    <a href="./index.html" class="nav-back">
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+        <path d="m15 18-6-6 6-6"/>
+      </svg>
+      <span class="nav-back-text">Back</span>
+    </a>
+    <a href="#" class="nav-cta">Get the App</a>
+  </div>
+</nav>
+
+<!-- ─── PAGE ───────────────────────────────────── -->
+<div class="page-wrap">
+
+  <!-- HERO -->
+  <div class="recipes-hero">
+    <div class="eyebrow fade-up">
+      <div class="hero-dot"></div>
+      Powered by Spoonacular
+    </div>
+    <h1 class="fade-up fade-up-1">
+      Recipes for <em>every goal.</em>
+    </h1>
+    <p class="fade-up fade-up-2">
+      Over 5,000 delicious, nutrition-tracked recipes — curated to help you lose weight, maintain, or build muscle.
+    </p>
+  </div>
+
+  <!-- GOAL TABS -->
+  <div class="goal-tabs fade-up fade-up-2" id="goal-tabs">
+    <button class="goal-tab active" data-goal="lose">
+      <span class="goal-icon">🔥</span>
+      <span class="goal-label">Lose Weight</span>
+      <span class="goal-sub">Under 450 kcal</span>
+    </button>
+    <button class="goal-tab" data-goal="maintain">
+      <span class="goal-icon">⚖️</span>
+      <span class="goal-label">Maintain</span>
+      <span class="goal-sub">400–650 kcal</span>
+    </button>
+    <button class="goal-tab" data-goal="gain">
+      <span class="goal-icon">💪</span>
+      <span class="goal-label">Gain Weight</span>
+      <span class="goal-sub">600+ kcal</span>
+    </button>
+  </div>
+
+  <!-- FILTER BAR -->
+  <div class="filter-bar fade-up fade-up-3">
+    <div class="filter-row">
+      <span class="filter-label">Meal</span>
+      <button class="filter-pill active" data-filter="meal" data-value="">All Meals</button>
+      <button class="filter-pill" data-filter="meal" data-value="breakfast">🌅 Breakfast</button>
+      <button class="filter-pill" data-filter="meal" data-value="lunch">☀️ Lunch</button>
+      <button class="filter-pill" data-filter="meal" data-value="dinner">🌙 Dinner</button>
+      <button class="filter-pill" data-filter="meal" data-value="snack">🍎 Snack</button>
+      <button class="filter-pill" data-filter="meal" data-value="salad">🥗 Salad</button>
+    </div>
+    <div class="filter-row">
+      <span class="filter-label">Diet</span>
+      <button class="filter-pill pill-green" data-filter="diet" data-value="">Any</button>
+      <button class="filter-pill pill-blue" data-filter="diet" data-value="high-protein">💪 High Protein</button>
+      <button class="filter-pill pill-amber" data-filter="diet" data-value="ketogenic">🥩 Keto</button>
+      <button class="filter-pill pill-green" data-filter="diet" data-value="vegetarian">🥦 Vegetarian</button>
+      <button class="filter-pill pill-green" data-filter="diet" data-value="vegan">🌱 Vegan</button>
+      <button class="filter-pill pill-rose" data-filter="diet" data-value="paleo">🦴 Paleo</button>
+      <button class="filter-pill pill-cyan" data-filter="diet" data-value="gluten free">🌾 Gluten-Free</button>
+    </div>
+  </div>
+
+  <!-- RESULTS META -->
+  <div class="results-meta fade-up fade-up-4">
+    <div class="results-count" id="results-count">Loading recipes…</div>
+    <div style="display:flex;align-items:center;gap:10px;flex-shrink:0;">
+      <button class="saved-view-btn" id="saved-view-btn" title="View saved recipes">
+        ♥ Saved <span class="saved-count-badge" id="saved-count-badge">0</span>
+      </button>
+      <select class="sort-select" id="sort-select">
+        <option value="popularity">Most Popular</option>
+        <option value="healthiness">Healthiest</option>
+        <option value="time">Quickest</option>
+        <option value="calories">Fewest Calories</option>
+        <option value="protein">Most Protein</option>
+      </select>
+    </div>
+  </div>
+
+  <!-- RECIPE GRID -->
+  <div class="recipes-grid-wrap">
+    <div class="recipes-grid" id="recipes-grid">
+      <!-- Skeleton cards on load -->
+    </div>
+    <div class="load-more-wrap" id="load-more-wrap" style="display:none;">
+      <button class="load-more-btn" id="load-more-btn">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <path d="M12 5v14M5 12l7 7 7-7"/>
+        </svg>
+        Load More Recipes
+      </button>
+    </div>
+  </div>
+
+</div><!-- /page-wrap -->
+
+<!-- ─── DETAIL MODAL ─────────────────────────── -->
+<div class="modal-overlay" id="modal-overlay">
+  <div class="modal" id="modal">
+    <div class="modal-hero">
+      <img class="modal-img" id="modal-img" src="" alt="" />
+      <div class="modal-img-overlay"></div>
+      <button class="modal-close" id="modal-close">✕</button>
+      <div class="modal-title-block">
+        <div class="modal-title" id="modal-title"></div>
+      </div>
+    </div>
+    <div class="modal-scroll" id="modal-scroll">
+      <!-- Dynamically populated -->
+    </div>
+    <div class="modal-cta-bar">
+      <button class="modal-cta-primary" onclick="showToast('📲 Open Nutriva AI to log this recipe!', '#00e5a0')">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M12 5v14M5 12l7 7 7-7"/></svg>
+        Log in Nutriva AI
+      </button>
+      <button class="modal-cta-secondary" id="modal-fav-btn">♡ Save</button>
+    </div>
+  </div>
+</div>
+
+<!-- ─── TOAST ─────────────────────────────────── -->
+<div class="toast" id="toast">
+  <span class="toast-icon" id="toast-icon">✓</span>
+  <span id="toast-msg"></span>
+</div>
+
+<!-- ─── SCROLL TOP ───────────────────────────── -->
+<button class="scroll-top" id="scroll-top" title="Back to top">↑</button>
+
+<script>
+/* ═══════════════════════════════════════════════════════════
+   CONFIG
+═══════════════════════════════════════════════════════════ */
+const API_KEY = 'e74e665dab854909af456a2897d24040';
+const BASE    = 'https://api.spoonacular.com';
+const PAGE_SIZE = 24;
+
+/* Goal configurations */
+const GOAL_CONFIG = {
+  lose:     { label: 'Lose Weight',  maxCalories: 450, minProtein: 15, sort: 'healthiness' },
+  maintain: { label: 'Maintain',     minCalories: 350, maxCalories: 650, sort: 'popularity' },
+  gain:     { label: 'Gain Weight',  minCalories: 550, minProtein: 30, sort: 'popularity'  },
+};
+
+/* Saved-view flag */
+let savedViewActive = false;
+
+/* State */
+let state = {
+  goal:     'lose',
+  meal:     '',
+  diet:     '',
+  sort:     'popularity',
+  query:    '',
+  offset:   0,
+  total:    0,
+  recipes:  [],
+  liked:    new Set(JSON.parse(localStorage.getItem('nx_liked') || '[]')),
+  loading:  false,
+  detailCache: {},
+};
+
+/* ═══════════════════════════════════════════════════════════
+   RECIPE EMOJI FALLBACK
+═══════════════════════════════════════════════════════════ */
+function getRecipeEmoji(title = '') {
+  const t = title.toLowerCase();
+  if (t.includes('chicken'))  return '🍗';
+  if (t.includes('salad'))    return '🥗';
+  if (t.includes('pasta') || t.includes('spaghetti') || t.includes('noodle') || t.includes('linguine') || t.includes('fettuccine')) return '🍝';
+  if (t.includes('pizza'))    return '🍕';
+  if (t.includes('burger') || t.includes('sandwich') || t.includes('wrap')) return '🍔';
+  if (t.includes('soup') || t.includes('stew') || t.includes('chili') || t.includes('chowder')) return '🍲';
+  if (t.includes('steak') || t.includes('beef') || t.includes('brisket')) return '🥩';
+  if (t.includes('fish') || t.includes('salmon') || t.includes('tuna') || t.includes('cod') || t.includes('halibut')) return '🐟';
+  if (t.includes('shrimp') || t.includes('prawn') || t.includes('lobster')) return '🦐';
+  if (t.includes('egg') || t.includes('omelette') || t.includes('omelet') || t.includes('frittata')) return '🍳';
+  if (t.includes('pancake') || t.includes('waffle') || t.includes('crepe')) return '🥞';
+  if (t.includes('rice') || t.includes('risotto') || t.includes('pilaf')) return '🍚';
+  if (t.includes('taco') || t.includes('burrito') || t.includes('quesadilla')) return '🌮';
+  if (t.includes('sushi') || t.includes('ramen') || t.includes('miso')) return '🍜';
+  if (t.includes('curry') || t.includes('masala') || t.includes('tikka')) return '🍛';
+  if (t.includes('cake') || t.includes('brownie') || t.includes('cookie') || t.includes('muffin')) return '🎂';
+  if (t.includes('smoothie') || t.includes('shake') || t.includes('juice')) return '🥤';
+  if (t.includes('vegan') || t.includes('vegetable') || t.includes('veggie') || t.includes('tofu')) return '🥦';
+  if (t.includes('bread') || t.includes('toast') || t.includes('baguette')) return '🍞';
+  if (t.includes('yogurt') || t.includes('yoghurt') || t.includes('parfait')) return '🥛';
+  if (t.includes('oat') || t.includes('granola') || t.includes('cereal')) return '🥣';
+  if (t.includes('pork') || t.includes('bacon') || t.includes('ham') || t.includes('ribs')) return '🥓';
+  if (t.includes('lamb') || t.includes('mutton')) return '🍖';
+  if (t.includes('avocado') || t.includes('guacamole')) return '🥑';
+  if (t.includes('mushroom')) return '🍄';
+  if (t.includes('lemon') || t.includes('citrus')) return '🍋';
+  return '🍽️';
+}
+
+/* ═══════════════════════════════════════════════════════════
+   URL STATE PERSISTENCE
+═══════════════════════════════════════════════════════════ */
+function pushURLState() {
+  const p = new URLSearchParams();
+  if (state.goal !== 'lose')        p.set('goal', state.goal);
+  if (state.meal)                   p.set('meal', state.meal);
+  if (state.diet)                   p.set('diet', state.diet);
+  if (state.sort !== 'popularity')  p.set('sort', state.sort);
+  if (state.query)                  p.set('q', state.query);
+  const qs = p.toString();
+  history.replaceState(null, '', qs ? `?${qs}` : location.pathname);
+}
+
+function applyURLState() {
+  const p = new URLSearchParams(location.search);
+  if (p.has('goal') && GOAL_CONFIG[p.get('goal')]) {
+    state.goal = p.get('goal');
+    document.querySelectorAll('.goal-tab').forEach(t =>
+      t.classList.toggle('active', t.dataset.goal === state.goal));
+  }
+  if (p.has('meal')) {
+    state.meal = p.get('meal');
+    document.querySelectorAll('[data-filter="meal"]').forEach(pill =>
+      pill.classList.toggle('active', pill.dataset.value === state.meal));
+  }
+  if (p.has('diet')) {
+    state.diet = p.get('diet');
+    document.querySelectorAll('[data-filter="diet"]').forEach(pill =>
+      pill.classList.toggle('active', pill.dataset.value === state.diet));
+  }
+  if (p.has('sort')) {
+    state.sort = p.get('sort');
+    const sortEl = document.getElementById('sort-select');
+    if (sortEl) sortEl.value = state.sort;
+  }
+  if (p.has('q')) {
+    state.query = p.get('q');
+    const searchEl = document.getElementById('search-input');
+    if (searchEl) searchEl.value = state.query;
+  }
+  fetchRecipes();
+}
+
+/* ═══════════════════════════════════════════════════════════
+   SAVED RECIPES VIEW
+═══════════════════════════════════════════════════════════ */
+function updateSavedBadge() {
+  const badge = document.getElementById('saved-count-badge');
+  if (badge) badge.textContent = state.liked.size;
+}
+
+async function fetchSaved() {
+  if (state.liked.size === 0) {
+    renderSavedEmpty();
+    return;
+  }
+  const grid = document.getElementById('recipes-grid');
+  const count = Math.min(state.liked.size, 100);
+  grid.innerHTML = Array(count).fill(0).map(() => skeletonHTML()).join('');
+  document.getElementById('results-count').innerHTML = `Loading <strong>${count}</strong> saved recipe${count !== 1 ? 's' : ''}…`;
+  try {
+    const ids = [...state.liked].slice(0, 100).join(',');
+    const res = await fetch(`${BASE}/recipes/informationBulk?apiKey=${API_KEY}&ids=${ids}&includeNutrition=true`);
+    if (!res.ok) throw new Error('API error');
+    const recipes = await res.json();
+    state.recipes = recipes;
+    renderGrid(false);
+    const n = recipes.length;
+    document.getElementById('results-count').innerHTML =
+      `♥ <strong>${n}</strong> saved recipe${n !== 1 ? 's' : ''}`;
+  } catch {
+    grid.innerHTML = `
+      <div class="empty-state">
+        <div class="empty-icon">⚠️</div>
+        <h3>Couldn't load saved recipes</h3>
+        <p>Check your connection and try again.</p>
+        <button class="empty-retry" onclick="fetchSaved()">Retry</button>
+      </div>`;
+    document.getElementById('results-count').innerHTML = 'Error loading saved recipes';
+  }
+}
+
+function renderSavedEmpty() {
+  const grid = document.getElementById('recipes-grid');
+  grid.innerHTML = `
+    <div class="empty-state" style="grid-column:1/-1;">
+      <div class="empty-icon">🤍</div>
+      <h3>No saved recipes yet</h3>
+      <p>Tap the ♡ heart on any recipe to save it here.</p>
+      <button class="empty-retry" onclick="hideSavedView()">Browse Recipes</button>
+    </div>`;
+  document.getElementById('results-count').innerHTML = `<strong>0</strong> saved recipes`;
+}
+
+function showSavedView() {
+  savedViewActive = true;
+  document.getElementById('saved-view-btn').classList.add('active');
+  document.getElementById('sort-select').style.visibility = 'hidden';
+  const lm = document.getElementById('load-more-wrap');
+  if (lm) lm.style.display = 'none';
+  fetchSaved();
+}
+
+function hideSavedView() {
+  savedViewActive = false;
+  document.getElementById('saved-view-btn').classList.remove('active');
+  document.getElementById('sort-select').style.visibility = '';
+  fetchRecipes();
+}
+
+/* ═══════════════════════════════════════════════════════════
+   AURORA BACKGROUND (ported from main site)
+═══════════════════════════════════════════════════════════ */
+(function aurora() {
+  const cvs = document.getElementById('aurora-canvas');
+  const ctx = cvs.getContext('2d');
+  let W, H, t = 0;
+  function resize() { W = cvs.width = window.innerWidth; H = cvs.height = window.innerHeight; }
+  window.addEventListener('resize', resize); resize();
+  const blobs = [
+    { x:.2, y:.3, r:.5, c:'rgba(79,110,247,' },
+    { x:.7, y:.2, r:.45, c:'rgba(155,114,255,' },
+    { x:.5, y:.8, r:.4,  c:'rgba(0,229,160,' },
+    { x:.85,.65, r:.38, c:'rgba(34,211,238,' },
+  ];
+  function draw() {
+    t += .003;
+    ctx.clearRect(0,0,W,H);
+    blobs.forEach((b,i) => {
+      const x = (b.x + Math.sin(t + i*1.3) * .12) * W;
+      const y = (b.y + Math.cos(t + i*1.7) * .1) * H;
+      const r = b.r * Math.min(W,H);
+      const g = ctx.createRadialGradient(x,y,0,x,y,r);
+      g.addColorStop(0, b.c + '.09)');
+      g.addColorStop(1, b.c + '0)');
+      ctx.fillStyle = g;
+      ctx.beginPath(); ctx.arc(x,y,r,0,Math.PI*2); ctx.fill();
+    });
+    requestAnimationFrame(draw);
+  }
+  draw();
+})();
+
+/* ═══════════════════════════════════════════════════════════
+   SKELETON CARDS
+═══════════════════════════════════════════════════════════ */
+function skeletonHTML() {
+  return `
+    <div class="skeleton-card">
+      <div class="skel-img"></div>
+      <div class="skel-body">
+        <div class="skel-line h16 w80"></div>
+        <div class="skel-line h12 w60"></div>
+        <div class="skel-row">
+          <div class="skel-line h10"></div>
+          <div class="skel-line h10"></div>
+          <div class="skel-line h10"></div>
+        </div>
+        <div class="skel-line skel-macro h10" style="width:100%"></div>
+        <div class="skel-row">
+          <div class="skel-line h10 w45"></div>
+          <div class="skel-line h10 w45"></div>
+        </div>
+      </div>
+    </div>`;
+}
+
+function showSkeletons(n = PAGE_SIZE) {
+  const grid = document.getElementById('recipes-grid');
+  grid.innerHTML = Array(n).fill(0).map(() => skeletonHTML()).join('');
+}
+
+/* ═══════════════════════════════════════════════════════════
+   BUILD API URL
+═══════════════════════════════════════════════════════════ */
+function buildURL(extra = {}) {
+  const g = GOAL_CONFIG[state.goal];
+  const params = new URLSearchParams({
+    apiKey:              API_KEY,
+    number:              PAGE_SIZE,
+    offset:              state.offset,
+    addRecipeNutrition:  'true',
+    addRecipeInformation:'true',
+    sort:                state.sort || g.sort || 'popularity',
+    fillIngredients:     'false',
+    ...(g.maxCalories ? { maxCalories: g.maxCalories } : {}),
+    ...(g.minCalories ? { minCalories: g.minCalories } : {}),
+    ...(g.minProtein  ? { minProtein:  g.minProtein  } : {}),
+    ...(state.diet && state.diet !== 'high-protein' ? { diet: state.diet } : {}),
+    ...(state.diet === 'high-protein' ? { minProtein: 35 } : {}),
+    ...(state.meal  ? { type: state.meal  } : {}),
+    ...(state.query ? { query: state.query } : {}),
+    ...extra,
+  });
+  return `${BASE}/recipes/complexSearch?${params}`;
+}
+
+/* ═══════════════════════════════════════════════════════════
+   FETCH RECIPES
+═══════════════════════════════════════════════════════════ */
+async function fetchRecipes(append = false) {
+  if (state.loading) return;
+  state.loading = true;
+
+  if (!append) {
+    state.offset = 0;
+    state.recipes = [];
+    showSkeletons();
+    document.getElementById('load-more-wrap').style.display = 'none';
+    document.getElementById('results-count').textContent = 'Loading recipes…';
+  } else {
+    const btn = document.getElementById('load-more-btn');
+    btn.classList.add('loading');
+    btn.innerHTML = '<div class="spinner"></div> Loading…';
+  }
+
+  try {
+    const res  = await fetch(buildURL());
+    if (!res.ok) throw new Error(`API ${res.status}`);
+    const data = await res.json();
+
+    const results = data.results || [];
+    state.total   = data.totalResults || 0;
+    state.offset  += results.length;
+
+    if (append) {
+      state.recipes = [...state.recipes, ...results];
+    } else {
+      state.recipes = results;
+    }
+
+    renderGrid(append);
+    updateMeta();
+
+    /* Show load more if more exist */
+    const lmw = document.getElementById('load-more-wrap');
+    if (state.offset < state.total && state.total > PAGE_SIZE) {
+      lmw.style.display = 'block';
+      const btn = document.getElementById('load-more-btn');
+      btn.classList.remove('loading');
+      btn.innerHTML = `
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <path d="M12 5v14M5 12l7 7 7-7"/>
+        </svg>
+        Load More Recipes`;
+    } else {
+      lmw.style.display = 'none';
+    }
+  } catch (err) {
+    console.error(err);
+    const grid = document.getElementById('recipes-grid');
+    grid.innerHTML = `
+      <div class="empty-state">
+        <div class="empty-icon">⚠️</div>
+        <h3>Couldn't load recipes</h3>
+        <p>Something went wrong connecting to the recipe database. Check your connection and try again.</p>
+        <button class="empty-retry" onclick="fetchRecipes()">Retry</button>
+      </div>`;
+    document.getElementById('results-count').textContent = 'Error loading recipes';
+    document.getElementById('load-more-wrap').style.display = 'none';
+  }
+
+  state.loading = false;
+}
+
+/* ═══════════════════════════════════════════════════════════
+   HELPERS
+═══════════════════════════════════════════════════════════ */
+function getNutrient(nutrients, name) {
+  const n = (nutrients || []).find(x => x.name === name);
+  return n ? Math.round(n.amount) : 0;
+}
+
+function getDietTags(recipe) {
+  const tags = [];
+  const d = (recipe.diets || []).map(x => x.toLowerCase());
+  if (d.includes('ketogenic'))   tags.push({ cls: 'keto',    label: 'Keto' });
+  if (d.includes('vegan'))       tags.push({ cls: 'vegan',   label: 'Vegan' });
+  if (d.includes('vegetarian') && !d.includes('vegan')) tags.push({ cls: 'vegetarian', label: 'Veg' });
+  if (d.includes('paleo'))       tags.push({ cls: 'paleo',   label: 'Paleo' });
+  if (d.includes('gluten free')) tags.push({ cls: 'glutenfree', label: 'GF' });
+  const prot = getNutrient(recipe.nutrition?.nutrients, 'Protein');
+  if (prot >= 30) tags.push({ cls: 'protein', label: `${prot}g Protein` });
+  return tags.slice(0, 3);
+}
+
+function getImageURL(recipe) {
+  if (recipe.image) return recipe.image;
+  if (recipe.id) return `https://img.spoonacular.com/recipes/${recipe.id}-556x370.jpg`;
+  return '';
+}
+
+function macroPercent(prot, carbs, fat) {
+  const cal = prot * 4 + carbs * 4 + fat * 9;
+  if (cal === 0) return { p: 33, c: 34, f: 33 };
+  return {
+    p: Math.round(prot * 4 / cal * 100),
+    c: Math.round(carbs * 4 / cal * 100),
+    f: Math.round(fat  * 9 / cal * 100),
+  };
+}
+
+/* ═══════════════════════════════════════════════════════════
+   RENDER GRID
+═══════════════════════════════════════════════════════════ */
+function renderGrid(append = false) {
+  const grid = document.getElementById('recipes-grid');
+  const toRender = append
+    ? state.recipes.slice(state.recipes.length - PAGE_SIZE)
+    : state.recipes;
+
+  if (!append) grid.innerHTML = '';
+
+  if (state.recipes.length === 0) {
+    grid.innerHTML = `
+      <div class="empty-state">
+        <div class="empty-icon">🥗</div>
+        <h3>No recipes found</h3>
+        <p>Try adjusting your filters or search to discover something delicious.</p>
+        <button class="empty-retry" onclick="clearFilters()">Clear Filters</button>
+      </div>`;
+    return;
+  }
+
+  toRender.forEach(recipe => {
+    const nutrients  = recipe.nutrition?.nutrients || [];
+    const cal  = getNutrient(nutrients, 'Calories');
+    const prot = getNutrient(nutrients, 'Protein');
+    const carb = getNutrient(nutrients, 'Carbohydrates');
+    const fat  = getNutrient(nutrients, 'Fat');
+    const mp   = macroPercent(prot, carb, fat);
+    const tags = getDietTags(recipe);
+    const img  = getImageURL(recipe);
+    const emoji = getRecipeEmoji(recipe.title);
+    const isLiked = state.liked.has(recipe.id);
+    const mins = recipe.readyInMinutes || '?';
+    const servings = recipe.servings || '?';
+
+    const tagsHTML = tags.map(t =>
+      `<span class="diet-tag ${t.cls}">${t.label}</span>`
+    ).join('');
+
+    const card = document.createElement('div');
+    card.className = 'recipe-card';
+    card.dataset.id = recipe.id;
+    card.innerHTML = `
+      <button class="card-fav ${isLiked ? 'liked' : ''}" data-id="${recipe.id}" title="${isLiked ? 'Saved' : 'Save recipe'}">
+        ${isLiked ? '♥' : '♡'}
+      </button>
+      <div class="card-img-wrap">
+        ${img
+          ? `<img class="card-img" src="${img}" alt="${recipe.title}" onerror="this.outerHTML='<div class=card-img-fallback>${emoji}</div>'">`
+          : `<div class="card-img-fallback">${emoji}</div>`}
+        <div class="card-cal-badge">
+          <span class="cal-flame">🔥</span>${cal} kcal
+        </div>
+        ${tagsHTML ? `<div class="card-diet-tags">${tagsHTML}</div>` : ''}
+      </div>
+      <div class="card-body">
+        <div class="card-title">${recipe.title}</div>
+        <div class="macro-bar-wrap">
+          <div class="macro-bar-labels">
+            <span class="macro-lbl">
+              <span class="macro-dot" style="background:var(--blue2)"></span>
+              P <span class="macro-lbl-val">${prot}g</span>
+            </span>
+            <span class="macro-lbl">
+              <span class="macro-dot" style="background:var(--green)"></span>
+              C <span class="macro-lbl-val">${carb}g</span>
+            </span>
+            <span class="macro-lbl">
+              <span class="macro-dot" style="background:var(--amber)"></span>
+              F <span class="macro-lbl-val">${fat}g</span>
+            </span>
+          </div>
+          <div class="macro-bar">
+            <div class="macro-seg protein" style="width:${mp.p}%"></div>
+            <div class="macro-seg carbs"   style="width:${mp.c}%"></div>
+            <div class="macro-seg fat"     style="width:${mp.f}%"></div>
+          </div>
+        </div>
+        <div class="card-footer">
+          <span class="card-meta-chip">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/>
+            </svg>
+            ${mins} min
+          </span>
+          <span class="card-meta-chip">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/>
+              <path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/>
+            </svg>
+            ${servings}
+          </span>
+          <span class="card-meta-sep"></span>
+          <button class="card-log-btn" data-id="${recipe.id}">View →</button>
+        </div>
+      </div>`;
+
+    /* open modal on card click */
+    card.addEventListener('click', (e) => {
+      if (e.target.closest('.card-fav')) return;
+      openModal(recipe.id, recipe);
+    });
+
+    /* fav toggle */
+    card.querySelector('.card-fav').addEventListener('click', (e) => {
+      e.stopPropagation();
+      toggleLike(recipe.id, e.currentTarget);
+    });
+
+    grid.appendChild(card);
+
+    /* Stagger fade-in */
+    card.style.opacity = '0';
+    card.style.transform = 'translateY(16px)';
+    requestAnimationFrame(() => {
+      card.style.transition = 'opacity .5s var(--ease-expo), transform .5s var(--ease-expo)';
+      card.style.opacity = '1';
+      card.style.transform = 'translateY(0)';
+    });
+  });
+}
+
+/* ═══════════════════════════════════════════════════════════
+   RESULTS META
+═══════════════════════════════════════════════════════════ */
+function updateMeta() {
+  const el = document.getElementById('results-count');
+  const g  = GOAL_CONFIG[state.goal];
+  el.innerHTML = `Showing <strong>${state.recipes.length}</strong> of <strong>${state.total.toLocaleString()}</strong> recipes for <strong>${g.label}</strong>`;
+}
+
+/* ═══════════════════════════════════════════════════════════
+   MODAL
+═══════════════════════════════════════════════════════════ */
+async function openModal(id, recipeBasic) {
+  const overlay = document.getElementById('modal-overlay');
+  const scroll  = document.getElementById('modal-scroll');
+  const title   = document.getElementById('modal-title');
+  const img     = document.getElementById('modal-img');
+  const favBtn  = document.getElementById('modal-fav-btn');
+
+  /* Set basic info immediately */
+  title.textContent = recipeBasic.title;
+  const imgSrc = getImageURL(recipeBasic);
+  img.src = imgSrc;
+  img.onerror = () => { img.style.display='none'; };
+  scroll.innerHTML = `<div style="text-align:center;padding:40px;color:var(--ink3);">
+    <div class="spinner" style="margin:0 auto 12px;width:28px;height:28px;border-width:3px;"></div>
+    Loading recipe details…
+  </div>`;
+  overlay.classList.add('open');
+  document.body.style.overflow = 'hidden';
+
+  favBtn.textContent = state.liked.has(id) ? '♥ Saved' : '♡ Save';
+  favBtn.onclick = () => {
+    toggleLike(id, null);
+    favBtn.textContent = state.liked.has(id) ? '♥ Saved' : '♡ Save';
+  };
+
+  /* Fetch full detail */
+  try {
+    let detail = state.detailCache[id];
+    if (!detail) {
+      const res = await fetch(`${BASE}/recipes/${id}/information?apiKey=${API_KEY}&includeNutrition=true`);
+      if (!res.ok) throw new Error();
+      detail = await res.json();
+      state.detailCache[id] = detail;
+    }
+    renderModalContent(detail, scroll);
+  } catch {
+    scroll.innerHTML = `<div style="text-align:center;padding:40px;color:var(--ink3);">
+      <p>Couldn't load full details — try again.</p>
+    </div>`;
+  }
+}
+
+function renderModalContent(r, scroll) {
+  const nutrients = r.nutrition?.nutrients || [];
+  const cal  = getNutrient(nutrients, 'Calories');
+  const prot = getNutrient(nutrients, 'Protein');
+  const carb = getNutrient(nutrients, 'Carbohydrates');
+  const fat  = getNutrient(nutrients, 'Fat');
+  const fiber = getNutrient(nutrients, 'Fiber');
+  const sugar = getNutrient(nutrients, 'Sugar');
+  const sodium = getNutrient(nutrients, 'Sodium');
+
+  const mp = macroPercent(prot, carb, fat);
+  const calTotal = prot * 4 + carb * 4 + fat * 9 || 1;
+
+  /* Ring chart SVG */
+  const R = 42, C = 2 * Math.PI * R;
+  const protArc = C * mp.p / 100;
+  const carbArc = C * mp.c / 100;
+  const fatArc  = C * mp.f / 100;
+
+  const ingredients = (r.extendedIngredients || []).map(ing =>
+    `<div class="ingredient-item"><span class="ingredient-dot"></span>${ing.original}</div>`
+  ).join('');
+
+  /* Steps */
+  const steps = (r.analyzedInstructions?.[0]?.steps || []);
+  const stepsHTML = steps.length
+    ? steps.map((s, i) => `
+      <div class="instruction-step">
+        <div class="step-num">${s.number || i+1}</div>
+        <div class="step-text">${s.step}</div>
+      </div>`).join('')
+    : (r.instructions
+        ? r.instructions.replace(/<[^>]*>/g,'').split(/\.(?=\s[A-Z])/).filter(Boolean).slice(0,10).map((s,i) => `
+          <div class="instruction-step">
+            <div class="step-num">${i+1}</div>
+            <div class="step-text">${s.trim()}.</div>
+          </div>`).join('')
+        : '<p style="color:var(--ink3);font-size:13px;padding:8px 0;">No instructions available.</p>');
+
+  const diets = (r.diets || []).map(d =>
+    `<span class="filter-pill active pill-green" style="pointer-events:none">${d}</span>`
+  ).join('');
+
+  const sourceLink = r.sourceUrl
+    ? `<a href="${r.sourceUrl}" target="_blank" rel="noopener" style="color:var(--blue2);font-size:12px;text-decoration:underline;text-underline-offset:3px;">View full recipe →</a>`
+    : '';
+
+  scroll.innerHTML = `
+    <!-- Quick info chips -->
+    <div class="modal-section">
+      <div class="modal-section-title">Quick Info</div>
+      <div class="info-chips">
+        <div class="info-chip">
+          <span class="info-chip-icon">⏱️</span>
+          <div class="info-chip-inner">
+            <strong>${r.readyInMinutes || '?'} min</strong>
+            <span class="info-chip-sub">Total Time</span>
+          </div>
+        </div>
+        <div class="info-chip">
+          <span class="info-chip-icon">🍽️</span>
+          <div class="info-chip-inner">
+            <strong>${r.servings || '?'} servings</strong>
+            <span class="info-chip-sub">Serving Size</span>
+          </div>
+        </div>
+        <div class="info-chip">
+          <span class="info-chip-icon">⭐</span>
+          <div class="info-chip-inner">
+            <strong>${r.spoonacularScore ? Math.round(r.spoonacularScore) + '/100' : '—'}</strong>
+            <span class="info-chip-sub">Health Score</span>
+          </div>
+        </div>
+        <div class="info-chip">
+          <span class="info-chip-icon">💰</span>
+          <div class="info-chip-inner">
+            <strong>${r.pricePerServing ? '$' + (r.pricePerServing/100).toFixed(2) : '—'}</strong>
+            <span class="info-chip-sub">Per Serving</span>
+          </div>
+        </div>
+      </div>
+      ${diets ? `<div class="filter-row" style="gap:6px;flex-wrap:wrap;">${diets}</div>` : ''}
+    </div>
+
+    <!-- Macro cards -->
+    <div class="modal-section">
+      <div class="modal-section-title">Nutrition per Serving</div>
+      <div class="modal-macro-row">
+        <div class="macro-card cal">
+          <div class="macro-card-val">${cal}</div>
+          <div class="macro-card-lbl">🔥 kcal</div>
+        </div>
+        <div class="macro-card prot">
+          <div class="macro-card-val">${prot}g</div>
+          <div class="macro-card-lbl">💪 Protein</div>
+        </div>
+        <div class="macro-card carb">
+          <div class="macro-card-val">${carb}g</div>
+          <div class="macro-card-lbl">🌾 Carbs</div>
+        </div>
+        <div class="macro-card fat">
+          <div class="macro-card-val">${fat}g</div>
+          <div class="macro-card-lbl">🫙 Fat</div>
+        </div>
+      </div>
+
+      <!-- Macro visual -->
+      <div class="modal-macro-visual">
+        <div class="macro-ring-wrap">
+          <svg width="100" height="100" viewBox="0 0 100 100">
+            <circle cx="50" cy="50" r="${R}" fill="none" stroke="var(--s4)" stroke-width="10"/>
+            <!-- Fat (background) -->
+            <circle cx="50" cy="50" r="${R}" fill="none" stroke="var(--amber)"
+              stroke-width="10" stroke-dasharray="${fatArc} ${C - fatArc}"
+              stroke-dashoffset="${-C * mp.p / 100 - C * mp.c / 100}"/>
+            <!-- Carbs -->
+            <circle cx="50" cy="50" r="${R}" fill="none" stroke="var(--green)"
+              stroke-width="10" stroke-dasharray="${carbArc} ${C - carbArc}"
+              stroke-dashoffset="${-C * mp.p / 100}"/>
+            <!-- Protein (front) -->
+            <circle cx="50" cy="50" r="${R}" fill="none" stroke="var(--blue2)"
+              stroke-width="10" stroke-dasharray="${protArc} ${C - protArc}"
+              stroke-dashoffset="0"/>
+          </svg>
+          <div class="macro-ring-center">${cal}<span>kcal</span></div>
+        </div>
+        <div class="macro-legend">
+          <div>
+            <div class="legend-row">
+              <div class="legend-dot" style="background:var(--blue2)"></div>
+              <span class="legend-lbl">Protein</span>
+              <span class="legend-val" style="color:var(--blue2)">${prot}g · ${mp.p}%</span>
+            </div>
+            <div class="legend-bar-track">
+              <div class="legend-bar-fill" style="width:${mp.p}%;background:var(--blue2)"></div>
+            </div>
+          </div>
+          <div>
+            <div class="legend-row">
+              <div class="legend-dot" style="background:var(--green)"></div>
+              <span class="legend-lbl">Carbohydrates</span>
+              <span class="legend-val" style="color:var(--green)">${carb}g · ${mp.c}%</span>
+            </div>
+            <div class="legend-bar-track">
+              <div class="legend-bar-fill" style="width:${mp.c}%;background:var(--green)"></div>
+            </div>
+          </div>
+          <div>
+            <div class="legend-row">
+              <div class="legend-dot" style="background:var(--amber)"></div>
+              <span class="legend-lbl">Fat</span>
+              <span class="legend-val" style="color:var(--amber)">${fat}g · ${mp.f}%</span>
+            </div>
+            <div class="legend-bar-track">
+              <div class="legend-bar-fill" style="width:${mp.f}%;background:var(--amber)"></div>
+            </div>
+          </div>
+          ${fiber ? `
+          <div>
+            <div class="legend-row">
+              <div class="legend-dot" style="background:var(--cyan)"></div>
+              <span class="legend-lbl">Fiber</span>
+              <span class="legend-val" style="color:var(--cyan)">${fiber}g</span>
+            </div>
+          </div>` : ''}
+        </div>
+      </div>
+    </div>
+
+    ${ingredients ? `
+    <!-- Ingredients -->
+    <div class="modal-section">
+      <div class="modal-section-title">Ingredients (${r.extendedIngredients?.length || ''})</div>
+      <div class="ingredients-grid">${ingredients}</div>
+    </div>` : ''}
+
+    ${stepsHTML ? `
+    <!-- Instructions -->
+    <div class="modal-section">
+      <div class="modal-section-title">Instructions</div>
+      <div class="instructions-list">${stepsHTML}</div>
+    </div>` : ''}
+
+    ${sourceLink ? `<div style="padding-bottom:4px;">${sourceLink}</div>` : ''}
+  `;
+}
+
+/* ═══════════════════════════════════════════════════════════
+   CLOSE MODAL
+═══════════════════════════════════════════════════════════ */
+function closeModal() {
+  document.getElementById('modal-overlay').classList.remove('open');
+  document.body.style.overflow = '';
+}
+document.getElementById('modal-close').addEventListener('click', closeModal);
+document.getElementById('modal-overlay').addEventListener('click', (e) => {
+  if (e.target === document.getElementById('modal-overlay')) closeModal();
+});
+document.addEventListener('keydown', (e) => { if (e.key === 'Escape') closeModal(); });
+
+/* ═══════════════════════════════════════════════════════════
+   LIKE / SAVE
+═══════════════════════════════════════════════════════════ */
+function toggleLike(id, btn) {
+  const numId = Number(id);
+  if (state.liked.has(numId)) {
+    state.liked.delete(numId);
+    showToast('Removed from saved recipes', '#f43f5e');
+  } else {
+    state.liked.add(numId);
+    showToast('💚 Recipe saved!', '#00e5a0');
+  }
+  localStorage.setItem('nx_liked', JSON.stringify([...state.liked]));
+  updateSavedBadge();
+
+  /* If we're in saved view, remove the card if un-saved */
+  if (savedViewActive && !state.liked.has(numId)) {
+    const card = document.querySelector(`.recipe-card[data-id="${id}"]`);
+    if (card) card.remove();
+    if (state.liked.size === 0) renderSavedEmpty();
+    else {
+      const n = state.liked.size;
+      document.getElementById('results-count').innerHTML = `♥ <strong>${n}</strong> saved recipe${n !== 1 ? 's' : ''}`;
+    }
+  }
+
+  /* Update all fav buttons for this id */
+  document.querySelectorAll(`.card-fav[data-id="${id}"]`).forEach(b => {
+    b.classList.toggle('liked', state.liked.has(numId));
+    b.textContent = state.liked.has(numId) ? '♥' : '♡';
+  });
+}
+
+/* ═══════════════════════════════════════════════════════════
+   TOAST
+═══════════════════════════════════════════════════════════ */
+let toastTimer;
+function showToast(msg, color = '#fff') {
+  const toast = document.getElementById('toast');
+  const msgEl = document.getElementById('toast-msg');
+  msgEl.textContent = msg;
+  msgEl.style.color = color;
+  toast.classList.add('show');
+  clearTimeout(toastTimer);
+  toastTimer = setTimeout(() => toast.classList.remove('show'), 2800);
+}
+
+/* ═══════════════════════════════════════════════════════════
+   CLEAR FILTERS
+═══════════════════════════════════════════════════════════ */
+function clearFilters() {
+  state.meal  = '';
+  state.diet  = '';
+  state.query = '';
+  document.getElementById('search-input').value = '';
+  document.querySelectorAll('[data-filter="meal"]').forEach(p => {
+    p.classList.toggle('active', p.dataset.value === '');
+  });
+  document.querySelectorAll('[data-filter="diet"]').forEach(p => {
+    p.classList.toggle('active', p.dataset.value === '');
+  });
+  fetchRecipes();
+  pushURLState();
+}
+
+/* ═══════════════════════════════════════════════════════════
+   EVENTS — GOAL TABS
+═══════════════════════════════════════════════════════════ */
+document.getElementById('goal-tabs').addEventListener('click', (e) => {
+  const tab = e.target.closest('.goal-tab');
+  if (!tab) return;
+  if (savedViewActive) hideSavedView();
+  document.querySelectorAll('.goal-tab').forEach(t => t.classList.remove('active'));
+  tab.classList.add('active');
+  state.goal = tab.dataset.goal;
+  state.sort = GOAL_CONFIG[state.goal].sort;
+  document.getElementById('sort-select').value = state.sort;
+  fetchRecipes();
+  pushURLState();
+});
+
+/* ═══════════════════════════════════════════════════════════
+   EVENTS — FILTER PILLS
+═══════════════════════════════════════════════════════════ */
+document.querySelectorAll('[data-filter]').forEach(pill => {
+  pill.addEventListener('click', () => {
+    const filter = pill.dataset.filter;
+    const value  = pill.dataset.value;
+
+    document.querySelectorAll(`[data-filter="${filter}"]`).forEach(p =>
+      p.classList.remove('active'));
+    pill.classList.add('active');
+
+    if (filter === 'meal') state.meal = value;
+    if (filter === 'diet') state.diet = value;
+
+    if (savedViewActive) hideSavedView(); else { fetchRecipes(); pushURLState(); }
+  });
+});
+
+/* ═══════════════════════════════════════════════════════════
+   EVENTS — SORT
+═══════════════════════════════════════════════════════════ */
+document.getElementById('sort-select').addEventListener('change', (e) => {
+  state.sort = e.target.value;
+  fetchRecipes();
+  pushURLState();
+});
+
+/* ═══════════════════════════════════════════════════════════
+   EVENTS — SEARCH (debounced)
+═══════════════════════════════════════════════════════════ */
+let searchTimer;
+document.getElementById('search-input').addEventListener('input', (e) => {
+  clearTimeout(searchTimer);
+  searchTimer = setTimeout(() => {
+    state.query = e.target.value.trim();
+    if (savedViewActive) hideSavedView(); else { fetchRecipes(); pushURLState(); }
+  }, 480);
+});
+
+/* ═══════════════════════════════════════════════════════════
+   EVENTS — SAVED VIEW
+═══════════════════════════════════════════════════════════ */
+document.getElementById('saved-view-btn').addEventListener('click', () => {
+  if (savedViewActive) hideSavedView();
+  else showSavedView();
+});
+
+/* ═══════════════════════════════════════════════════════════
+   EVENTS — LOAD MORE
+═══════════════════════════════════════════════════════════ */
+document.getElementById('load-more-btn').addEventListener('click', () => {
+  fetchRecipes(true);
+});
+
+/* ═══════════════════════════════════════════════════════════
+   SCROLL TO TOP
+═══════════════════════════════════════════════════════════ */
+const scrollTopBtn = document.getElementById('scroll-top');
+window.addEventListener('scroll', () => {
+  scrollTopBtn.classList.toggle('visible', window.scrollY > 600);
+});
+scrollTopBtn.addEventListener('click', () => {
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+});
+
+/* ═══════════════════════════════════════════════════════════
+   INIT
+═══════════════════════════════════════════════════════════ */
+updateSavedBadge();   // seed saved count from localStorage
+applyURLState();      // restore filters from URL params (or default fetchRecipes)
+</script>
+</body>
+</html>
