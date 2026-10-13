@@ -51,7 +51,7 @@
     <div class="container">
       <div class="eyebrow">Legal</div>
       <h1>Privacy Policy</h1>
-      <p class="meta">Effective date: March 26, 2026 &nbsp;·&nbsp; Last updated: October 12, 2026</p>
+      <p class="meta">Effective date: March 26, 2026 &nbsp;·&nbsp; Last updated: October 13, 2026</p>
     </div>
   </section>
   <div class="container">
@@ -107,8 +107,8 @@
   <h3>2.2 Information Collected Automatically</h3>
   <ul>
     <li><strong>Device Information:</strong> Device model, operating system version, unique device identifiers, and app version.</li>
-    <li><strong>Usage Data:</strong> Features you use, screens you visit, session duration, and in-app events (only in app versions before 2.0, via PostHog — see Section 8).</li>
-    <li><strong>Crash Reports:</strong> Stack traces and diagnostic information collected automatically if the app crashes (only in app versions before 2.0, via Sentry — see Section 8; version 2.0 relies on Apple's own crash reports, which you can choose to share with developers in iPhone Settings).</li>
+    <li><strong>Usage Data:</strong> Which screens you open and which features you use (for example "scanned a meal" or "sent a Coach message"), app version and device type, via PostHog — see Section 8. Never your food, health values, photos or chat text. You can turn this off in Settings › Share Usage &amp; Crash Data.</li>
+    <li><strong>Crash Reports:</strong> Stack traces, device model, iOS version, the screen you were on and app performance data if the app crashes, freezes or a request fails, via Sentry — see Section 8. No health or food data. You can turn this off in Settings › Share Usage &amp; Crash Data.</li>
     <li><strong>IP Address:</strong> Collected by our backend (Supabase) for security and abuse prevention purposes.</li>
     <li><strong>Device identifier:</strong> If you apply a referral code, we store an identifier Apple assigns to Nutriva on your device (the identifier for vendor) with that referral, only to stop the same device from redeeming more than one referral. It is not used for advertising or tracking and is deleted with your account.</li>
   </ul>
@@ -176,15 +176,15 @@
         <td><a href="https://www.revenuecat.com/privacy" target="_blank" rel="noopener noreferrer">revenuecat.com/privacy</a></td>
       </tr>
       <tr>
-        <td><strong>PostHog</strong> (versions before 2.0)</td>
+        <td><strong>PostHog</strong></td>
         <td>Product analytics &amp; feature usage</td>
-        <td>Anonymised event data, device type, app version</td>
+        <td>Screens and features used, your random account ID, device type, app version</td>
         <td><a href="https://posthog.com/privacy" target="_blank" rel="noopener noreferrer">posthog.com/privacy</a></td>
       </tr>
       <tr>
-        <td><strong>Sentry</strong> (versions before 2.0)</td>
+        <td><strong>Sentry</strong></td>
         <td>Crash reporting &amp; error monitoring</td>
-        <td>Stack traces, device info, app state at time of crash</td>
+        <td>Stack traces, device info, screen and app state at the time of the error, your random account ID</td>
         <td><a href="https://sentry.io/privacy/" target="_blank" rel="noopener noreferrer">sentry.io/privacy</a></td>
       </tr>
       <tr>
@@ -243,8 +243,8 @@
 
   <!-- 8 -->
   <h2 id="s8">8. Analytics &amp; Crash Reporting</h2>
-  <p><strong>Nutriva AI 2.0 contains no third-party analytics or crash-reporting tools.</strong> If you allow it in iPhone Settings › Privacy &amp; Security › Analytics &amp; Improvements, Apple may share anonymous crash and usage reports with us; this is controlled entirely by Apple and by you.</p>
-  <p><strong>Earlier versions (1.x).</strong> App versions before 2.0 used PostHog to understand in aggregate how features were used (anonymised events with device type and app version, no name, email, food or health data) and Sentry to diagnose crashes (stack trace, device model, OS version, no health or food data). These tools are removed in 2.0; updating the app stops them.</p>
+  <p>To find and fix bugs and to see which features are used, Nutriva AI sends <strong>crash and error reports to Sentry</strong> and <strong>usage events to PostHog</strong>. They carry your random account ID, never your name, email or phone number, and never your food, photos, Apple Health data, weights or Coach messages. Apple Health data is never used for analytics. Neither tool is used for advertising or to track you across other apps and websites.</p>
+  <p><strong>Your choice.</strong> Turn this off any time in the app: Profile › Settings › Share Usage &amp; Crash Data. Apple may also share anonymous crash reports with us if you allow it in iPhone Settings › Privacy &amp; Security › Analytics &amp; Improvements.</p>
 
   <!-- 9 -->
   <h2 id="s9">9. Camera, Microphone &amp; Photo Library</h2>
@@ -267,8 +267,8 @@
       <tr><td>Account information (email, profile)</td><td>Kept until account deletion</td></tr>
       <tr><td>AI coach conversations</td><td>Kept in your account until you delete your account</td></tr>
       <tr><td>Referral device identifier (IDFV)</td><td>Kept with the referral record until you delete your account</td></tr>
-      <tr><td>Anonymised analytics events (PostHog, versions before 2.0)</td><td>Up to 1 year</td></tr>
-      <tr><td>Crash reports (Sentry, versions before 2.0)</td><td>90 days</td></tr>
+      <tr><td>Analytics events (PostHog)</td><td>Up to 1 year</td></tr>
+      <tr><td>Crash reports (Sentry)</td><td>90 days</td></tr>
       <tr><td>Subscription records (RevenueCat)</td><td>For the duration required by applicable law (typically 7 years for billing records)</td></tr>
       <tr><td>Backup copies</td><td>Deleted within 30 days of account deletion</td></tr>
     </tbody>
