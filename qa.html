@@ -81,7 +81,7 @@
       }); } },
     { id: 'terms', name: 'Terms keep the medical disclaimer and include subscription terms and fair use',
       run: function () { return get('/terms').then(function (t) {
-        ['MEDICAL DISCLAIMER', 'Nutriva Pro', '13 October 2026', '200 AI Coach chats', '24 hours'].forEach(function (k) {
+        ['MEDICAL DISCLAIMER', 'Nutriva Pro', '20 October 2026', '200 AI Coach chats', '24 hours'].forEach(function (k) {
           if (t.indexOf(k) < 0) throw new Error('missing: ' + k);
         });
       }); } },
