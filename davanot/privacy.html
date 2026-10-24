@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <meta name="color-scheme" content="light" />
+  <meta name="theme-color" content="#F6F8FC" />
+  <link rel="icon" type="image/png" sizes="64x64" href="/davanot/app-icon.png" />
+  <link rel="apple-touch-icon" href="/davanot/app-icon.png" />
+  <link rel="stylesheet" href="/site.css?v=4" />
+  <title>Gizlilik Politikası | DavaNot</title>
+  <meta name="description" content="DavaNot Gizlilik Politikası: Avukatlık sırrı, yerel veri saklama ve sıfır bulut aktarımı ilkelerimiz." />
+  <link rel="canonical" href="https://nutrivaai.com/davanot/privacy" />
+  <style>
+    .legal-content {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: var(--r-card);
+      padding: 2.5rem;
+      line-height: 1.75;
+      color: var(--text);
+    }
+    .legal-content h2 {
+      font-size: 1.35rem;
+      margin: 2rem 0 0.75rem;
+      color: #1E3E62;
+    }
+    .legal-content h3 {
+      font-size: 1.1rem;
+      margin: 1.25rem 0 0.5rem;
+    }
+    .legal-content p, .legal-content ul {
+      color: var(--text-2);
+      margin-bottom: 1rem;
+    }
+    .legal-content li {
+      margin-bottom: 0.5rem;
+    }
+  </style>
+</head>
+<body>
+<header class="site-header">
+  <nav class="bar" aria-label="Ana Menü">
+    <a class="brand" href="/davanot" aria-label="DavaNot">
+      <img src="/davanot/app-icon.png" alt="DavaNot" width="32" height="32" style="border-radius: 8px;" />
+      <span>DavaNot</span>
+    </a>
+    <ul class="nav-links">
+      <li><a href="/davanot#ozellikler">Özellikler</a></li>
+      <li><a href="/davanot/support">Destek</a></li>
+      <li><a href="/davanot/privacy" aria-current="page">Gizlilik</a></li>
+      <li><a href="/davanot/terms">Kullanım Koşulları</a></li>
+    </ul>
+  </nav>
+</header>
+
+<main id="main">
+  <section class="page-hero" style="text-align: center; padding: 4.5rem 1rem 2.5rem;">
+    <div class="container" style="max-width: 800px; margin: 0 auto;">
+      <div style="font-weight: 600; color: #1E3E62; margin-bottom: 0.5rem;">Yasal Bildirimler</div>
+      <h1 style="font-size: 2.5rem; font-weight: 800; letter-spacing: -0.02em; margin-bottom: 1rem;">Gizlilik Politikası</h1>
+      <p class="lead" style="font-size: 1.1rem; color: var(--text-2);">Son Güncelleme: 24 Ekim 2026</p>
+    </div>
+  </section>
+
+  <div class="container" style="max-width: 800px; margin: 0 auto; padding: 0 1rem 4rem;">
+    <div class="legal-content">
+      <h2>1. Temel İlke ve Sır Saklama Yükümlülüğü</h2>
+      <p>
+        DavaNot ("Uygulama"), Türk avukatları ve hukuk büroları için geliştirilmiştir. 1136 sayılı Avukatlık Kanunu'nun 36. maddesinde düzenlenen <strong>"Sır Saklama Yükümlülüğü"</strong> ve 6698 sayılı Kişisel Verilerin Korunması Kanunu (KVKK) hükümleri DavaNot mimarisinin temelini oluşturur.
+      </p>
+
+      <h2>2. Sıfır Bulut Aktarımı (Zero-Cloud Storage)</h2>
+      <p>
+        DavaNot, kullanıcılarının girdiği dava dosyalarını, duruşma notlarını, müvekkil kimliklerini, tensip zabıtlarını veya taranan adli evrakları <strong>asla harici bir sunucuya, bulut veritabanına veya üçüncü taraf yapay zeka sağlayıcısına iletmez.</strong>
+      </p>
+      <ul>
+        <li>Tüm veritabanı Apple SwiftData ile cihazınızın yerel depolama alanında şifrelenerek tutulur.</li>
+        <li>Evrak Kasası, Apple Keychain ve AES-256 seviyesinde cihaz yerelinde kilitlenir.</li>
+        <li>Metin tanıma (Vision OCR) işlemleri tamamen cihaz üzerindeki Apple Neural Engine çipi tarafından yerel olarak yürütülür.</li>
+      </ul>
+
+      <h2>3. Toplanan Bilgiler ve Analitik</h2>
+      <p>
+        DavaNot içerisinde üçüncü taraf reklam kütüphaneleri, kullanıcı takip (tracking) mekanizmaları veya üçüncü taraf analitik SDK'ları bulunmaz.
+      </p>
+      <ul>
+        <li><strong>Crash Raporları:</strong> Kullanıcının Apple cihaz ayarlarında izin vermesi halinde, yalnızca Apple App Store Connect tarafından sağlanan anonim çökme raporları geliştiriciye iletilir. Bu raporlar hiçbir kişisel veri veya dava içeriği barındırmaz.</li>
+        <li><strong>Abonelik Bilgileri:</strong> DavaNot Pro abonelikleri doğrudan Apple StoreKit 2 altyapısıyla gerçekleştirilir. Finansal ödeme bilgileri Apple tarafından işlenir; DavaNot kredi kartı numaralarına veya fatura adreslerine asla erişemez.</li>
+      </ul>
+
+      <h2>4. Kilit Ekranı Gizliliği</h2>
+      <p>
+        DavaNot, duruşma ve süre bildirimlerinde üçüncü kişilerin müvekkil adını veya mahkeme esas numarasını görmesini engellemek amacıyla, kilit ekranı bildirimlerinde asgari ve gizlilik korumalı başlıklar kullanır.
+      </p>
+
+      <h2>5. İletişim</h2>
+      <p>
+        Gizlilik politikamız ile ilgili soru ve talepleriniz için resmi destek adresimiz üzerinden bizimle iletişime geçebilirsiniz:
+      </p>
+      <p>
+        <strong>E-posta:</strong> <a href="mailto:destek@davanot.app" style="color: #1E3E62; font-weight: 600;">destek@davanot.app</a>
+      </p>
+    </div>
+  </div>
+</main>
+
+<footer style="background: #0B192C; color: #fff; padding: 2.5rem 1rem; text-align: center; font-size: 0.85rem; color: #94A3B8;">
+  <p style="margin: 0 0 0.5rem;"><a href="/davanot" style="color: #D4AF37; text-decoration: none;">DavaNot Ana Sayfa</a> · <a href="/davanot/support" style="color: #D4AF37; text-decoration: none;">Destek</a> · <a href="/davanot/terms" style="color: #D4AF37; text-decoration: none;">Kullanım Koşulları</a></p>
+  <p style="margin: 0;">&copy; 2026 DavaNot. Tüm hakları saklıdır.</p>
+</footer>
+</body>
+</html>
