@@ -51,7 +51,7 @@
     <div class="container">
       <div class="eyebrow">Legal</div>
       <h1>Privacy Policy</h1>
-      <p class="meta">Effective date: March 26, 2026 &nbsp;·&nbsp; Last updated: October 13, 2026</p>
+      <p class="meta">Effective date: March 26, 2026 &nbsp;·&nbsp; Last updated: October 28, 2026</p>
     </div>
   </section>
   <div class="container">
@@ -68,10 +68,10 @@
       <li><a href="#s2">Information We Collect</a></li>
       <li><a href="#s3">How We Use Your Information</a></li>
       <li><a href="#s4">Third-Party Services &amp; Data Sharing</a></li>
-      <li><a href="#s5">Health Data &amp; Apple Health</a></li>
+      <li><a href="#s5">Health Data, Apple Health &amp; GLP-1 Mode</a></li>
       <li><a href="#s6">AI Features</a></li>
       <li><a href="#s7">In-App Purchases &amp; Subscriptions</a></li>
-      <li><a href="#s8">Analytics &amp; Crash Reporting</a></li>
+      <li><a href="#s8">Analytics, Crash Reporting &amp; Ad Measurement</a></li>
       <li><a href="#s9">Camera, Microphone &amp; Photo Library</a></li>
       <li><a href="#s10">Data Retention</a></li>
       <li><a href="#s11">Data Security</a></li>
@@ -100,6 +100,7 @@
     <li><strong>Profile Data:</strong> Gender, date of birth, height, weight, activity level, dietary preferences, and health goals you enter during onboarding or at any time.</li>
     <li><strong>Nutrition &amp; Food Data:</strong> Meal descriptions, food photos, barcode scans, calorie and macro entries, water intake, and fasting logs you record.</li>
     <li><strong>Body Measurements:</strong> Waist, chest, arms, hips, thighs, and neck measurements if you choose to log them.</li>
+    <li><strong>GLP-1 Mode:</strong> If you turn on GLP-1 mode: the medicine you choose, your dose schedule and reminder time, and your side-effect check-ins (appetite, nausea, constipation, energy). This stays on your iPhone (see Section 5).</li>
     <li><strong>AI Coach Conversations:</strong> Messages you send to the AI coach (Marcus) and its replies are stored in your Nutriva account so the Coach can work and to protect the service from abuse. They are deleted when you delete your account (see Section 6).</li>
     <li><strong>Feedback &amp; Support:</strong> Any information you provide when you contact us for support.</li>
   </ul>
@@ -117,8 +118,8 @@
   <ul>
     <li>We do not collect your precise location (GPS coordinates).</li>
     <li>We do not read your contacts, calendar, or messages.</li>
-    <li>We do not run third-party advertising SDKs or ad trackers.</li>
-    <li>We do not track you across apps and websites owned by other companies, and we do not use your data for advertising.</li>
+    <li>We do not show ads in the app. The only advertising-related tool in the app is the Meta (Facebook) SDK, used only to measure installs and App Store purchases that come from our own ads, and only after you allow it (see Section 4).</li>
+    <li>We do not collect your advertising identifier (IDFA), we do not show Apple's tracking prompt, and we do not use your health, food, weight, GLP-1 or chat data for advertising.</li>
     <li>Our website (nutrivaai.com) does not use cookies, analytics or tracking scripts.</li>
     <li>We do not sell your personal data to third parties. Ever.</li>
   </ul>
@@ -188,6 +189,12 @@
         <td><a href="https://sentry.io/privacy/" target="_blank" rel="noopener noreferrer">sentry.io/privacy</a></td>
       </tr>
       <tr>
+        <td><strong>Meta (Facebook) SDK</strong></td>
+        <td>Measuring installs and App Store purchases (trials and subscriptions) that come from our ads on Meta</td>
+        <td>Only after you allow Share Usage &amp; Crash Data: the app install or first open and App Store purchase events, with basic device and app information. No advertising identifier. Never health, food, weight, GLP-1 or chat data</td>
+        <td><a href="https://www.facebook.com/privacy/policy/" target="_blank" rel="noopener noreferrer">facebook.com/privacy/policy</a></td>
+      </tr>
+      <tr>
         <td><strong>Apple App Store</strong></td>
         <td>App distribution &amp; payment processing</td>
         <td>Handled directly by Apple under its own policies</td>
@@ -199,7 +206,7 @@
   <p>We do not share your data with any other third parties. We may disclose your information if required by law, court order, or to protect the safety of users.</p>
 
   <!-- 5 -->
-  <h2 id="s5">5. Health Data &amp; Apple Health</h2>
+  <h2 id="s5">5. Health Data, Apple Health &amp; GLP-1 Mode</h2>
   <p>Nutriva AI reads Apple Health (HealthKit) data <strong>only with your permission</strong>, and only for the data types you allow. Apple Health data is read on your device. Depending on what you allow, the app may read:</p>
   <ul>
     <li>Activity: activity rings, steps, active energy and workouts</li>
@@ -219,13 +226,22 @@
 
   <p>This use of HealthKit data complies with Apple's HealthKit guidelines.</p>
 
+  <h3>GLP-1 mode</h3>
+  <p>GLP-1 mode is optional and off until you turn it on. If you use it, the medicine you choose, your dose schedule and reminder time, and your side-effect check-ins are sensitive health data. We use them only to show your dose-day card and reminder, your protein target and your check-in history in the app.</p>
+  <ul>
+    <li><strong>Where it is stored:</strong> only on your iPhone, in the app's private storage, in a separate file for each Nutriva account. It is not synced to our servers and is excluded from iCloud and device backups, so it is not restored on a new iPhone. Dose-day reminders are scheduled on your iPhone by iOS.</li>
+    <li><strong>AI Coach:</strong> shared with Marcus only if you turn on "Share with Marcus" in GLP-1 mode (it is off by default). When it is on, your medicine, where you are in your dose week and your most recent check-in are sent with your questions to the AI Coach (processed by OpenAI, see Section 6). You can turn it off at any time.</li>
+    <li><strong>Never sold or used for advertising:</strong> GLP-1 data is never sold, never used for advertising or marketing, and never sent to Meta, PostHog or Sentry. Usage analytics may record that a GLP-1 mode screen or check-in was used, but never which medicine, your schedule or your check-in answers.</li>
+    <li><strong>Export and deletion:</strong> your check-ins are included when you export your data. Signing out keeps the file on that iPhone for when you sign back in; deleting your account deletes it.</li>
+  </ul>
+
   <!-- 6 -->
   <h2 id="s6">6. AI Features</h2>
   <p>Nutriva AI uses AI models from OpenAI (GPT models) to analyze food photos, labels, menus and meal descriptions, to power the AI Coach (Marcus), and to write health insights and weekly reviews. If OpenAI is temporarily unavailable, food and meal estimates may be processed by Google (Gemini API) instead.</p>
   <h3>What is sent</h3>
   <ul>
     <li><strong>Food analysis:</strong> the photo or description you submit and your app language. We do not send your name or email.</li>
-    <li><strong>AI Coach:</strong> your message, the recent conversation, and the context Marcus needs to answer: your first name, goal, weight and goal weight, height, age, sex, activity level, diet preference, today's food and water totals, recent averages, recent meal names and anything you asked Marcus to remember. When your question is about your health, a short summary of relevant Apple Health numbers is included (see Section 5). Email, phone numbers and card numbers typed into a message are removed before sending.</li>
+    <li><strong>AI Coach:</strong> your message, the recent conversation, and the context Marcus needs to answer: your first name, goal, weight and goal weight, height, age, sex, activity level, diet preference, today's food and water totals, recent averages, recent meal names and anything you asked Marcus to remember. When your question is about your health, a short summary of relevant Apple Health numbers is included (see Section 5). If you turned on "Share with Marcus" in GLP-1 mode, your medicine, where you are in your dose week and your most recent check-in are included too (off by default). Email, phone numbers and card numbers typed into a message are removed before sending.</li>
   </ul>
   <p>You choose whether to allow this: the app asks before the first AI request, and you can change it in Settings at any time. AI features are not available without that permission; everything else keeps working.</p>
   <p>OpenAI and Google process these requests under their API terms and, by default, do not use API data to train their models. Your Coach conversations are stored in your Nutriva account so the service works and is protected from abuse, and they are deleted when you delete your account.</p>
@@ -233,7 +249,7 @@
 
   <!-- 7 -->
   <h2 id="s7">7. In-App Purchases &amp; Subscriptions</h2>
-  <p>Nutriva AI offers an auto-renewing subscription, <strong>Nutriva Pro</strong>. Accounts created on or after 20 October 2026 need Nutriva Pro to use the app; accounts created before that date keep their free plan. All payment transactions are processed by Apple (App Store) — we never receive or store your payment card details.</p>
+  <p>Nutriva AI offers an auto-renewing subscription, <strong>Nutriva Pro</strong>. New accounts, created with version 2.1 of the app or later, start with Nutriva Pro (a free trial or introductory offer may apply for eligible new subscribers); accounts created before then keep their free plan. All payment transactions are processed by Apple (App Store) — we never receive or store your payment card details.</p>
   <p>Subscription status is verified through <strong>RevenueCat</strong>, which receives your anonymised device identifier and purchase receipt from the app store to confirm your entitlements. RevenueCat does not receive your name, email, or health data.</p>
   <p>For subscription management, cancellations, and refunds, please use your device's subscription management settings:</p>
   <ul>
@@ -242,9 +258,10 @@
   <p>Refund requests are handled by Apple according to its refund policies. Deleting your Nutriva account does not cancel an App Store subscription; cancel it separately in your Apple ID settings.</p>
 
   <!-- 8 -->
-  <h2 id="s8">8. Analytics &amp; Crash Reporting</h2>
+  <h2 id="s8">8. Analytics, Crash Reporting &amp; Ad Measurement</h2>
   <p>To find and fix bugs and to see which features are used, Nutriva AI sends <strong>crash and error reports to Sentry</strong> and <strong>usage events to PostHog</strong>. They carry your random account ID, never your name, email or phone number, and never your food, photos, Apple Health data, weights or Coach messages. Apple Health data is never used for analytics. Neither tool is used for advertising or to track you across other apps and websites.</p>
-  <p><strong>Your choice.</strong> Turn this off any time in the app: Profile › Settings › Share Usage &amp; Crash Data. Apple may also share anonymous crash reports with us if you allow it in iPhone Settings › Privacy &amp; Security › Analytics &amp; Improvements.</p>
+  <p><strong>Meta ad measurement.</strong> The app includes the Meta (Facebook) SDK only to measure installs and App Store purchases (trials and subscriptions) that come from our ads on Meta. It starts only when Share Usage &amp; Crash Data is on; until then nothing is sent to Meta. Meta measures through Apple's privacy-preserving ad attribution (SKAdNetwork) and Meta's Aggregated Event Measurement: the app does not collect your advertising identifier (IDFA) and does not show Apple's tracking prompt. No custom events are sent, and never your health, Apple Health, food, weight, GLP-1, photo or chat data, or your name or email.</p>
+  <p><strong>Your choice.</strong> Usage events (PostHog) and Meta ad measurement are off in the EU/EEA, the UK and Switzerland until you allow them; elsewhere they are on by default. Crash reports are on until you turn them off. Turn all of this off any time in the app: Profile › Settings › Share Usage &amp; Crash Data. Apple may also share anonymous crash reports with us if you allow it in iPhone Settings › Privacy &amp; Security › Analytics &amp; Improvements.</p>
 
   <!-- 9 -->
   <h2 id="s9">9. Camera, Microphone &amp; Photo Library</h2>
@@ -266,6 +283,8 @@
       <tr><td>Food logs, weight, and nutrition data</td><td>Kept until you delete them or your account</td></tr>
       <tr><td>Account information (email, profile)</td><td>Kept until account deletion</td></tr>
       <tr><td>AI coach conversations</td><td>Kept in your account until you delete your account</td></tr>
+      <tr><td>GLP-1 mode data (medicine, schedule, check-ins)</td><td>Kept only on your iPhone until you delete it, delete your account or delete the app</td></tr>
+      <tr><td>Ad measurement events (Meta)</td><td>Kept by Meta under its own data policy</td></tr>
       <tr><td>Referral device identifier (IDFV)</td><td>Kept with the referral record until you delete your account</td></tr>
       <tr><td>Analytics events (PostHog)</td><td>Up to 1 year</td></tr>
       <tr><td>Crash reports (Sentry)</td><td>90 days</td></tr>
@@ -273,7 +292,7 @@
       <tr><td>Backup copies</td><td>Deleted within 30 days of account deletion</td></tr>
     </tbody>
   </table></div>
-  <p>You can delete your account and all your data at any time in the app: <strong>Profile → Account → Delete account</strong> (also reachable from the subscription screen's Account button), or by emailing <strong>nutrivaaiteam@gmail.com</strong>. Deleting your account removes your data from our servers, including your food, water and weight logs, your AI Coach conversations and any referral records. If you signed in with Apple, Nutriva is also disconnected from your Apple ID. Account deletion is permanent and irreversible. It does not cancel an App Store subscription; cancel that in your Apple ID settings.</p>
+  <p>You can delete your account and all your data at any time in the app: <strong>Profile → Account → Delete account</strong> (also reachable from the subscription screen's Account button), or by emailing <strong>nutrivaaiteam@gmail.com</strong>. Deleting your account removes your data from our servers, including your food, water and weight logs, your AI Coach conversations and any referral records, and deletes your GLP-1 mode data from the iPhone you delete it on. If you signed in with Apple, Nutriva is also disconnected from your Apple ID. Account deletion is permanent and irreversible. It does not cancel an App Store subscription; cancel that in your Apple ID settings.</p>
 
   <!-- 11 -->
   <h2 id="s11">11. Data Security</h2>
@@ -292,7 +311,7 @@
   <p>Nutriva AI is available globally. If you are located outside the United States, your data may be transferred to and processed in the United States or other countries where our service providers operate. We rely on the following safeguards for such transfers:</p>
   <ul>
     <li>Standard Contractual Clauses (SCCs) approved by the European Commission, where applicable.</li>
-    <li>Our third-party providers (Supabase, PostHog, Sentry, OpenAI, Google) maintain their own appropriate transfer mechanisms.</li>
+    <li>Our third-party providers (Supabase, PostHog, Sentry, OpenAI, Google, Meta) maintain their own appropriate transfer mechanisms.</li>
   </ul>
 
   <!-- 13 -->
@@ -344,6 +363,7 @@
   <ul>
     <li>Meal logging reminders</li>
     <li>Fasting timer alerts</li>
+    <li>GLP-1 dose-day reminders, if you turn them on in GLP-1 mode (scheduled on your iPhone; they can be late or missed, so don't rely on them alone)</li>
     <li>Streak and goal milestone notifications</li>
     <li>Weekly AI summary reports</li>
   </ul>
