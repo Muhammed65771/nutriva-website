@@ -118,7 +118,7 @@
   <ul>
     <li>We do not collect your precise location (GPS coordinates).</li>
     <li>We do not read your contacts, calendar, or messages.</li>
-    <li>We do not show ads in the app. The only advertising-related tool in the app is the Meta (Facebook) SDK, used only to measure installs and App Store purchases that come from our own ads, and only after you allow it (see Section 4).</li>
+    <li>We do not show ads in the app and we do not include any advertising SDK. To see which of our own ads work, we use only Apple's privacy-preserving attribution (SKAdNetwork and Apple Search Ads attribution), which reports results to us in aggregate and never identifies you (see Section 8).</li>
     <li>We do not collect your advertising identifier (IDFA), we do not show Apple's tracking prompt, and we do not use your health, food, weight, GLP-1 or chat data for advertising.</li>
     <li>Our website (nutrivaai.com) does not use cookies, analytics or tracking scripts.</li>
     <li>We do not sell your personal data to third parties. Ever.</li>
@@ -189,12 +189,6 @@
         <td><a href="https://sentry.io/privacy/" target="_blank" rel="noopener noreferrer">sentry.io/privacy</a></td>
       </tr>
       <tr>
-        <td><strong>Meta (Facebook) SDK</strong></td>
-        <td>Measuring installs and App Store purchases (trials and subscriptions) that come from our ads on Meta</td>
-        <td>Only after you allow Share Usage &amp; Crash Data: the app install or first open and App Store purchase events, with basic device and app information. No advertising identifier. Never health, food, weight, GLP-1 or chat data</td>
-        <td><a href="https://www.facebook.com/privacy/policy/" target="_blank" rel="noopener noreferrer">facebook.com/privacy/policy</a></td>
-      </tr>
-      <tr>
         <td><strong>Apple App Store</strong></td>
         <td>App distribution &amp; payment processing</td>
         <td>Handled directly by Apple under its own policies</td>
@@ -231,7 +225,7 @@
   <ul>
     <li><strong>Where it is stored:</strong> only on your iPhone, in the app's private storage, in a separate file for each Nutriva account. It is not synced to our servers and is excluded from iCloud and device backups, so it is not restored on a new iPhone. Dose-day reminders are scheduled on your iPhone by iOS.</li>
     <li><strong>AI Coach:</strong> shared with Marcus only if you turn on "Share with Marcus" in GLP-1 mode (it is off by default). When it is on, your medicine, where you are in your dose week and your most recent check-in are sent with your questions to the AI Coach (processed by OpenAI, see Section 6). You can turn it off at any time.</li>
-    <li><strong>Never sold or used for advertising:</strong> GLP-1 data is never sold, never used for advertising or marketing, and never sent to Meta, PostHog or Sentry. Usage analytics may record that a GLP-1 mode screen or check-in was used, but never which medicine, your schedule or your check-in answers.</li>
+    <li><strong>Never sold or used for advertising:</strong> GLP-1 data is never sold, never used for advertising or marketing, and never sent to PostHog, Sentry or any advertising service. Usage analytics may record that a GLP-1 mode screen or check-in was used, but never which medicine, your schedule or your check-in answers.</li>
     <li><strong>Export and deletion:</strong> your check-ins are included when you export your data. Signing out keeps the file on that iPhone for when you sign back in; deleting your account deletes it.</li>
   </ul>
 
@@ -260,8 +254,8 @@
   <!-- 8 -->
   <h2 id="s8">8. Analytics, Crash Reporting &amp; Ad Measurement</h2>
   <p>To find and fix bugs and to see which features are used, Nutriva AI sends <strong>crash and error reports to Sentry</strong> and <strong>usage events to PostHog</strong>. They carry your random account ID, never your name, email or phone number, and never your food, photos, Apple Health data, weights or Coach messages. Apple Health data is never used for analytics. Neither tool is used for advertising or to track you across other apps and websites.</p>
-  <p><strong>Meta ad measurement.</strong> The app includes the Meta (Facebook) SDK only to measure installs and App Store purchases (trials and subscriptions) that come from our ads on Meta. It starts only when Share Usage &amp; Crash Data is on; until then nothing is sent to Meta. Meta measures through Apple's privacy-preserving ad attribution (SKAdNetwork) and Meta's Aggregated Event Measurement: the app does not collect your advertising identifier (IDFA) and does not show Apple's tracking prompt. No custom events are sent, and never your health, Apple Health, food, weight, GLP-1, photo or chat data, or your name or email.</p>
-  <p><strong>Your choice.</strong> Usage events (PostHog) and Meta ad measurement are off in the EU/EEA, the UK and Switzerland until you allow them; elsewhere they are on by default. Crash reports are on until you turn them off. Turn all of this off any time in the app: Profile › Settings › Share Usage &amp; Crash Data. Apple may also share anonymous crash reports with us if you allow it in iPhone Settings › Privacy &amp; Security › Analytics &amp; Improvements.</p>
+  <p><strong>Ad measurement (Apple only).</strong> To learn which of our ads bring new users, the app uses Apple's own privacy-preserving attribution: <strong>SKAdNetwork</strong>, where Apple tells an ad network, in aggregate and with a delay, how many installs from its ads were opened or started a subscription, and <strong>Apple Search Ads attribution (AdServices)</strong>, which tells us which Apple Search Ads campaign led to an install. Neither identifies you, neither uses your advertising identifier (IDFA), and neither is tracking, so the app does not show Apple's tracking prompt. No health, food, weight, GLP-1, photo or chat data is ever part of it.</p>
+  <p><strong>Your choice.</strong> Usage events (PostHog) are off in the EU/EEA, the UK and Switzerland until you allow them; elsewhere they are on by default. Crash reports are on until you turn them off. Turn all of this off any time in the app: Profile › Settings › Share Usage &amp; Crash Data. Apple may also share anonymous crash reports with us if you allow it in iPhone Settings › Privacy &amp; Security › Analytics &amp; Improvements.</p>
 
   <!-- 9 -->
   <h2 id="s9">9. Camera, Microphone &amp; Photo Library</h2>
@@ -284,7 +278,6 @@
       <tr><td>Account information (email, profile)</td><td>Kept until account deletion</td></tr>
       <tr><td>AI coach conversations</td><td>Kept in your account until you delete your account</td></tr>
       <tr><td>GLP-1 mode data (medicine, schedule, check-ins)</td><td>Kept only on your iPhone until you delete it, delete your account or delete the app</td></tr>
-      <tr><td>Ad measurement events (Meta)</td><td>Kept by Meta under its own data policy</td></tr>
       <tr><td>Referral device identifier (IDFV)</td><td>Kept with the referral record until you delete your account</td></tr>
       <tr><td>Analytics events (PostHog)</td><td>Up to 1 year</td></tr>
       <tr><td>Crash reports (Sentry)</td><td>90 days</td></tr>
@@ -311,7 +304,7 @@
   <p>Nutriva AI is available globally. If you are located outside the United States, your data may be transferred to and processed in the United States or other countries where our service providers operate. We rely on the following safeguards for such transfers:</p>
   <ul>
     <li>Standard Contractual Clauses (SCCs) approved by the European Commission, where applicable.</li>
-    <li>Our third-party providers (Supabase, PostHog, Sentry, OpenAI, Google, Meta) maintain their own appropriate transfer mechanisms.</li>
+    <li>Our third-party providers (Supabase, PostHog, Sentry, OpenAI, Google) maintain their own appropriate transfer mechanisms.</li>
   </ul>
 
   <!-- 13 -->
