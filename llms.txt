@@ -16,6 +16,9 @@
 
 ## Pages
 - [Home](https://nutrivaai.com/): features, pricing, FAQ
+- [AI calorie counter](https://nutrivaai.com/ai-calorie-counter): how photo calorie counting works and how accurate it is
+- [GLP-1 food tracker](https://nutrivaai.com/glp-1-food-tracker): GLP-1 mode
+- [Calories in common foods](https://nutrivaai.com/calories): 60 foods, per portion and per 100 g, from USDA FoodData Central
 - [Support](https://nutrivaai.com/support): contact, subscriptions, account deletion
 - [Privacy Policy](https://nutrivaai.com/privacy)
 - [Terms of Use](https://nutrivaai.com/terms)
