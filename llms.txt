@@ -1,0 +1,25 @@
+# Nutriva AI
+
+> Nutriva AI: Calorie Counter is an AI calorie counter and nutrition coach for iPhone and Apple Watch (App Store id 6761382561, iOS 18 or later). Not affiliated with Nutriva supplements or with other apps named "Nutriva".
+
+## Key facts
+- Log food by photo (AI estimates calories, protein, carbs and fat in seconds), barcode, nutrition label, or by typing or speaking a description.
+- Barcode results are cross-checked across several food databases; when they disagree the app asks for the label instead of guessing.
+- Marcus: an AI coach that answers questions using your food log and, if you allow it, your Apple Health data. Marcus is an AI, not a doctor.
+- GLP-1 mode: dose-day reminders on the schedule the user enters, protein-first goals, side-effect check-ins. It never suggests or changes doses.
+- Fasting timer with Live Activities, including a Ramadan fast. Water, weight, strength logging, weekly meal plan, widgets, Siri and Shortcuts.
+- Apple Watch app. Works offline: about 2,000 common foods searchable on the device; photo scans wait and run when back online.
+- 18 languages: English, Arabic, German, Spanish, French, Hindi, Croatian, Indonesian, Italian, Japanese, Korean, Kurdish (Kurmanji), Dutch, Portuguese, Russian, Turkish, Chinese (Simplified and Traditional).
+- No ads and no tracking.
+- Price (US): Nutriva Pro $39.99/year with a 7-day free trial, or $9.99/month with the first month at $4.99. Accounts created before 20 October 2026 keep a free plan.
+- Calories and macros are estimates and can be wrong. Not a medical device.
+
+## Pages
+- [Home](https://nutrivaai.com/): features, pricing, FAQ
+- [Support](https://nutrivaai.com/support): contact, subscriptions, account deletion
+- [Privacy Policy](https://nutrivaai.com/privacy)
+- [Terms of Use](https://nutrivaai.com/terms)
+- [App Store](https://apps.apple.com/app/id6761382561)
+
+## Contact
+nutrivaaiteam@gmail.com
